@@ -1,0 +1,773 @@
+No.,Name,Unit,Time_ms,Conversion
+1,Longitudinal delta-v,km/h,0,E=N-127
+2,Longitudinal delta-v,km/h,10,E=N-127
+3,Longitudinal delta-v,km/h,20,E=N-127
+4,Longitudinal delta-v,km/h,30,E=N-127
+5,Longitudinal delta-v,km/h,40,E=N-127
+6,Longitudinal delta-v,km/h,50,E=N-127
+7,Longitudinal delta-v,km/h,60,E=N-127
+8,Longitudinal delta-v,km/h,70,E=N-127
+9,Longitudinal delta-v,km/h,80,E=N-127
+10,Longitudinal delta-v,km/h,90,E=N-127
+11,Longitudinal delta-v,km/h,100,E=N-127
+12,Longitudinal delta-v,km/h,110,E=N-127
+13,Longitudinal delta-v,km/h,120,E=N-127
+14,Longitudinal delta-v,km/h,130,E=N-127
+15,Longitudinal delta-v,km/h,140,E=N-127
+16,Longitudinal delta-v,km/h,150,E=N-127
+17,Longitudinal delta-v,km/h,160,E=N-127
+18,Longitudinal delta-v,km/h,170,E=N-127
+19,Longitudinal delta-v,km/h,180,E=N-127
+20,Longitudinal delta-v,km/h,190,E=N-127
+21,Longitudinal delta-v,km/h,200,E=N-127
+22,Longitudinal delta-v,km/h,210,E=N-127
+23,Longitudinal delta-v,km/h,220,E=N-127
+24,Longitudinal delta-v,km/h,230,E=N-127
+25,Longitudinal delta-v,km/h,240,E=N-127
+26,Longitudinal delta-v,km/h,250,E=N-127
+27,Maximum longitudinal delta-v,km/h,N/A,E=N-127
+28,Time to reach maximum longitudinal delta-v,ms,N/A,E=N*2.5
+29,Time to clip longitudinal acceleration,ms,N/A,E=N
+30,Time to clip lateral acceleration,ms,N/A,E=N
+31,Vehicle speed,km/h,-5000,E=N
+32,Vehicle speed,km/h,-4500,E=N
+33,Vehicle speed,km/h,-4000,E=N
+34,Vehicle speed,km/h,-3500,E=N
+35,Vehicle speed,km/h,-3000,E=N
+36,Vehicle speed,km/h,-2500,E=N
+37,Vehicle speed,km/h,-2000,E=N
+38,Vehicle speed,km/h,-1500,E=N
+39,Vehicle speed,km/h,-1000,E=N
+40,Vehicle speed,km/h,-500,E=N
+41,Vehicle speed,km/h,0,E=N
+42,Service brake,N/A,-5000,"0: Off, 1: On"
+43,Service brake,N/A,-4500,"0: Off, 1: On"
+44,Service brake,N/A,-4000,"0: Off, 1: On"
+45,Service brake,N/A,-3500,"0: Off, 1: On"
+46,Service brake,N/A,-3000,"0: Off, 1: On"
+47,Service brake,N/A,-2500,"0: Off, 1: On"
+48,Service brake,N/A,-2000,"0: Off, 1: On"
+49,Service brake,N/A,-1500,"0: Off, 1: On"
+50,Service brake,N/A,-1000,"0: Off, 1: On"
+51,Service brake,N/A,-500,"0: Off, 1: On"
+52,Service brake,N/A,0,"0: Off, 1: On"
+53,"Seat belt status, driver",N/A,N/A,"0: Fastened, 1: Not fastened"
+54,Accelerator pedal position,%,-5000,E=N
+55,Accelerator pedal position,%,-4500,E=N
+56,Accelerator pedal position,%,-4000,E=N
+57,Accelerator pedal position,%,-3500,E=N
+58,Accelerator pedal position,%,-3000,E=N
+59,Accelerator pedal position,%,-2500,E=N
+60,Accelerator pedal position,%,-2000,E=N
+61,Accelerator pedal position,%,-1500,E=N
+62,Accelerator pedal position,%,-1000,E=N
+63,Accelerator pedal position,%,-500,E=N
+64,Accelerator pedal position,%,0,E=N
+65,Engine speed,rpm,-5000,E=N*100
+66,Engine speed,rpm,-4500,E=N*100
+67,Engine speed,rpm,-4000,E=N*100
+68,Engine speed,rpm,-3500,E=N*100
+69,Engine speed,rpm,-3000,E=N*100
+70,Engine speed,rpm,-2500,E=N*100
+71,Engine speed,rpm,-2000,E=N*100
+72,Engine speed,rpm,-1500,E=N*100
+73,Engine speed,rpm,-1000,E=N*100
+74,Engine speed,rpm,-500,E=N*100
+75,Engine speed,rpm,0,E=N*100
+76,"Ignition cycle, event",N/A,N/A,E=N
+77,"Ignition cycle, event",N/A,N/A,Subsequent
+78,"Ignition cycle, download",N/A,N/A,E=N
+79,"Ignition cycle, download",N/A,N/A,Subsequent
+80,Complete file recorded,N/A,N/A,"0: No, 1: Yes"
+81,Time from last event to this event,s,N/A,E=N*0.1
+82,Vehicle identification number,N/A,N/A,Ascii
+83,Vehicle identification number,N/A,N/A,Ascii
+84,Vehicle identification number,N/A,N/A,Ascii
+85,Vehicle identification number,N/A,N/A,Ascii
+86,Vehicle identification number,N/A,N/A,Ascii
+87,Vehicle identification number,N/A,N/A,Ascii
+88,Vehicle identification number,N/A,N/A,Ascii
+89,Vehicle identification number,N/A,N/A,Ascii
+90,Vehicle identification number,N/A,N/A,Ascii
+91,Vehicle identification number,N/A,N/A,Ascii
+92,Vehicle identification number,N/A,N/A,Ascii
+93,Vehicle identification number,N/A,N/A,Ascii
+94,Vehicle identification number,N/A,N/A,Ascii
+95,Vehicle identification number,N/A,N/A,Ascii
+96,Vehicle identification number,N/A,N/A,Ascii
+97,Vehicle identification number,N/A,N/A,Ascii
+98,Vehicle identification number,N/A,N/A,Ascii
+99,Hardware number of EDR unit,N/A,N/A,Ascii
+100,Hardware number of EDR unit,N/A,N/A,Ascii
+101,Hardware number of EDR unit,N/A,N/A,Ascii
+102,Hardware number of EDR unit,N/A,N/A,Ascii
+103,Hardware number of EDR unit,N/A,N/A,Ascii
+104,Hardware number of EDR unit,N/A,N/A,Ascii
+105,Hardware number of EDR unit,N/A,N/A,Ascii
+106,Hardware number of EDR unit,N/A,N/A,Ascii
+107,Hardware number of EDR unit,N/A,N/A,Ascii
+108,Hardware number of EDR unit,N/A,N/A,Ascii
+109,Hardware number of EDR unit,N/A,N/A,Ascii
+110,Hardware number of EDR unit,N/A,N/A,Ascii
+111,Hardware number of EDR unit,N/A,N/A,Ascii
+112,Hardware number of EDR unit,N/A,N/A,Ascii
+113,Hardware number of EDR unit,N/A,N/A,Ascii
+114,Hardware number of EDR unit,N/A,N/A,Ascii
+115,Hardware number of EDR unit,N/A,N/A,Ascii
+116,Hardware number of EDR unit,N/A,N/A,Ascii
+117,Hardware number of EDR unit,N/A,N/A,Ascii
+118,Hardware number of EDR unit,N/A,N/A,Ascii
+119,Hardware number of EDR unit,N/A,N/A,Ascii
+120,Hardware number of EDR unit,N/A,N/A,Ascii
+121,Hardware number of EDR unit,N/A,N/A,Ascii
+122,Hardware number of EDR unit,N/A,N/A,Ascii
+123,Hardware number of EDR unit,N/A,N/A,Ascii
+124,Hardware number of EDR unit,N/A,N/A,Ascii
+125,Hardware number of EDR unit,N/A,N/A,Ascii
+126,Hardware number of EDR unit,N/A,N/A,Ascii
+127,Hardware number of EDR unit,N/A,N/A,Ascii
+128,Hardware number of EDR unit,N/A,N/A,Ascii
+129,Hardware number of EDR unit,N/A,N/A,Ascii
+130,Hardware number of EDR unit,N/A,N/A,Ascii
+131,Hardware number of EDR unit,N/A,N/A,Ascii
+132,Hardware number of EDR unit,N/A,N/A,Ascii
+133,Hardware number of EDR unit,N/A,N/A,Ascii
+134,Hardware number of EDR unit,N/A,N/A,Ascii
+135,Hardware number of EDR unit,N/A,N/A,Ascii
+136,Hardware number of EDR unit,N/A,N/A,Ascii
+137,Hardware number of EDR unit,N/A,N/A,Ascii
+138,Hardware number of EDR unit,N/A,N/A,Ascii
+139,Hardware number of EDR unit,N/A,N/A,Ascii
+140,Hardware number of EDR unit,N/A,N/A,Ascii
+141,Hardware number of EDR unit,N/A,N/A,Ascii
+142,Hardware number of EDR unit,N/A,N/A,Ascii
+143,Hardware number of EDR unit,N/A,N/A,Ascii
+144,Hardware number of EDR unit,N/A,N/A,Ascii
+145,Hardware number of EDR unit,N/A,N/A,Ascii
+146,Hardware number of EDR unit,N/A,N/A,Ascii
+147,Hardware number of EDR unit,N/A,N/A,Ascii
+148,Hardware number of EDR unit,N/A,N/A,Ascii
+149,Hardware number of EDR unit,N/A,N/A,Ascii
+150,Hardware number of EDR unit,N/A,N/A,Ascii
+151,Hardware number of EDR unit,N/A,N/A,Ascii
+152,Hardware number of EDR unit,N/A,N/A,Ascii
+153,Hardware number of EDR unit,N/A,N/A,Ascii
+154,Hardware number of EDR unit,N/A,N/A,Ascii
+155,Hardware number of EDR unit,N/A,N/A,Ascii
+156,Hardware number of EDR unit,N/A,N/A,Ascii
+157,Hardware number of EDR unit,N/A,N/A,Ascii
+158,Hardware number of EDR unit,N/A,N/A,Ascii
+159,Hardware number of EDR unit,N/A,N/A,Ascii
+160,Hardware number of EDR unit,N/A,N/A,Ascii
+161,Hardware number of EDR unit,N/A,N/A,Ascii
+162,Hardware number of EDR unit,N/A,N/A,Ascii
+163,Serial number of EDR unit,N/A,N/A,Ascii
+164,Serial number of EDR unit,N/A,N/A,Ascii
+165,Serial number of EDR unit,N/A,N/A,Ascii
+166,Serial number of EDR unit,N/A,N/A,Ascii
+167,Serial number of EDR unit,N/A,N/A,Ascii
+168,Serial number of EDR unit,N/A,N/A,Ascii
+169,Serial number of EDR unit,N/A,N/A,Ascii
+170,Serial number of EDR unit,N/A,N/A,Ascii
+171,Serial number of EDR unit,N/A,N/A,Ascii
+172,Serial number of EDR unit,N/A,N/A,Ascii
+173,Serial number of EDR unit,N/A,N/A,Ascii
+174,Serial number of EDR unit,N/A,N/A,Ascii
+175,Serial number of EDR unit,N/A,N/A,Ascii
+176,Serial number of EDR unit,N/A,N/A,Ascii
+177,Serial number of EDR unit,N/A,N/A,Ascii
+178,Serial number of EDR unit,N/A,N/A,Ascii
+179,Serial number of EDR unit,N/A,N/A,Ascii
+180,Serial number of EDR unit,N/A,N/A,Ascii
+181,Serial number of EDR unit,N/A,N/A,Ascii
+182,Serial number of EDR unit,N/A,N/A,Ascii
+183,Serial number of EDR unit,N/A,N/A,Ascii
+184,Serial number of EDR unit,N/A,N/A,Ascii
+185,Serial number of EDR unit,N/A,N/A,Ascii
+186,Serial number of EDR unit,N/A,N/A,Ascii
+187,Serial number of EDR unit,N/A,N/A,Ascii
+188,Serial number of EDR unit,N/A,N/A,Ascii
+189,Serial number of EDR unit,N/A,N/A,Ascii
+190,Serial number of EDR unit,N/A,N/A,Ascii
+191,Serial number of EDR unit,N/A,N/A,Ascii
+192,Serial number of EDR unit,N/A,N/A,Ascii
+193,Serial number of EDR unit,N/A,N/A,Ascii
+194,Serial number of EDR unit,N/A,N/A,Ascii
+195,Serial number of EDR unit,N/A,N/A,Ascii
+196,Serial number of EDR unit,N/A,N/A,Ascii
+197,Serial number of EDR unit,N/A,N/A,Ascii
+198,Serial number of EDR unit,N/A,N/A,Ascii
+199,Serial number of EDR unit,N/A,N/A,Ascii
+200,Serial number of EDR unit,N/A,N/A,Ascii
+201,Serial number of EDR unit,N/A,N/A,Ascii
+202,Serial number of EDR unit,N/A,N/A,Ascii
+203,Serial number of EDR unit,N/A,N/A,Ascii
+204,Serial number of EDR unit,N/A,N/A,Ascii
+205,Serial number of EDR unit,N/A,N/A,Ascii
+206,Serial number of EDR unit,N/A,N/A,Ascii
+207,Serial number of EDR unit,N/A,N/A,Ascii
+208,Serial number of EDR unit,N/A,N/A,Ascii
+209,Serial number of EDR unit,N/A,N/A,Ascii
+210,Serial number of EDR unit,N/A,N/A,Ascii
+211,Serial number of EDR unit,N/A,N/A,Ascii
+212,Serial number of EDR unit,N/A,N/A,Ascii
+213,Serial number of EDR unit,N/A,N/A,Ascii
+214,Serial number of EDR unit,N/A,N/A,Ascii
+215,Serial number of EDR unit,N/A,N/A,Ascii
+216,Serial number of EDR unit,N/A,N/A,Ascii
+217,Serial number of EDR unit,N/A,N/A,Ascii
+218,Serial number of EDR unit,N/A,N/A,Ascii
+219,Serial number of EDR unit,N/A,N/A,Ascii
+220,Serial number of EDR unit,N/A,N/A,Ascii
+221,Serial number of EDR unit,N/A,N/A,Ascii
+222,Serial number of EDR unit,N/A,N/A,Ascii
+223,Serial number of EDR unit,N/A,N/A,Ascii
+224,Serial number of EDR unit,N/A,N/A,Ascii
+225,Serial number of EDR unit,N/A,N/A,Ascii
+226,Serial number of EDR unit,N/A,N/A,Ascii
+227,Software number of EDR unit,N/A,N/A,Ascii
+228,Software number of EDR unit,N/A,N/A,Ascii
+229,Software number of EDR unit,N/A,N/A,Ascii
+230,Software number of EDR unit,N/A,N/A,Ascii
+231,Software number of EDR unit,N/A,N/A,Ascii
+232,Software number of EDR unit,N/A,N/A,Ascii
+233,Software number of EDR unit,N/A,N/A,Ascii
+234,Software number of EDR unit,N/A,N/A,Ascii
+235,Software number of EDR unit,N/A,N/A,Ascii
+236,Software number of EDR unit,N/A,N/A,Ascii
+237,Software number of EDR unit,N/A,N/A,Ascii
+238,Software number of EDR unit,N/A,N/A,Ascii
+239,Software number of EDR unit,N/A,N/A,Ascii
+240,Software number of EDR unit,N/A,N/A,Ascii
+241,Software number of EDR unit,N/A,N/A,Ascii
+242,Software number of EDR unit,N/A,N/A,Ascii
+243,Software number of EDR unit,N/A,N/A,Ascii
+244,Software number of EDR unit,N/A,N/A,Ascii
+245,Software number of EDR unit,N/A,N/A,Ascii
+246,Software number of EDR unit,N/A,N/A,Ascii
+247,Software number of EDR unit,N/A,N/A,Ascii
+248,Software number of EDR unit,N/A,N/A,Ascii
+249,Software number of EDR unit,N/A,N/A,Ascii
+250,Software number of EDR unit,N/A,N/A,Ascii
+251,Software number of EDR unit,N/A,N/A,Ascii
+252,Software number of EDR unit,N/A,N/A,Ascii
+253,Software number of EDR unit,N/A,N/A,Ascii
+254,Software number of EDR unit,N/A,N/A,Ascii
+255,Software number of EDR unit,N/A,N/A,Ascii
+256,Software number of EDR unit,N/A,N/A,Ascii
+257,Software number of EDR unit,N/A,N/A,Ascii
+258,Software number of EDR unit,N/A,N/A,Ascii
+259,Software number of EDR unit,N/A,N/A,Ascii
+260,Software number of EDR unit,N/A,N/A,Ascii
+261,Software number of EDR unit,N/A,N/A,Ascii
+262,Software number of EDR unit,N/A,N/A,Ascii
+263,Software number of EDR unit,N/A,N/A,Ascii
+264,Software number of EDR unit,N/A,N/A,Ascii
+265,Software number of EDR unit,N/A,N/A,Ascii
+266,Software number of EDR unit,N/A,N/A,Ascii
+267,Software number of EDR unit,N/A,N/A,Ascii
+268,Software number of EDR unit,N/A,N/A,Ascii
+269,Software number of EDR unit,N/A,N/A,Ascii
+270,Software number of EDR unit,N/A,N/A,Ascii
+271,Software number of EDR unit,N/A,N/A,Ascii
+272,Software number of EDR unit,N/A,N/A,Ascii
+273,Software number of EDR unit,N/A,N/A,Ascii
+274,Software number of EDR unit,N/A,N/A,Ascii
+275,Software number of EDR unit,N/A,N/A,Ascii
+276,Software number of EDR unit,N/A,N/A,Ascii
+277,Software number of EDR unit,N/A,N/A,Ascii
+278,Software number of EDR unit,N/A,N/A,Ascii
+279,Software number of EDR unit,N/A,N/A,Ascii
+280,Software number of EDR unit,N/A,N/A,Ascii
+281,Software number of EDR unit,N/A,N/A,Ascii
+282,Software number of EDR unit,N/A,N/A,Ascii
+283,Software number of EDR unit,N/A,N/A,Ascii
+284,Software number of EDR unit,N/A,N/A,Ascii
+285,Software number of EDR unit,N/A,N/A,Ascii
+286,Software number of EDR unit,N/A,N/A,Ascii
+287,Software number of EDR unit,N/A,N/A,Ascii
+288,Software number of EDR unit,N/A,N/A,Ascii
+289,Software number of EDR unit,N/A,N/A,Ascii
+290,Software number of EDR unit,N/A,N/A,Ascii
+291,Longitudinal acceleration,G,0,E=N-127
+292,Longitudinal acceleration,G,2,E=N-127
+293,Longitudinal acceleration,G,4,E=N-127
+294,Longitudinal acceleration,G,6,E=N-127
+295,Longitudinal acceleration,G,8,E=N-127
+296,Longitudinal acceleration,G,10,E=N-127
+297,Longitudinal acceleration,G,12,E=N-127
+298,Longitudinal acceleration,G,14,E=N-127
+299,Longitudinal acceleration,G,16,E=N-127
+300,Longitudinal acceleration,G,18,E=N-127
+301,Longitudinal acceleration,G,20,E=N-127
+302,Longitudinal acceleration,G,22,E=N-127
+303,Longitudinal acceleration,G,24,E=N-127
+304,Longitudinal acceleration,G,26,E=N-127
+305,Longitudinal acceleration,G,28,E=N-127
+306,Longitudinal acceleration,G,30,E=N-127
+307,Longitudinal acceleration,G,32,E=N-127
+308,Longitudinal acceleration,G,34,E=N-127
+309,Longitudinal acceleration,G,36,E=N-127
+310,Longitudinal acceleration,G,38,E=N-127
+311,Longitudinal acceleration,G,40,E=N-127
+312,Longitudinal acceleration,G,42,E=N-127
+313,Longitudinal acceleration,G,44,E=N-127
+314,Longitudinal acceleration,G,46,E=N-127
+315,Longitudinal acceleration,G,48,E=N-127
+316,Longitudinal acceleration,G,50,E=N-127
+317,Longitudinal acceleration,G,52,E=N-127
+318,Longitudinal acceleration,G,54,E=N-127
+319,Longitudinal acceleration,G,56,E=N-127
+320,Longitudinal acceleration,G,58,E=N-127
+321,Longitudinal acceleration,G,60,E=N-127
+322,Longitudinal acceleration,G,62,E=N-127
+323,Longitudinal acceleration,G,64,E=N-127
+324,Longitudinal acceleration,G,66,E=N-127
+325,Longitudinal acceleration,G,68,E=N-127
+326,Longitudinal acceleration,G,70,E=N-127
+327,Longitudinal acceleration,G,72,E=N-127
+328,Longitudinal acceleration,G,74,E=N-127
+329,Longitudinal acceleration,G,76,E=N-127
+330,Longitudinal acceleration,G,78,E=N-127
+331,Longitudinal acceleration,G,80,E=N-127
+332,Longitudinal acceleration,G,82,E=N-127
+333,Longitudinal acceleration,G,84,E=N-127
+334,Longitudinal acceleration,G,86,E=N-127
+335,Longitudinal acceleration,G,88,E=N-127
+336,Longitudinal acceleration,G,90,E=N-127
+337,Longitudinal acceleration,G,92,E=N-127
+338,Longitudinal acceleration,G,94,E=N-127
+339,Longitudinal acceleration,G,96,E=N-127
+340,Longitudinal acceleration,G,98,E=N-127
+341,Longitudinal acceleration,G,100,E=N-127
+342,Longitudinal acceleration,G,102,E=N-127
+343,Longitudinal acceleration,G,104,E=N-127
+344,Longitudinal acceleration,G,106,E=N-127
+345,Longitudinal acceleration,G,108,E=N-127
+346,Longitudinal acceleration,G,110,E=N-127
+347,Longitudinal acceleration,G,112,E=N-127
+348,Longitudinal acceleration,G,114,E=N-127
+349,Longitudinal acceleration,G,116,E=N-127
+350,Longitudinal acceleration,G,118,E=N-127
+351,Longitudinal acceleration,G,120,E=N-127
+352,Longitudinal acceleration,G,122,E=N-127
+353,Longitudinal acceleration,G,124,E=N-127
+354,Longitudinal acceleration,G,126,E=N-127
+355,Longitudinal acceleration,G,128,E=N-127
+356,Longitudinal acceleration,G,130,E=N-127
+357,Longitudinal acceleration,G,132,E=N-127
+358,Longitudinal acceleration,G,134,E=N-127
+359,Longitudinal acceleration,G,136,E=N-127
+360,Longitudinal acceleration,G,138,E=N-127
+361,Longitudinal acceleration,G,140,E=N-127
+362,Longitudinal acceleration,G,142,E=N-127
+363,Longitudinal acceleration,G,144,E=N-127
+364,Longitudinal acceleration,G,146,E=N-127
+365,Longitudinal acceleration,G,148,E=N-127
+366,Longitudinal acceleration,G,150,E=N-127
+367,Longitudinal acceleration,G,152,E=N-127
+368,Longitudinal acceleration,G,154,E=N-127
+369,Longitudinal acceleration,G,156,E=N-127
+370,Longitudinal acceleration,G,158,E=N-127
+371,Longitudinal acceleration,G,160,E=N-127
+372,Longitudinal acceleration,G,162,E=N-127
+373,Longitudinal acceleration,G,164,E=N-127
+374,Longitudinal acceleration,G,166,E=N-127
+375,Longitudinal acceleration,G,168,E=N-127
+376,Longitudinal acceleration,G,170,E=N-127
+377,Longitudinal acceleration,G,172,E=N-127
+378,Longitudinal acceleration,G,174,E=N-127
+379,Longitudinal acceleration,G,176,E=N-127
+380,Longitudinal acceleration,G,178,E=N-127
+381,Longitudinal acceleration,G,180,E=N-127
+382,Longitudinal acceleration,G,182,E=N-127
+383,Longitudinal acceleration,G,184,E=N-127
+384,Longitudinal acceleration,G,186,E=N-127
+385,Longitudinal acceleration,G,188,E=N-127
+386,Longitudinal acceleration,G,190,E=N-127
+387,Longitudinal acceleration,G,192,E=N-127
+388,Longitudinal acceleration,G,194,E=N-127
+389,Longitudinal acceleration,G,196,E=N-127
+390,Longitudinal acceleration,G,198,E=N-127
+391,Longitudinal acceleration,G,200,E=N-127
+392,Longitudinal acceleration,G,202,E=N-127
+393,Longitudinal acceleration,G,204,E=N-127
+394,Longitudinal acceleration,G,206,E=N-127
+395,Longitudinal acceleration,G,208,E=N-127
+396,Longitudinal acceleration,G,210,E=N-127
+397,Longitudinal acceleration,G,212,E=N-127
+398,Longitudinal acceleration,G,214,E=N-127
+399,Longitudinal acceleration,G,216,E=N-127
+400,Longitudinal acceleration,G,218,E=N-127
+401,Longitudinal acceleration,G,220,E=N-127
+402,Longitudinal acceleration,G,222,E=N-127
+403,Longitudinal acceleration,G,224,E=N-127
+404,Longitudinal acceleration,G,226,E=N-127
+405,Longitudinal acceleration,G,228,E=N-127
+406,Longitudinal acceleration,G,230,E=N-127
+407,Longitudinal acceleration,G,232,E=N-127
+408,Longitudinal acceleration,G,234,E=N-127
+409,Longitudinal acceleration,G,236,E=N-127
+410,Longitudinal acceleration,G,238,E=N-127
+411,Longitudinal acceleration,G,240,E=N-127
+412,Longitudinal acceleration,G,242,E=N-127
+413,Longitudinal acceleration,G,244,E=N-127
+414,Longitudinal acceleration,G,246,E=N-127
+415,Longitudinal acceleration,G,248,E=N-127
+416,Longitudinal acceleration,G,250,E=N-127
+417,Lateral acceleration,G,0,E=N-127
+418,Lateral acceleration,G,2,E=N-127
+419,Lateral acceleration,G,4,E=N-127
+420,Lateral acceleration,G,6,E=N-127
+421,Lateral acceleration,G,8,E=N-127
+422,Lateral acceleration,G,10,E=N-127
+423,Lateral acceleration,G,12,E=N-127
+424,Lateral acceleration,G,14,E=N-127
+425,Lateral acceleration,G,16,E=N-127
+426,Lateral acceleration,G,18,E=N-127
+427,Lateral acceleration,G,20,E=N-127
+428,Lateral acceleration,G,22,E=N-127
+429,Lateral acceleration,G,24,E=N-127
+430,Lateral acceleration,G,26,E=N-127
+431,Lateral acceleration,G,28,E=N-127
+432,Lateral acceleration,G,30,E=N-127
+433,Lateral acceleration,G,32,E=N-127
+434,Lateral acceleration,G,34,E=N-127
+435,Lateral acceleration,G,36,E=N-127
+436,Lateral acceleration,G,38,E=N-127
+437,Lateral acceleration,G,40,E=N-127
+438,Lateral acceleration,G,42,E=N-127
+439,Lateral acceleration,G,44,E=N-127
+440,Lateral acceleration,G,46,E=N-127
+441,Lateral acceleration,G,48,E=N-127
+442,Lateral acceleration,G,50,E=N-127
+443,Lateral acceleration,G,52,E=N-127
+444,Lateral acceleration,G,54,E=N-127
+445,Lateral acceleration,G,56,E=N-127
+446,Lateral acceleration,G,58,E=N-127
+447,Lateral acceleration,G,60,E=N-127
+448,Lateral acceleration,G,62,E=N-127
+449,Lateral acceleration,G,64,E=N-127
+450,Lateral acceleration,G,66,E=N-127
+451,Lateral acceleration,G,68,E=N-127
+452,Lateral acceleration,G,70,E=N-127
+453,Lateral acceleration,G,72,E=N-127
+454,Lateral acceleration,G,74,E=N-127
+455,Lateral acceleration,G,76,E=N-127
+456,Lateral acceleration,G,78,E=N-127
+457,Lateral acceleration,G,80,E=N-127
+458,Lateral acceleration,G,82,E=N-127
+459,Lateral acceleration,G,84,E=N-127
+460,Lateral acceleration,G,86,E=N-127
+461,Lateral acceleration,G,88,E=N-127
+462,Lateral acceleration,G,90,E=N-127
+463,Lateral acceleration,G,92,E=N-127
+464,Lateral acceleration,G,94,E=N-127
+465,Lateral acceleration,G,96,E=N-127
+466,Lateral acceleration,G,98,E=N-127
+467,Lateral acceleration,G,100,E=N-127
+468,Lateral acceleration,G,102,E=N-127
+469,Lateral acceleration,G,104,E=N-127
+470,Lateral acceleration,G,106,E=N-127
+471,Lateral acceleration,G,108,E=N-127
+472,Lateral acceleration,G,110,E=N-127
+473,Lateral acceleration,G,112,E=N-127
+474,Lateral acceleration,G,114,E=N-127
+475,Lateral acceleration,G,116,E=N-127
+476,Lateral acceleration,G,118,E=N-127
+477,Lateral acceleration,G,120,E=N-127
+478,Lateral acceleration,G,122,E=N-127
+479,Lateral acceleration,G,124,E=N-127
+480,Lateral acceleration,G,126,E=N-127
+481,Lateral acceleration,G,128,E=N-127
+482,Lateral acceleration,G,130,E=N-127
+483,Lateral acceleration,G,132,E=N-127
+484,Lateral acceleration,G,134,E=N-127
+485,Lateral acceleration,G,136,E=N-127
+486,Lateral acceleration,G,138,E=N-127
+487,Lateral acceleration,G,140,E=N-127
+488,Lateral acceleration,G,142,E=N-127
+489,Lateral acceleration,G,144,E=N-127
+490,Lateral acceleration,G,146,E=N-127
+491,Lateral acceleration,G,148,E=N-127
+492,Lateral acceleration,G,150,E=N-127
+493,Lateral acceleration,G,152,E=N-127
+494,Lateral acceleration,G,154,E=N-127
+495,Lateral acceleration,G,156,E=N-127
+496,Lateral acceleration,G,158,E=N-127
+497,Lateral acceleration,G,160,E=N-127
+498,Lateral acceleration,G,162,E=N-127
+499,Lateral acceleration,G,164,E=N-127
+500,Lateral acceleration,G,166,E=N-127
+501,Lateral acceleration,G,168,E=N-127
+502,Lateral acceleration,G,170,E=N-127
+503,Lateral acceleration,G,172,E=N-127
+504,Lateral acceleration,G,174,E=N-127
+505,Lateral acceleration,G,176,E=N-127
+506,Lateral acceleration,G,178,E=N-127
+507,Lateral acceleration,G,180,E=N-127
+508,Lateral acceleration,G,182,E=N-127
+509,Lateral acceleration,G,184,E=N-127
+510,Lateral acceleration,G,186,E=N-127
+511,Lateral acceleration,G,188,E=N-127
+512,Lateral acceleration,G,190,E=N-127
+513,Lateral acceleration,G,192,E=N-127
+514,Lateral acceleration,G,194,E=N-127
+515,Lateral acceleration,G,196,E=N-127
+516,Lateral acceleration,G,198,E=N-127
+517,Lateral acceleration,G,200,E=N-127
+518,Lateral acceleration,G,202,E=N-127
+519,Lateral acceleration,G,204,E=N-127
+520,Lateral acceleration,G,206,E=N-127
+521,Lateral acceleration,G,208,E=N-127
+522,Lateral acceleration,G,210,E=N-127
+523,Lateral acceleration,G,212,E=N-127
+524,Lateral acceleration,G,214,E=N-127
+525,Lateral acceleration,G,216,E=N-127
+526,Lateral acceleration,G,218,E=N-127
+527,Lateral acceleration,G,220,E=N-127
+528,Lateral acceleration,G,222,E=N-127
+529,Lateral acceleration,G,224,E=N-127
+530,Lateral acceleration,G,226,E=N-127
+531,Lateral acceleration,G,228,E=N-127
+532,Lateral acceleration,G,230,E=N-127
+533,Lateral acceleration,G,232,E=N-127
+534,Lateral acceleration,G,234,E=N-127
+535,Lateral acceleration,G,236,E=N-127
+536,Lateral acceleration,G,238,E=N-127
+537,Lateral acceleration,G,240,E=N-127
+538,Lateral acceleration,G,242,E=N-127
+539,Lateral acceleration,G,244,E=N-127
+540,Lateral acceleration,G,246,E=N-127
+541,Lateral acceleration,G,248,E=N-127
+542,Lateral acceleration,G,250,E=N-127
+543,Lateral delta-v,km/h,0,E=N-127
+544,Lateral delta-v,km/h,10,E=N-127
+545,Lateral delta-v,km/h,20,E=N-127
+546,Lateral delta-v,km/h,30,E=N-127
+547,Lateral delta-v,km/h,40,E=N-127
+548,Lateral delta-v,km/h,50,E=N-127
+549,Lateral delta-v,km/h,60,E=N-127
+550,Lateral delta-v,km/h,70,E=N-127
+551,Lateral delta-v,km/h,80,E=N-127
+552,Lateral delta-v,km/h,90,E=N-127
+553,Lateral delta-v,km/h,100,E=N-127
+554,Lateral delta-v,km/h,110,E=N-127
+555,Lateral delta-v,km/h,120,E=N-127
+556,Lateral delta-v,km/h,130,E=N-127
+557,Lateral delta-v,km/h,140,E=N-127
+558,Lateral delta-v,km/h,150,E=N-127
+559,Lateral delta-v,km/h,160,E=N-127
+560,Lateral delta-v,km/h,170,E=N-127
+561,Lateral delta-v,km/h,180,E=N-127
+562,Lateral delta-v,km/h,190,E=N-127
+563,Lateral delta-v,km/h,200,E=N-127
+564,Lateral delta-v,km/h,210,E=N-127
+565,Lateral delta-v,km/h,220,E=N-127
+566,Lateral delta-v,km/h,230,E=N-127
+567,Lateral delta-v,km/h,240,E=N-127
+568,Lateral delta-v,km/h,250,E=N-127
+569,Maximum lateral delta-v,km/h,N/A,E=N-127
+570,Square of maximum resultant delta-v,(km/h)^2,N/A,E=N
+571,Square of maximum resultant delta-v,(km/h)^2,N/A,Subsequent
+572,Time to reach maximum lateral delta-v,ms,N/A,E=N*2.5
+573,Time to reach maximum resultant delta-v,ms,N/A,E=N*2.5
+574,Yaw rate,deg/s,-5000,E=N*0.1-300
+575,Yaw rate,deg/s,-5000,Subsequent
+576,Yaw rate,deg/s,-4500,E=N*0.1-300
+577,Yaw rate,deg/s,-4500,Subsequent
+578,Yaw rate,deg/s,-4000,E=N*0.1-300
+579,Yaw rate,deg/s,-4000,Subsequent
+580,Yaw rate,deg/s,-3500,E=N*0.1-300
+581,Yaw rate,deg/s,-3500,Subsequent
+582,Yaw rate,deg/s,-3000,E=N*0.1-300
+583,Yaw rate,deg/s,-3000,Subsequent
+584,Yaw rate,deg/s,-2500,E=N*0.1-300
+585,Yaw rate,deg/s,-2500,Subsequent
+586,Yaw rate,deg/s,-2000,E=N*0.1-300
+587,Yaw rate,deg/s,-2000,Subsequent
+588,Yaw rate,deg/s,-1500,E=N*0.1-300
+589,Yaw rate,deg/s,-1500,Subsequent
+590,Yaw rate,deg/s,-1000,E=N*0.1-300
+591,Yaw rate,deg/s,-1000,Subsequent
+592,Yaw rate,deg/s,-500,E=N*0.1-300
+593,Yaw rate,deg/s,-500,Subsequent
+594,Yaw rate,deg/s,0,E=N*0.1-300
+595,Yaw rate,deg/s,0,Subsequent
+596,Steering input,deg,-5000,E=N*5-780
+597,Steering input,deg,-5000,Subsequent
+598,Steering input,deg,-4500,E=N*5-780
+599,Steering input,deg,-4500,Subsequent
+600,Steering input,deg,-4000,E=N*5-780
+601,Steering input,deg,-4000,Subsequent
+602,Steering input,deg,-3500,E=N*5-780
+603,Steering input,deg,-3500,Subsequent
+604,Steering input,deg,-3000,E=N*5-780
+605,Steering input,deg,-3000,Subsequent
+606,Steering input,deg,-2500,E=N*5-780
+607,Steering input,deg,-2500,Subsequent
+608,Steering input,deg,-2000,E=N*5-780
+609,Steering input,deg,-2000,Subsequent
+610,Steering input,deg,-1500,E=N*5-780
+611,Steering input,deg,-1500,Subsequent
+612,Steering input,deg,-1000,E=N*5-780
+613,Steering input,deg,-1000,Subsequent
+614,Steering input,deg,-500,E=N*5-780
+615,Steering input,deg,-500,Subsequent
+616,Steering input,deg,0,E=N*5-780
+617,Steering input,deg,0,Subsequent
+618,Time end,ms,N/A,E=N*2.5
+619,Year,N/A,N/A,E=N+2000
+620,Month,N/A,N/A,E=N
+621,Day,N/A,N/A,E=N
+622,Hour,N/A,N/A,E=N
+623,Minute,N/A,N/A,E=N
+624,Second,N/A,N/A,E=N
+625,Gear position,N/A,-5000,"0: P, 1: R, 2: N, 3: D"
+626,Gear position,N/A,-4500,"0: P, 1: R, 2: N, 3: D"
+627,Gear position,N/A,-4000,"0: P, 1: R, 2: N, 3: D"
+628,Gear position,N/A,-3500,"0: P, 1: R, 2: N, 3: D"
+629,Gear position,N/A,-3000,"0: P, 1: R, 2: N, 3: D"
+630,Gear position,N/A,-2500,"0: P, 1: R, 2: N, 3: D"
+631,Gear position,N/A,-2000,"0: P, 1: R, 2: N, 3: D"
+632,Gear position,N/A,-1500,"0: P, 1: R, 2: N, 3: D"
+633,Gear position,N/A,-1000,"0: P, 1: R, 2: N, 3: D"
+634,Gear position,N/A,-500,"0: P, 1: R, 2: N, 3: D"
+635,Gear position,N/A,0,"0: P, 1: R, 2: N, 3: D"
+636,Engine throttle position,%,-5000,E=N
+637,Engine throttle position,%,-4500,E=N
+638,Engine throttle position,%,-4000,E=N
+639,Engine throttle position,%,-3500,E=N
+640,Engine throttle position,%,-3000,E=N
+641,Engine throttle position,%,-2500,E=N
+642,Engine throttle position,%,-2000,E=N
+643,Engine throttle position,%,-1500,E=N
+644,Engine throttle position,%,-1000,E=N
+645,Engine throttle position,%,-500,E=N
+646,Engine throttle position,%,0,E=N
+647,Brake pedal position,%,-5000,E=N*5
+648,Brake pedal position,%,-4500,E=N*5
+649,Brake pedal position,%,-4000,E=N*5
+650,Brake pedal position,%,-3500,E=N*5
+651,Brake pedal position,%,-3000,E=N*5
+652,Brake pedal position,%,-2500,E=N*5
+653,Brake pedal position,%,-2000,E=N*5
+654,Brake pedal position,%,-1500,E=N*5
+655,Brake pedal position,%,-1000,E=N*5
+656,Brake pedal position,%,-500,E=N*5
+657,Brake pedal position,%,0,E=N*5
+658,Parking system status,N/A,-5000,"0: On, 1: Off, 2: Faulted"
+659,Parking system status,N/A,-4500,"0: On, 1: Off, 2: Faulted"
+660,Parking system status,N/A,-4000,"0: On, 1: Off, 2: Faulted"
+661,Parking system status,N/A,-3500,"0: On, 1: Off, 2: Faulted"
+662,Parking system status,N/A,-3000,"0: On, 1: Off, 2: Faulted"
+663,Parking system status,N/A,-2500,"0: On, 1: Off, 2: Faulted"
+664,Parking system status,N/A,-2000,"0: On, 1: Off, 2: Faulted"
+665,Parking system status,N/A,-1500,"0: On, 1: Off, 2: Faulted"
+666,Parking system status,N/A,-1000,"0: On, 1: Off, 2: Faulted"
+667,Parking system status,N/A,-500,"0: On, 1: Off, 2: Faulted"
+668,Parking system status,N/A,0,"0: On, 1: Off, 2: Faulted"
+669,Turn signal switch status,N/A,-5000,"0: Off, 1: Left, 2, Right, Both"
+670,Turn signal switch status,N/A,-4500,"0: Off, 1: Left, 2, Right, Both"
+671,Turn signal switch status,N/A,-4000,"0: Off, 1: Left, 2, Right, Both"
+672,Turn signal switch status,N/A,-3500,"0: Off, 1: Left, 2, Right, Both"
+673,Turn signal switch status,N/A,-3000,"0: Off, 1: Left, 2, Right, Both"
+674,Turn signal switch status,N/A,-2500,"0: Off, 1: Left, 2, Right, Both"
+675,Turn signal switch status,N/A,-2000,"0: Off, 1: Left, 2, Right, Both"
+676,Turn signal switch status,N/A,-1500,"0: Off, 1: Left, 2, Right, Both"
+677,Turn signal switch status,N/A,-1000,"0: Off, 1: Left, 2, Right, Both"
+678,Turn signal switch status,N/A,-500,"0: Off, 1: Left, 2, Right, Both"
+679,Turn signal switch status,N/A,0,"0: Off, 1: Left, 2, Right, Both"
+680,"Time to activate pretensioner, driver",ms,N/A,E=N
+681,"Time to activate pretensioner, driver",ms,N/A,Subsequent
+682,"Time to activate front airbag (first stage), driver",ms,N/A,E=N
+683,"Time to activate front airbag (first stage), driver",ms,N/A,Subsequent
+684,"Time to activate front airbag (second stage), driver",ms,N/A,E=N
+685,"Time to activate front airbag (second stage), driver",ms,N/A,Subsequent
+686,"Time to activate side airbag, driver",ms,N/A,E=N
+687,"Time to activate side airbag, driver",ms,N/A,Subsequent
+688,"Time to activate side curtain airbag, driver",ms,N/A,E=N
+689,"Time to activate side curtain airbag, driver",ms,N/A,Subsequent
+690,"Seat belt status, front passenger",N/A,N/A,"0: Fastened, 1: Not fastened"
+691,"Time to activate pretensioner, front passenger",ms,N/A,E=N
+692,"Time to activate pretensioner, front passenger",ms,N/A,Subsequent
+693,Front passenger airbag suppression status,N/A,N/A,"0: Not suppressed, 1: Suppressed"
+694,"Time to activate front airbag (first stage), front passenger",ms,N/A,E=N
+695,"Time to activate front airbag (first stage), front passenger",ms,N/A,Subsequent
+696,"Time to activate front airbag (second stage), front passenger",ms,N/A,E=N
+697,"Time to activate front airbag (second stage), front passenger",ms,N/A,Subsequent
+698,"Time to activate side airbag, front passenger",ms,N/A,E=N
+699,"Time to activate side airbag, front passenger",ms,N/A,Subsequent
+700,"Time to activate side curtain airbag, front passenger",ms,N/A,E=N
+701,"Time to activate side curtain airbag, front passenger",ms,N/A,Subsequent
+702,Occupant safety system warning state,N/A,N/A,"0: Off, 1: On"
+703,Tire pressure monitoring system warning status,N/A,N/A,"0: Off, 1: On"
+704,Brake system warning status,N/A,N/A,"0: Off, 1: On"
+705,Cruise control system status,N/A,-5000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+706,Cruise control system status,N/A,-4500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+707,Cruise control system status,N/A,-4000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+708,Cruise control system status,N/A,-3500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+709,Cruise control system status,N/A,-3000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+710,Cruise control system status,N/A,-2500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+711,Cruise control system status,N/A,-2000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+712,Cruise control system status,N/A,-1500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+713,Cruise control system status,N/A,-1000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+714,Cruise control system status,N/A,-500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+715,Cruise control system status,N/A,0,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+716,Adaptive cruise control system status,N/A,-5000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+717,Adaptive cruise control system status,N/A,-4500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+718,Adaptive cruise control system status,N/A,-4000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+719,Adaptive cruise control system status,N/A,-3500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+720,Adaptive cruise control system status,N/A,-3000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+721,Adaptive cruise control system status,N/A,-2500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+722,Adaptive cruise control system status,N/A,-2000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+723,Adaptive cruise control system status,N/A,-1500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+724,Adaptive cruise control system status,N/A,-1000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+725,Adaptive cruise control system status,N/A,-500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+726,Adaptive cruise control system status,N/A,0,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+727,Anti lock brake system status,N/A,-5000,"0: On, 1: Engaged, 2: Faulted"
+728,Anti lock brake system status,N/A,-4500,"0: On, 1: Engaged, 2: Faulted"
+729,Anti lock brake system status,N/A,-4000,"0: On, 1: Engaged, 2: Faulted"
+730,Anti lock brake system status,N/A,-3500,"0: On, 1: Engaged, 2: Faulted"
+731,Anti lock brake system status,N/A,-3000,"0: On, 1: Engaged, 2: Faulted"
+732,Anti lock brake system status,N/A,-2500,"0: On, 1: Engaged, 2: Faulted"
+733,Anti lock brake system status,N/A,-2000,"0: On, 1: Engaged, 2: Faulted"
+734,Anti lock brake system status,N/A,-1500,"0: On, 1: Engaged, 2: Faulted"
+735,Anti lock brake system status,N/A,-1000,"0: On, 1: Engaged, 2: Faulted"
+736,Anti lock brake system status,N/A,-500,"0: On, 1: Engaged, 2: Faulted"
+737,Anti lock brake system status,N/A,0,"0: On, 1: Engaged, 2: Faulted"
+738,Automatic emergency braking system status,N/A,-5000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+739,Automatic emergency braking system status,N/A,-4500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+740,Automatic emergency braking system status,N/A,-4000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+741,Automatic emergency braking system status,N/A,-3500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+742,Automatic emergency braking system status,N/A,-3000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+743,Automatic emergency braking system status,N/A,-2500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+744,Automatic emergency braking system status,N/A,-2000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+745,Automatic emergency braking system status,N/A,-1500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+746,Automatic emergency braking system status,N/A,-1000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+747,Automatic emergency braking system status,N/A,-500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+748,Automatic emergency braking system status,N/A,0,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+749,Stability control system status,N/A,-5000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+750,Stability control system status,N/A,-4500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+751,Stability control system status,N/A,-4000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+752,Stability control system status,N/A,-3500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+753,Stability control system status,N/A,-3000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+754,Stability control system status,N/A,-2500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+755,Stability control system status,N/A,-2000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+756,Stability control system status,N/A,-1500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+757,Stability control system status,N/A,-1000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+758,Stability control system status,N/A,-500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+759,Stability control system status,N/A,0,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+760,Traction control system status,N/A,-5000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+761,Traction control system status,N/A,-4500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+762,Traction control system status,N/A,-4000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+763,Traction control system status,N/A,-3500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+764,Traction control system status,N/A,-3000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+765,Traction control system status,N/A,-2500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+766,Traction control system status,N/A,-2000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+767,Traction control system status,N/A,-1500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+768,Traction control system status,N/A,-1000,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+769,Traction control system status,N/A,-500,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+770,Traction control system status,N/A,0,"0: On, 1: Engaged, 2: Off, 3: Faulted"
+771,Pre-event synchronization timer,ms,N/A,E=N
+772,Pre-event synchronization timer,ms,N/A,Subsequent
