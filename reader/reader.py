@@ -36,32 +36,42 @@ isotp_params = {
 }
 
 notifier = can.Notifier(bus, [can.Printer()])                                       # Add a debug listener that print all messages
-rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0x77, source_address=0xF1)
+rx_addrs = []
+for i in range(0x100):
+    rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=i, source_address=0xF1)
+    rx_addrs.append(rx_addr)
 tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
-rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+
+rx_stacks = []
+for rx_addr in rx_addrs:
+    rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+    rx_stacks.append(rx_stack)
 tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
 
 request = ReadDataByIdentifier.make_request(didlist=[0xFA13], didconfig={'default':'s'})
 response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([0xFA, 0x13]))
 
-rx_stack.start()
+for rx_stack in rx_stacks:
+    rx_stack.start()
 tx_stack.start()
 
 tx_stack.send(request.get_payload(), isotp.TargetAddressType.Functional)
 
 try:
     while True:
-        payload = rx_stack.recv(block=True, timeout=1)
-        if payload is not None:
-            if payload[:3] == response.get_payload()[:3]:
-                print("Respoonse received!")
-                print(payload)
+        for rx_stack in rx_stacks:
+            payload = rx_stack.recv(block=True, timeout=0.01)
+            if payload is not None:
+                if payload[:3] == response.get_payload()[:3]:
+                    print("Respoonse received!")
+                    print(payload)
 
 except Exception as err:
     print(err)
     exit()
 
-rx_stack.stop()
+for rx_stack in rx_stacks:
+    rx_stack.stop()
 tx_stack.stop()
 
 bus.shutdown()
