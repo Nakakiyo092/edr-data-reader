@@ -36,16 +36,16 @@ isotp_params = {
 }
 
 notifier = can.Notifier(bus, [can.Printer()])                                       # Add a debug listener that print all messages
-rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
+rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0x77, source_address=0xF1)
 tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
 rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
 tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
 
+request = ReadDataByIdentifier.make_request(didlist=[0xFA13], didconfig={'default':'s'})
+response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([0xFA, 0x13]))
+
 rx_stack.start()
 tx_stack.start()
-
-request = ReadDataByIdentifier.make_request(didlist=[0xFA13], didconfig={'default':'>H'})
-response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=b'\x01')
 
 tx_stack.send(request.get_payload(), isotp.TargetAddressType.Functional)
 
@@ -53,7 +53,7 @@ try:
     while True:
         payload = rx_stack.recv(block=True, timeout=1)
         if payload is not None:
-            if payload == response.get_payload():
+            if payload[:3] == response.get_payload()[:3]:
                 print("Respoonse received!")
                 print(payload)
 
