@@ -50,6 +50,7 @@ tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_ad
 
 request = ReadDataByIdentifier.make_request(didlist=[0xFA13], didconfig={'default':'s'})
 response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([0xFA, 0x13]))
+pend_response = Response(service=ReadDataByIdentifier, code=Response.Code.RequestCorrectlyReceived_ResponsePending)
 
 for rx_stack in rx_stacks:
     rx_stack.start()
@@ -62,7 +63,10 @@ try:
         for rx_stack in rx_stacks:
             payload = rx_stack.recv(block=True, timeout=0.01)
             if payload is not None:
-                if payload[:3] == response.get_payload()[:3]:
+                if payload == pend_response.get_payload():
+                    pass
+
+                if payload[:3] == response.get_payload():
                     print("Respoonse received!")
                     print(payload)
 
