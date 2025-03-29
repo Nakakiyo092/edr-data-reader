@@ -1,10 +1,85 @@
 #!/usr/bin/env python3
 
+import time
 import can
 import isotp
 from udsoncan import Request, Response
 from udsoncan.services import ReadDataByIdentifier
 
+def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> bytearray:
+
+    print("")
+    if tx_addr.is_tx_29bits():
+        print("Reading data id", hex(did), "with 29bits address.")
+    elif addr_type == isotp.TargetAddressType.Functional:
+        print("Reading data id", hex(did), "with 11bits functional address.")
+    else:
+        print("Reading data id", hex(did), "with 11bits physical address.")
+
+    # Setup ISOTP stacks
+    tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+    rx_stacks = []
+    for rx_addr in rx_addrs:
+        rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+        rx_stacks.append(rx_stack)
+
+    # Request message
+    request = ReadDataByIdentifier.make_request(didlist=[did], didconfig={'default':'s'})
+
+    # Response message (data/pending)
+    response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([(did>>8)&0xFF,did&0xFF]))
+    pend_response = Response(service=ReadDataByIdentifier, code=Response.Code.RequestCorrectlyReceived_ResponsePending)
+
+    # Start stacks
+    tx_stack.start()
+    for rx_stack in rx_stacks:
+        rx_stack.start()
+
+    # Send request
+    tx_stack.send(request.get_payload(), addr_type)
+
+    try:
+        # Wait for response
+        waiting = True
+        start_time = time.time()
+        while waiting:
+            # Response timeout
+            if time.time() - start_time > 5 + 1:
+                payload = None
+                waiting = False
+                break
+
+            # Check response for all stacks
+            for rx_stack in rx_stacks:
+                payload = rx_stack.recv(block=True, timeout=0.01)
+                if payload is not None:
+                    if payload == pend_response.get_payload():
+                        pass
+
+                    if payload[:3] == response.get_payload():
+                        waiting = False
+                        break
+
+    except Exception as err:
+        print(err)
+        return None
+
+    # Stop stacks
+    tx_stack.stop()
+    for rx_stack in rx_stacks:
+        rx_stack.stop()
+
+    if payload is not None:
+        print(len(payload), " bytes of data received.")
+    else:
+        print("No data received.")
+
+    return payload
+
+
+### Main process ###
+
+# Setup and start a CAN bus
 try:
     #bus = can.Bus(interface='slcan', channel='/dev/ttyACM0', bitrate=500000)
     bus = can.Bus(interface='slcan', channel='COM8', bitrate=500000)
@@ -13,6 +88,11 @@ try:
 except Exception as err:
     print(err)
     exit()
+
+# Setup a debug listener that print all messages
+#notifier = can.Notifier(bus, [can.Printer()])
+notifier = can.Notifier(bus, [])
+
 
 # Isotp parameters
 isotp_params = {
@@ -35,47 +115,51 @@ isotp_params = {
  'listen_mode': False,                   # Does not use the listen_mode which prevent transmission.
 }
 
-notifier = can.Notifier(bus, [can.Printer()])                                       # Add a debug listener that print all messages
+
+# Read with 11bits functional address
+tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
+rx_addrs = []
+for i in range(0x100 - 0x8):
+    rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8)
+    rx_addrs.append(rx_addr)
+
+try:
+    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+except Exception as err:
+    print(err)
+
+
+# Read with 11bits physical address
+tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F5, rxid=0x7F1)
+rx_addrs = []
+rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F5, rxid=0x7F1)
+rx_addrs.append(rx_addr)
+
+try:
+    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+except Exception as err:
+    print(err)
+
+
+# Read with 29bits address
+tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
 rx_addrs = []
 for i in range(0x100):
     rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=i, source_address=0xF1)
     rx_addrs.append(rx_addr)
-tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
-
-rx_stacks = []
-for rx_addr in rx_addrs:
-    rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
-    rx_stacks.append(rx_stack)
-tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
-
-request = ReadDataByIdentifier.make_request(didlist=[0xFA13], didconfig={'default':'s'})
-response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([0xFA, 0x13]))
-pend_response = Response(service=ReadDataByIdentifier, code=Response.Code.RequestCorrectlyReceived_ResponsePending)
-
-for rx_stack in rx_stacks:
-    rx_stack.start()
-tx_stack.start()
-
-tx_stack.send(request.get_payload(), isotp.TargetAddressType.Functional)
 
 try:
-    while True:
-        for rx_stack in rx_stacks:
-            payload = rx_stack.recv(block=True, timeout=0.01)
-            if payload is not None:
-                if payload == pend_response.get_payload():
-                    pass
-
-                if payload[:3] == response.get_payload():
-                    print("Respoonse received!")
-                    print(payload)
-
+    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
 except Exception as err:
     print(err)
-    exit()
 
-for rx_stack in rx_stacks:
-    rx_stack.stop()
-tx_stack.stop()
 
+# Shutdown the CAN bus
+notifier.stop()
 bus.shutdown()
