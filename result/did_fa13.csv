@@ -1,0 +1,773 @@
+No.,Name,Unit,Time_ms,Value table,Conversion,Raw value
+1,Longitudinal delta-v,km/h,0,"0xFE: Invalid, 0xFF: N/A",E=N-127,0
+2,Longitudinal delta-v,km/h,10,"0xFE: Invalid, 0xFF: N/A",E=N-127,1
+3,Longitudinal delta-v,km/h,20,"0xFE: Invalid, 0xFF: N/A",E=N-127,2
+4,Longitudinal delta-v,km/h,30,"0xFE: Invalid, 0xFF: N/A",E=N-127,3
+5,Longitudinal delta-v,km/h,40,"0xFE: Invalid, 0xFF: N/A",E=N-127,4
+6,Longitudinal delta-v,km/h,50,"0xFE: Invalid, 0xFF: N/A",E=N-127,5
+7,Longitudinal delta-v,km/h,60,"0xFE: Invalid, 0xFF: N/A",E=N-127,6
+8,Longitudinal delta-v,km/h,70,"0xFE: Invalid, 0xFF: N/A",E=N-127,7
+9,Longitudinal delta-v,km/h,80,"0xFE: Invalid, 0xFF: N/A",E=N-127,8
+10,Longitudinal delta-v,km/h,90,"0xFE: Invalid, 0xFF: N/A",E=N-127,9
+11,Longitudinal delta-v,km/h,100,"0xFE: Invalid, 0xFF: N/A",E=N-127,10
+12,Longitudinal delta-v,km/h,110,"0xFE: Invalid, 0xFF: N/A",E=N-127,11
+13,Longitudinal delta-v,km/h,120,"0xFE: Invalid, 0xFF: N/A",E=N-127,12
+14,Longitudinal delta-v,km/h,130,"0xFE: Invalid, 0xFF: N/A",E=N-127,13
+15,Longitudinal delta-v,km/h,140,"0xFE: Invalid, 0xFF: N/A",E=N-127,14
+16,Longitudinal delta-v,km/h,150,"0xFE: Invalid, 0xFF: N/A",E=N-127,15
+17,Longitudinal delta-v,km/h,160,"0xFE: Invalid, 0xFF: N/A",E=N-127,16
+18,Longitudinal delta-v,km/h,170,"0xFE: Invalid, 0xFF: N/A",E=N-127,17
+19,Longitudinal delta-v,km/h,180,"0xFE: Invalid, 0xFF: N/A",E=N-127,18
+20,Longitudinal delta-v,km/h,190,"0xFE: Invalid, 0xFF: N/A",E=N-127,19
+21,Longitudinal delta-v,km/h,200,"0xFE: Invalid, 0xFF: N/A",E=N-127,20
+22,Longitudinal delta-v,km/h,210,"0xFE: Invalid, 0xFF: N/A",E=N-127,21
+23,Longitudinal delta-v,km/h,220,"0xFE: Invalid, 0xFF: N/A",E=N-127,22
+24,Longitudinal delta-v,km/h,230,"0xFE: Invalid, 0xFF: N/A",E=N-127,23
+25,Longitudinal delta-v,km/h,240,"0xFE: Invalid, 0xFF: N/A",E=N-127,24
+26,Longitudinal delta-v,km/h,250,"0xFE: Invalid, 0xFF: N/A",E=N-127,25
+27,Maximum longitudinal delta-v,km/h,N/A,"0xFE: Invalid, 0xFF: N/A",E=N-127,26
+28,Time to reach maximum longitudinal delta-v,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N*2.5,27
+29,Time to clip longitudinal acceleration,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,28
+30,Time to clip lateral acceleration,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,29
+31,Vehicle speed,km/h,-5000,"0xFE: Invalid, 0xFF: N/A",E=N,30
+32,Vehicle speed,km/h,-4500,"0xFE: Invalid, 0xFF: N/A",E=N,31
+33,Vehicle speed,km/h,-4000,"0xFE: Invalid, 0xFF: N/A",E=N,32
+34,Vehicle speed,km/h,-3500,"0xFE: Invalid, 0xFF: N/A",E=N,33
+35,Vehicle speed,km/h,-3000,"0xFE: Invalid, 0xFF: N/A",E=N,34
+36,Vehicle speed,km/h,-2500,"0xFE: Invalid, 0xFF: N/A",E=N,35
+37,Vehicle speed,km/h,-2000,"0xFE: Invalid, 0xFF: N/A",E=N,36
+38,Vehicle speed,km/h,-1500,"0xFE: Invalid, 0xFF: N/A",E=N,37
+39,Vehicle speed,km/h,-1000,"0xFE: Invalid, 0xFF: N/A",E=N,38
+40,Vehicle speed,km/h,-500,"0xFE: Invalid, 0xFF: N/A",E=N,39
+41,Vehicle speed,km/h,0,"0xFE: Invalid, 0xFF: N/A",E=N,40
+42,Service brake,N/A,-5000,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,41
+43,Service brake,N/A,-4500,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,42
+44,Service brake,N/A,-4000,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,43
+45,Service brake,N/A,-3500,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,44
+46,Service brake,N/A,-3000,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,45
+47,Service brake,N/A,-2500,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,46
+48,Service brake,N/A,-2000,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,47
+49,Service brake,N/A,-1500,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,48
+50,Service brake,N/A,-1000,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,49
+51,Service brake,N/A,-500,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,50
+52,Service brake,N/A,0,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,51
+53,"Seat belt status, driver",N/A,N/A,"0x00: Fastened, 0x01: Not fastened, 0xFE: Invalid, 0xFF: N/A",Not defined,52
+54,Accelerator pedal position,%,-5000,"0xFE: Invalid, 0xFF: N/A",E=N,53
+55,Accelerator pedal position,%,-4500,"0xFE: Invalid, 0xFF: N/A",E=N,54
+56,Accelerator pedal position,%,-4000,"0xFE: Invalid, 0xFF: N/A",E=N,55
+57,Accelerator pedal position,%,-3500,"0xFE: Invalid, 0xFF: N/A",E=N,56
+58,Accelerator pedal position,%,-3000,"0xFE: Invalid, 0xFF: N/A",E=N,57
+59,Accelerator pedal position,%,-2500,"0xFE: Invalid, 0xFF: N/A",E=N,58
+60,Accelerator pedal position,%,-2000,"0xFE: Invalid, 0xFF: N/A",E=N,59
+61,Accelerator pedal position,%,-1500,"0xFE: Invalid, 0xFF: N/A",E=N,60
+62,Accelerator pedal position,%,-1000,"0xFE: Invalid, 0xFF: N/A",E=N,61
+63,Accelerator pedal position,%,-500,"0xFE: Invalid, 0xFF: N/A",E=N,62
+64,Accelerator pedal position,%,0,"0xFE: Invalid, 0xFF: N/A",E=N,63
+65,Engine speed,rpm,-5000,"0xFE: Invalid, 0xFF: N/A",E=N*100,64
+66,Engine speed,rpm,-4500,"0xFE: Invalid, 0xFF: N/A",E=N*100,65
+67,Engine speed,rpm,-4000,"0xFE: Invalid, 0xFF: N/A",E=N*100,66
+68,Engine speed,rpm,-3500,"0xFE: Invalid, 0xFF: N/A",E=N*100,67
+69,Engine speed,rpm,-3000,"0xFE: Invalid, 0xFF: N/A",E=N*100,68
+70,Engine speed,rpm,-2500,"0xFE: Invalid, 0xFF: N/A",E=N*100,69
+71,Engine speed,rpm,-2000,"0xFE: Invalid, 0xFF: N/A",E=N*100,70
+72,Engine speed,rpm,-1500,"0xFE: Invalid, 0xFF: N/A",E=N*100,71
+73,Engine speed,rpm,-1000,"0xFE: Invalid, 0xFF: N/A",E=N*100,72
+74,Engine speed,rpm,-500,"0xFE: Invalid, 0xFF: N/A",E=N*100,73
+75,Engine speed,rpm,0,"0xFE: Invalid, 0xFF: N/A",E=N*100,74
+76,"Ignition cycle, event",N/A,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,75
+77,"Ignition cycle, event",N/A,N/A,Subsequent byte,Subsequent byte,76
+78,"Ignition cycle, download",N/A,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,77
+79,"Ignition cycle, download",N/A,N/A,Subsequent byte,Subsequent byte,78
+80,Complete file recorded,N/A,N/A,"0x00: No, 0x01: Yes, 0xFE: Invalid, 0xFF: N/A",N/A,79
+81,Time from last event to this event,s,N/A,"0xFE: Invalid, 0xFF: N/A",E=N*0.1,80
+82,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,81
+83,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,82
+84,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,83
+85,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,84
+86,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,85
+87,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,86
+88,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,87
+89,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,88
+90,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,89
+91,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,90
+92,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,91
+93,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,92
+94,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,93
+95,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,94
+96,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,95
+97,Vehicle identification number,N/A,N/A,0xFF: See last byte,Ascii,96
+98,Vehicle identification number,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",Ascii,97
+99,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,98
+100,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,99
+101,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,100
+102,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,101
+103,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,102
+104,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,103
+105,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,104
+106,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,105
+107,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,106
+108,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,107
+109,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,108
+110,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,109
+111,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,110
+112,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,111
+113,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,112
+114,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,113
+115,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,114
+116,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,115
+117,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,116
+118,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,117
+119,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,118
+120,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,119
+121,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,120
+122,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,121
+123,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,122
+124,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,123
+125,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,124
+126,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,125
+127,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,126
+128,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,127
+129,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,128
+130,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,129
+131,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,130
+132,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,131
+133,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,132
+134,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,133
+135,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,134
+136,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,135
+137,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,136
+138,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,137
+139,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,138
+140,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,139
+141,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,140
+142,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,141
+143,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,142
+144,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,143
+145,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,144
+146,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,145
+147,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,146
+148,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,147
+149,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,148
+150,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,149
+151,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,150
+152,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,151
+153,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,152
+154,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,153
+155,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,154
+156,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,155
+157,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,156
+158,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,157
+159,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,158
+160,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,159
+161,Hardware number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,160
+162,Hardware number of EDR unit,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",Ascii,161
+163,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,162
+164,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,163
+165,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,164
+166,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,165
+167,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,166
+168,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,167
+169,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,168
+170,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,169
+171,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,170
+172,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,171
+173,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,172
+174,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,173
+175,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,174
+176,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,175
+177,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,176
+178,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,177
+179,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,178
+180,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,179
+181,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,180
+182,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,181
+183,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,182
+184,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,183
+185,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,184
+186,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,185
+187,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,186
+188,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,187
+189,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,188
+190,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,189
+191,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,190
+192,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,191
+193,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,192
+194,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,193
+195,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,194
+196,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,195
+197,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,196
+198,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,197
+199,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,198
+200,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,199
+201,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,200
+202,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,201
+203,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,202
+204,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,203
+205,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,204
+206,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,205
+207,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,206
+208,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,207
+209,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,208
+210,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,209
+211,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,210
+212,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,211
+213,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,212
+214,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,213
+215,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,214
+216,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,215
+217,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,216
+218,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,217
+219,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,218
+220,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,219
+221,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,220
+222,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,221
+223,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,222
+224,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,223
+225,Serial number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,224
+226,Serial number of EDR unit,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",Ascii,225
+227,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,226
+228,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,227
+229,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,228
+230,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,229
+231,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,230
+232,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,231
+233,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,232
+234,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,233
+235,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,234
+236,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,235
+237,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,236
+238,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,237
+239,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,238
+240,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,239
+241,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,240
+242,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,241
+243,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,242
+244,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,243
+245,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,244
+246,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,245
+247,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,246
+248,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,247
+249,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,248
+250,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,249
+251,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,250
+252,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,251
+253,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,252
+254,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,253
+255,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,254
+256,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,255
+257,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,0
+258,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,1
+259,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,2
+260,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,3
+261,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,4
+262,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,5
+263,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,6
+264,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,7
+265,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,8
+266,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,9
+267,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,10
+268,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,11
+269,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,12
+270,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,13
+271,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,14
+272,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,15
+273,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,16
+274,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,17
+275,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,18
+276,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,19
+277,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,20
+278,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,21
+279,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,22
+280,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,23
+281,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,24
+282,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,25
+283,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,26
+284,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,27
+285,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,28
+286,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,29
+287,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,30
+288,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,31
+289,Software number of EDR unit,N/A,N/A,0xFF: See last byte,Ascii,32
+290,Software number of EDR unit,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",Ascii,33
+291,Longitudinal acceleration,G,0,"0xFE: Invalid, 0xFF: N/A",E=N-127,34
+292,Longitudinal acceleration,G,2,"0xFE: Invalid, 0xFF: N/A",E=N-127,35
+293,Longitudinal acceleration,G,4,"0xFE: Invalid, 0xFF: N/A",E=N-127,36
+294,Longitudinal acceleration,G,6,"0xFE: Invalid, 0xFF: N/A",E=N-127,37
+295,Longitudinal acceleration,G,8,"0xFE: Invalid, 0xFF: N/A",E=N-127,38
+296,Longitudinal acceleration,G,10,"0xFE: Invalid, 0xFF: N/A",E=N-127,39
+297,Longitudinal acceleration,G,12,"0xFE: Invalid, 0xFF: N/A",E=N-127,40
+298,Longitudinal acceleration,G,14,"0xFE: Invalid, 0xFF: N/A",E=N-127,41
+299,Longitudinal acceleration,G,16,"0xFE: Invalid, 0xFF: N/A",E=N-127,42
+300,Longitudinal acceleration,G,18,"0xFE: Invalid, 0xFF: N/A",E=N-127,43
+301,Longitudinal acceleration,G,20,"0xFE: Invalid, 0xFF: N/A",E=N-127,44
+302,Longitudinal acceleration,G,22,"0xFE: Invalid, 0xFF: N/A",E=N-127,45
+303,Longitudinal acceleration,G,24,"0xFE: Invalid, 0xFF: N/A",E=N-127,46
+304,Longitudinal acceleration,G,26,"0xFE: Invalid, 0xFF: N/A",E=N-127,47
+305,Longitudinal acceleration,G,28,"0xFE: Invalid, 0xFF: N/A",E=N-127,48
+306,Longitudinal acceleration,G,30,"0xFE: Invalid, 0xFF: N/A",E=N-127,49
+307,Longitudinal acceleration,G,32,"0xFE: Invalid, 0xFF: N/A",E=N-127,50
+308,Longitudinal acceleration,G,34,"0xFE: Invalid, 0xFF: N/A",E=N-127,51
+309,Longitudinal acceleration,G,36,"0xFE: Invalid, 0xFF: N/A",E=N-127,52
+310,Longitudinal acceleration,G,38,"0xFE: Invalid, 0xFF: N/A",E=N-127,53
+311,Longitudinal acceleration,G,40,"0xFE: Invalid, 0xFF: N/A",E=N-127,54
+312,Longitudinal acceleration,G,42,"0xFE: Invalid, 0xFF: N/A",E=N-127,55
+313,Longitudinal acceleration,G,44,"0xFE: Invalid, 0xFF: N/A",E=N-127,56
+314,Longitudinal acceleration,G,46,"0xFE: Invalid, 0xFF: N/A",E=N-127,57
+315,Longitudinal acceleration,G,48,"0xFE: Invalid, 0xFF: N/A",E=N-127,58
+316,Longitudinal acceleration,G,50,"0xFE: Invalid, 0xFF: N/A",E=N-127,59
+317,Longitudinal acceleration,G,52,"0xFE: Invalid, 0xFF: N/A",E=N-127,60
+318,Longitudinal acceleration,G,54,"0xFE: Invalid, 0xFF: N/A",E=N-127,61
+319,Longitudinal acceleration,G,56,"0xFE: Invalid, 0xFF: N/A",E=N-127,62
+320,Longitudinal acceleration,G,58,"0xFE: Invalid, 0xFF: N/A",E=N-127,63
+321,Longitudinal acceleration,G,60,"0xFE: Invalid, 0xFF: N/A",E=N-127,64
+322,Longitudinal acceleration,G,62,"0xFE: Invalid, 0xFF: N/A",E=N-127,65
+323,Longitudinal acceleration,G,64,"0xFE: Invalid, 0xFF: N/A",E=N-127,66
+324,Longitudinal acceleration,G,66,"0xFE: Invalid, 0xFF: N/A",E=N-127,67
+325,Longitudinal acceleration,G,68,"0xFE: Invalid, 0xFF: N/A",E=N-127,68
+326,Longitudinal acceleration,G,70,"0xFE: Invalid, 0xFF: N/A",E=N-127,69
+327,Longitudinal acceleration,G,72,"0xFE: Invalid, 0xFF: N/A",E=N-127,70
+328,Longitudinal acceleration,G,74,"0xFE: Invalid, 0xFF: N/A",E=N-127,71
+329,Longitudinal acceleration,G,76,"0xFE: Invalid, 0xFF: N/A",E=N-127,72
+330,Longitudinal acceleration,G,78,"0xFE: Invalid, 0xFF: N/A",E=N-127,73
+331,Longitudinal acceleration,G,80,"0xFE: Invalid, 0xFF: N/A",E=N-127,74
+332,Longitudinal acceleration,G,82,"0xFE: Invalid, 0xFF: N/A",E=N-127,75
+333,Longitudinal acceleration,G,84,"0xFE: Invalid, 0xFF: N/A",E=N-127,76
+334,Longitudinal acceleration,G,86,"0xFE: Invalid, 0xFF: N/A",E=N-127,77
+335,Longitudinal acceleration,G,88,"0xFE: Invalid, 0xFF: N/A",E=N-127,78
+336,Longitudinal acceleration,G,90,"0xFE: Invalid, 0xFF: N/A",E=N-127,79
+337,Longitudinal acceleration,G,92,"0xFE: Invalid, 0xFF: N/A",E=N-127,80
+338,Longitudinal acceleration,G,94,"0xFE: Invalid, 0xFF: N/A",E=N-127,81
+339,Longitudinal acceleration,G,96,"0xFE: Invalid, 0xFF: N/A",E=N-127,82
+340,Longitudinal acceleration,G,98,"0xFE: Invalid, 0xFF: N/A",E=N-127,83
+341,Longitudinal acceleration,G,100,"0xFE: Invalid, 0xFF: N/A",E=N-127,84
+342,Longitudinal acceleration,G,102,"0xFE: Invalid, 0xFF: N/A",E=N-127,85
+343,Longitudinal acceleration,G,104,"0xFE: Invalid, 0xFF: N/A",E=N-127,86
+344,Longitudinal acceleration,G,106,"0xFE: Invalid, 0xFF: N/A",E=N-127,87
+345,Longitudinal acceleration,G,108,"0xFE: Invalid, 0xFF: N/A",E=N-127,88
+346,Longitudinal acceleration,G,110,"0xFE: Invalid, 0xFF: N/A",E=N-127,89
+347,Longitudinal acceleration,G,112,"0xFE: Invalid, 0xFF: N/A",E=N-127,90
+348,Longitudinal acceleration,G,114,"0xFE: Invalid, 0xFF: N/A",E=N-127,91
+349,Longitudinal acceleration,G,116,"0xFE: Invalid, 0xFF: N/A",E=N-127,92
+350,Longitudinal acceleration,G,118,"0xFE: Invalid, 0xFF: N/A",E=N-127,93
+351,Longitudinal acceleration,G,120,"0xFE: Invalid, 0xFF: N/A",E=N-127,94
+352,Longitudinal acceleration,G,122,"0xFE: Invalid, 0xFF: N/A",E=N-127,95
+353,Longitudinal acceleration,G,124,"0xFE: Invalid, 0xFF: N/A",E=N-127,96
+354,Longitudinal acceleration,G,126,"0xFE: Invalid, 0xFF: N/A",E=N-127,97
+355,Longitudinal acceleration,G,128,"0xFE: Invalid, 0xFF: N/A",E=N-127,98
+356,Longitudinal acceleration,G,130,"0xFE: Invalid, 0xFF: N/A",E=N-127,99
+357,Longitudinal acceleration,G,132,"0xFE: Invalid, 0xFF: N/A",E=N-127,100
+358,Longitudinal acceleration,G,134,"0xFE: Invalid, 0xFF: N/A",E=N-127,101
+359,Longitudinal acceleration,G,136,"0xFE: Invalid, 0xFF: N/A",E=N-127,102
+360,Longitudinal acceleration,G,138,"0xFE: Invalid, 0xFF: N/A",E=N-127,103
+361,Longitudinal acceleration,G,140,"0xFE: Invalid, 0xFF: N/A",E=N-127,104
+362,Longitudinal acceleration,G,142,"0xFE: Invalid, 0xFF: N/A",E=N-127,105
+363,Longitudinal acceleration,G,144,"0xFE: Invalid, 0xFF: N/A",E=N-127,106
+364,Longitudinal acceleration,G,146,"0xFE: Invalid, 0xFF: N/A",E=N-127,107
+365,Longitudinal acceleration,G,148,"0xFE: Invalid, 0xFF: N/A",E=N-127,108
+366,Longitudinal acceleration,G,150,"0xFE: Invalid, 0xFF: N/A",E=N-127,109
+367,Longitudinal acceleration,G,152,"0xFE: Invalid, 0xFF: N/A",E=N-127,110
+368,Longitudinal acceleration,G,154,"0xFE: Invalid, 0xFF: N/A",E=N-127,111
+369,Longitudinal acceleration,G,156,"0xFE: Invalid, 0xFF: N/A",E=N-127,112
+370,Longitudinal acceleration,G,158,"0xFE: Invalid, 0xFF: N/A",E=N-127,113
+371,Longitudinal acceleration,G,160,"0xFE: Invalid, 0xFF: N/A",E=N-127,114
+372,Longitudinal acceleration,G,162,"0xFE: Invalid, 0xFF: N/A",E=N-127,115
+373,Longitudinal acceleration,G,164,"0xFE: Invalid, 0xFF: N/A",E=N-127,116
+374,Longitudinal acceleration,G,166,"0xFE: Invalid, 0xFF: N/A",E=N-127,117
+375,Longitudinal acceleration,G,168,"0xFE: Invalid, 0xFF: N/A",E=N-127,118
+376,Longitudinal acceleration,G,170,"0xFE: Invalid, 0xFF: N/A",E=N-127,119
+377,Longitudinal acceleration,G,172,"0xFE: Invalid, 0xFF: N/A",E=N-127,120
+378,Longitudinal acceleration,G,174,"0xFE: Invalid, 0xFF: N/A",E=N-127,121
+379,Longitudinal acceleration,G,176,"0xFE: Invalid, 0xFF: N/A",E=N-127,122
+380,Longitudinal acceleration,G,178,"0xFE: Invalid, 0xFF: N/A",E=N-127,123
+381,Longitudinal acceleration,G,180,"0xFE: Invalid, 0xFF: N/A",E=N-127,124
+382,Longitudinal acceleration,G,182,"0xFE: Invalid, 0xFF: N/A",E=N-127,125
+383,Longitudinal acceleration,G,184,"0xFE: Invalid, 0xFF: N/A",E=N-127,126
+384,Longitudinal acceleration,G,186,"0xFE: Invalid, 0xFF: N/A",E=N-127,127
+385,Longitudinal acceleration,G,188,"0xFE: Invalid, 0xFF: N/A",E=N-127,128
+386,Longitudinal acceleration,G,190,"0xFE: Invalid, 0xFF: N/A",E=N-127,129
+387,Longitudinal acceleration,G,192,"0xFE: Invalid, 0xFF: N/A",E=N-127,130
+388,Longitudinal acceleration,G,194,"0xFE: Invalid, 0xFF: N/A",E=N-127,131
+389,Longitudinal acceleration,G,196,"0xFE: Invalid, 0xFF: N/A",E=N-127,132
+390,Longitudinal acceleration,G,198,"0xFE: Invalid, 0xFF: N/A",E=N-127,133
+391,Longitudinal acceleration,G,200,"0xFE: Invalid, 0xFF: N/A",E=N-127,134
+392,Longitudinal acceleration,G,202,"0xFE: Invalid, 0xFF: N/A",E=N-127,135
+393,Longitudinal acceleration,G,204,"0xFE: Invalid, 0xFF: N/A",E=N-127,136
+394,Longitudinal acceleration,G,206,"0xFE: Invalid, 0xFF: N/A",E=N-127,137
+395,Longitudinal acceleration,G,208,"0xFE: Invalid, 0xFF: N/A",E=N-127,138
+396,Longitudinal acceleration,G,210,"0xFE: Invalid, 0xFF: N/A",E=N-127,139
+397,Longitudinal acceleration,G,212,"0xFE: Invalid, 0xFF: N/A",E=N-127,140
+398,Longitudinal acceleration,G,214,"0xFE: Invalid, 0xFF: N/A",E=N-127,141
+399,Longitudinal acceleration,G,216,"0xFE: Invalid, 0xFF: N/A",E=N-127,142
+400,Longitudinal acceleration,G,218,"0xFE: Invalid, 0xFF: N/A",E=N-127,143
+401,Longitudinal acceleration,G,220,"0xFE: Invalid, 0xFF: N/A",E=N-127,144
+402,Longitudinal acceleration,G,222,"0xFE: Invalid, 0xFF: N/A",E=N-127,145
+403,Longitudinal acceleration,G,224,"0xFE: Invalid, 0xFF: N/A",E=N-127,146
+404,Longitudinal acceleration,G,226,"0xFE: Invalid, 0xFF: N/A",E=N-127,147
+405,Longitudinal acceleration,G,228,"0xFE: Invalid, 0xFF: N/A",E=N-127,148
+406,Longitudinal acceleration,G,230,"0xFE: Invalid, 0xFF: N/A",E=N-127,149
+407,Longitudinal acceleration,G,232,"0xFE: Invalid, 0xFF: N/A",E=N-127,150
+408,Longitudinal acceleration,G,234,"0xFE: Invalid, 0xFF: N/A",E=N-127,151
+409,Longitudinal acceleration,G,236,"0xFE: Invalid, 0xFF: N/A",E=N-127,152
+410,Longitudinal acceleration,G,238,"0xFE: Invalid, 0xFF: N/A",E=N-127,153
+411,Longitudinal acceleration,G,240,"0xFE: Invalid, 0xFF: N/A",E=N-127,154
+412,Longitudinal acceleration,G,242,"0xFE: Invalid, 0xFF: N/A",E=N-127,155
+413,Longitudinal acceleration,G,244,"0xFE: Invalid, 0xFF: N/A",E=N-127,156
+414,Longitudinal acceleration,G,246,"0xFE: Invalid, 0xFF: N/A",E=N-127,157
+415,Longitudinal acceleration,G,248,"0xFE: Invalid, 0xFF: N/A",E=N-127,158
+416,Longitudinal acceleration,G,250,"0xFE: Invalid, 0xFF: N/A",E=N-127,159
+417,Lateral acceleration,G,0,"0xFE: Invalid, 0xFF: N/A",E=N-127,160
+418,Lateral acceleration,G,2,"0xFE: Invalid, 0xFF: N/A",E=N-127,161
+419,Lateral acceleration,G,4,"0xFE: Invalid, 0xFF: N/A",E=N-127,162
+420,Lateral acceleration,G,6,"0xFE: Invalid, 0xFF: N/A",E=N-127,163
+421,Lateral acceleration,G,8,"0xFE: Invalid, 0xFF: N/A",E=N-127,164
+422,Lateral acceleration,G,10,"0xFE: Invalid, 0xFF: N/A",E=N-127,165
+423,Lateral acceleration,G,12,"0xFE: Invalid, 0xFF: N/A",E=N-127,166
+424,Lateral acceleration,G,14,"0xFE: Invalid, 0xFF: N/A",E=N-127,167
+425,Lateral acceleration,G,16,"0xFE: Invalid, 0xFF: N/A",E=N-127,168
+426,Lateral acceleration,G,18,"0xFE: Invalid, 0xFF: N/A",E=N-127,169
+427,Lateral acceleration,G,20,"0xFE: Invalid, 0xFF: N/A",E=N-127,170
+428,Lateral acceleration,G,22,"0xFE: Invalid, 0xFF: N/A",E=N-127,171
+429,Lateral acceleration,G,24,"0xFE: Invalid, 0xFF: N/A",E=N-127,172
+430,Lateral acceleration,G,26,"0xFE: Invalid, 0xFF: N/A",E=N-127,173
+431,Lateral acceleration,G,28,"0xFE: Invalid, 0xFF: N/A",E=N-127,174
+432,Lateral acceleration,G,30,"0xFE: Invalid, 0xFF: N/A",E=N-127,175
+433,Lateral acceleration,G,32,"0xFE: Invalid, 0xFF: N/A",E=N-127,176
+434,Lateral acceleration,G,34,"0xFE: Invalid, 0xFF: N/A",E=N-127,177
+435,Lateral acceleration,G,36,"0xFE: Invalid, 0xFF: N/A",E=N-127,178
+436,Lateral acceleration,G,38,"0xFE: Invalid, 0xFF: N/A",E=N-127,179
+437,Lateral acceleration,G,40,"0xFE: Invalid, 0xFF: N/A",E=N-127,180
+438,Lateral acceleration,G,42,"0xFE: Invalid, 0xFF: N/A",E=N-127,181
+439,Lateral acceleration,G,44,"0xFE: Invalid, 0xFF: N/A",E=N-127,182
+440,Lateral acceleration,G,46,"0xFE: Invalid, 0xFF: N/A",E=N-127,183
+441,Lateral acceleration,G,48,"0xFE: Invalid, 0xFF: N/A",E=N-127,184
+442,Lateral acceleration,G,50,"0xFE: Invalid, 0xFF: N/A",E=N-127,185
+443,Lateral acceleration,G,52,"0xFE: Invalid, 0xFF: N/A",E=N-127,186
+444,Lateral acceleration,G,54,"0xFE: Invalid, 0xFF: N/A",E=N-127,187
+445,Lateral acceleration,G,56,"0xFE: Invalid, 0xFF: N/A",E=N-127,188
+446,Lateral acceleration,G,58,"0xFE: Invalid, 0xFF: N/A",E=N-127,189
+447,Lateral acceleration,G,60,"0xFE: Invalid, 0xFF: N/A",E=N-127,190
+448,Lateral acceleration,G,62,"0xFE: Invalid, 0xFF: N/A",E=N-127,191
+449,Lateral acceleration,G,64,"0xFE: Invalid, 0xFF: N/A",E=N-127,192
+450,Lateral acceleration,G,66,"0xFE: Invalid, 0xFF: N/A",E=N-127,193
+451,Lateral acceleration,G,68,"0xFE: Invalid, 0xFF: N/A",E=N-127,194
+452,Lateral acceleration,G,70,"0xFE: Invalid, 0xFF: N/A",E=N-127,195
+453,Lateral acceleration,G,72,"0xFE: Invalid, 0xFF: N/A",E=N-127,196
+454,Lateral acceleration,G,74,"0xFE: Invalid, 0xFF: N/A",E=N-127,197
+455,Lateral acceleration,G,76,"0xFE: Invalid, 0xFF: N/A",E=N-127,198
+456,Lateral acceleration,G,78,"0xFE: Invalid, 0xFF: N/A",E=N-127,199
+457,Lateral acceleration,G,80,"0xFE: Invalid, 0xFF: N/A",E=N-127,200
+458,Lateral acceleration,G,82,"0xFE: Invalid, 0xFF: N/A",E=N-127,201
+459,Lateral acceleration,G,84,"0xFE: Invalid, 0xFF: N/A",E=N-127,202
+460,Lateral acceleration,G,86,"0xFE: Invalid, 0xFF: N/A",E=N-127,203
+461,Lateral acceleration,G,88,"0xFE: Invalid, 0xFF: N/A",E=N-127,204
+462,Lateral acceleration,G,90,"0xFE: Invalid, 0xFF: N/A",E=N-127,205
+463,Lateral acceleration,G,92,"0xFE: Invalid, 0xFF: N/A",E=N-127,206
+464,Lateral acceleration,G,94,"0xFE: Invalid, 0xFF: N/A",E=N-127,207
+465,Lateral acceleration,G,96,"0xFE: Invalid, 0xFF: N/A",E=N-127,208
+466,Lateral acceleration,G,98,"0xFE: Invalid, 0xFF: N/A",E=N-127,209
+467,Lateral acceleration,G,100,"0xFE: Invalid, 0xFF: N/A",E=N-127,210
+468,Lateral acceleration,G,102,"0xFE: Invalid, 0xFF: N/A",E=N-127,211
+469,Lateral acceleration,G,104,"0xFE: Invalid, 0xFF: N/A",E=N-127,212
+470,Lateral acceleration,G,106,"0xFE: Invalid, 0xFF: N/A",E=N-127,213
+471,Lateral acceleration,G,108,"0xFE: Invalid, 0xFF: N/A",E=N-127,214
+472,Lateral acceleration,G,110,"0xFE: Invalid, 0xFF: N/A",E=N-127,215
+473,Lateral acceleration,G,112,"0xFE: Invalid, 0xFF: N/A",E=N-127,216
+474,Lateral acceleration,G,114,"0xFE: Invalid, 0xFF: N/A",E=N-127,217
+475,Lateral acceleration,G,116,"0xFE: Invalid, 0xFF: N/A",E=N-127,218
+476,Lateral acceleration,G,118,"0xFE: Invalid, 0xFF: N/A",E=N-127,219
+477,Lateral acceleration,G,120,"0xFE: Invalid, 0xFF: N/A",E=N-127,220
+478,Lateral acceleration,G,122,"0xFE: Invalid, 0xFF: N/A",E=N-127,221
+479,Lateral acceleration,G,124,"0xFE: Invalid, 0xFF: N/A",E=N-127,222
+480,Lateral acceleration,G,126,"0xFE: Invalid, 0xFF: N/A",E=N-127,223
+481,Lateral acceleration,G,128,"0xFE: Invalid, 0xFF: N/A",E=N-127,224
+482,Lateral acceleration,G,130,"0xFE: Invalid, 0xFF: N/A",E=N-127,225
+483,Lateral acceleration,G,132,"0xFE: Invalid, 0xFF: N/A",E=N-127,226
+484,Lateral acceleration,G,134,"0xFE: Invalid, 0xFF: N/A",E=N-127,227
+485,Lateral acceleration,G,136,"0xFE: Invalid, 0xFF: N/A",E=N-127,228
+486,Lateral acceleration,G,138,"0xFE: Invalid, 0xFF: N/A",E=N-127,229
+487,Lateral acceleration,G,140,"0xFE: Invalid, 0xFF: N/A",E=N-127,230
+488,Lateral acceleration,G,142,"0xFE: Invalid, 0xFF: N/A",E=N-127,231
+489,Lateral acceleration,G,144,"0xFE: Invalid, 0xFF: N/A",E=N-127,232
+490,Lateral acceleration,G,146,"0xFE: Invalid, 0xFF: N/A",E=N-127,233
+491,Lateral acceleration,G,148,"0xFE: Invalid, 0xFF: N/A",E=N-127,234
+492,Lateral acceleration,G,150,"0xFE: Invalid, 0xFF: N/A",E=N-127,235
+493,Lateral acceleration,G,152,"0xFE: Invalid, 0xFF: N/A",E=N-127,236
+494,Lateral acceleration,G,154,"0xFE: Invalid, 0xFF: N/A",E=N-127,237
+495,Lateral acceleration,G,156,"0xFE: Invalid, 0xFF: N/A",E=N-127,238
+496,Lateral acceleration,G,158,"0xFE: Invalid, 0xFF: N/A",E=N-127,239
+497,Lateral acceleration,G,160,"0xFE: Invalid, 0xFF: N/A",E=N-127,240
+498,Lateral acceleration,G,162,"0xFE: Invalid, 0xFF: N/A",E=N-127,241
+499,Lateral acceleration,G,164,"0xFE: Invalid, 0xFF: N/A",E=N-127,242
+500,Lateral acceleration,G,166,"0xFE: Invalid, 0xFF: N/A",E=N-127,243
+501,Lateral acceleration,G,168,"0xFE: Invalid, 0xFF: N/A",E=N-127,244
+502,Lateral acceleration,G,170,"0xFE: Invalid, 0xFF: N/A",E=N-127,245
+503,Lateral acceleration,G,172,"0xFE: Invalid, 0xFF: N/A",E=N-127,246
+504,Lateral acceleration,G,174,"0xFE: Invalid, 0xFF: N/A",E=N-127,247
+505,Lateral acceleration,G,176,"0xFE: Invalid, 0xFF: N/A",E=N-127,248
+506,Lateral acceleration,G,178,"0xFE: Invalid, 0xFF: N/A",E=N-127,249
+507,Lateral acceleration,G,180,"0xFE: Invalid, 0xFF: N/A",E=N-127,250
+508,Lateral acceleration,G,182,"0xFE: Invalid, 0xFF: N/A",E=N-127,251
+509,Lateral acceleration,G,184,"0xFE: Invalid, 0xFF: N/A",E=N-127,252
+510,Lateral acceleration,G,186,"0xFE: Invalid, 0xFF: N/A",E=N-127,253
+511,Lateral acceleration,G,188,"0xFE: Invalid, 0xFF: N/A",E=N-127,254
+512,Lateral acceleration,G,190,"0xFE: Invalid, 0xFF: N/A",E=N-127,255
+513,Lateral acceleration,G,192,"0xFE: Invalid, 0xFF: N/A",E=N-127,0
+514,Lateral acceleration,G,194,"0xFE: Invalid, 0xFF: N/A",E=N-127,1
+515,Lateral acceleration,G,196,"0xFE: Invalid, 0xFF: N/A",E=N-127,2
+516,Lateral acceleration,G,198,"0xFE: Invalid, 0xFF: N/A",E=N-127,3
+517,Lateral acceleration,G,200,"0xFE: Invalid, 0xFF: N/A",E=N-127,4
+518,Lateral acceleration,G,202,"0xFE: Invalid, 0xFF: N/A",E=N-127,5
+519,Lateral acceleration,G,204,"0xFE: Invalid, 0xFF: N/A",E=N-127,6
+520,Lateral acceleration,G,206,"0xFE: Invalid, 0xFF: N/A",E=N-127,7
+521,Lateral acceleration,G,208,"0xFE: Invalid, 0xFF: N/A",E=N-127,8
+522,Lateral acceleration,G,210,"0xFE: Invalid, 0xFF: N/A",E=N-127,9
+523,Lateral acceleration,G,212,"0xFE: Invalid, 0xFF: N/A",E=N-127,10
+524,Lateral acceleration,G,214,"0xFE: Invalid, 0xFF: N/A",E=N-127,11
+525,Lateral acceleration,G,216,"0xFE: Invalid, 0xFF: N/A",E=N-127,12
+526,Lateral acceleration,G,218,"0xFE: Invalid, 0xFF: N/A",E=N-127,13
+527,Lateral acceleration,G,220,"0xFE: Invalid, 0xFF: N/A",E=N-127,14
+528,Lateral acceleration,G,222,"0xFE: Invalid, 0xFF: N/A",E=N-127,15
+529,Lateral acceleration,G,224,"0xFE: Invalid, 0xFF: N/A",E=N-127,16
+530,Lateral acceleration,G,226,"0xFE: Invalid, 0xFF: N/A",E=N-127,17
+531,Lateral acceleration,G,228,"0xFE: Invalid, 0xFF: N/A",E=N-127,18
+532,Lateral acceleration,G,230,"0xFE: Invalid, 0xFF: N/A",E=N-127,19
+533,Lateral acceleration,G,232,"0xFE: Invalid, 0xFF: N/A",E=N-127,20
+534,Lateral acceleration,G,234,"0xFE: Invalid, 0xFF: N/A",E=N-127,21
+535,Lateral acceleration,G,236,"0xFE: Invalid, 0xFF: N/A",E=N-127,22
+536,Lateral acceleration,G,238,"0xFE: Invalid, 0xFF: N/A",E=N-127,23
+537,Lateral acceleration,G,240,"0xFE: Invalid, 0xFF: N/A",E=N-127,24
+538,Lateral acceleration,G,242,"0xFE: Invalid, 0xFF: N/A",E=N-127,25
+539,Lateral acceleration,G,244,"0xFE: Invalid, 0xFF: N/A",E=N-127,26
+540,Lateral acceleration,G,246,"0xFE: Invalid, 0xFF: N/A",E=N-127,27
+541,Lateral acceleration,G,248,"0xFE: Invalid, 0xFF: N/A",E=N-127,28
+542,Lateral acceleration,G,250,"0xFE: Invalid, 0xFF: N/A",E=N-127,29
+543,Lateral delta-v,km/h,0,"0xFE: Invalid, 0xFF: N/A",E=N-127,30
+544,Lateral delta-v,km/h,10,"0xFE: Invalid, 0xFF: N/A",E=N-127,31
+545,Lateral delta-v,km/h,20,"0xFE: Invalid, 0xFF: N/A",E=N-127,32
+546,Lateral delta-v,km/h,30,"0xFE: Invalid, 0xFF: N/A",E=N-127,33
+547,Lateral delta-v,km/h,40,"0xFE: Invalid, 0xFF: N/A",E=N-127,34
+548,Lateral delta-v,km/h,50,"0xFE: Invalid, 0xFF: N/A",E=N-127,35
+549,Lateral delta-v,km/h,60,"0xFE: Invalid, 0xFF: N/A",E=N-127,36
+550,Lateral delta-v,km/h,70,"0xFE: Invalid, 0xFF: N/A",E=N-127,37
+551,Lateral delta-v,km/h,80,"0xFE: Invalid, 0xFF: N/A",E=N-127,38
+552,Lateral delta-v,km/h,90,"0xFE: Invalid, 0xFF: N/A",E=N-127,39
+553,Lateral delta-v,km/h,100,"0xFE: Invalid, 0xFF: N/A",E=N-127,40
+554,Lateral delta-v,km/h,110,"0xFE: Invalid, 0xFF: N/A",E=N-127,41
+555,Lateral delta-v,km/h,120,"0xFE: Invalid, 0xFF: N/A",E=N-127,42
+556,Lateral delta-v,km/h,130,"0xFE: Invalid, 0xFF: N/A",E=N-127,43
+557,Lateral delta-v,km/h,140,"0xFE: Invalid, 0xFF: N/A",E=N-127,44
+558,Lateral delta-v,km/h,150,"0xFE: Invalid, 0xFF: N/A",E=N-127,45
+559,Lateral delta-v,km/h,160,"0xFE: Invalid, 0xFF: N/A",E=N-127,46
+560,Lateral delta-v,km/h,170,"0xFE: Invalid, 0xFF: N/A",E=N-127,47
+561,Lateral delta-v,km/h,180,"0xFE: Invalid, 0xFF: N/A",E=N-127,48
+562,Lateral delta-v,km/h,190,"0xFE: Invalid, 0xFF: N/A",E=N-127,49
+563,Lateral delta-v,km/h,200,"0xFE: Invalid, 0xFF: N/A",E=N-127,50
+564,Lateral delta-v,km/h,210,"0xFE: Invalid, 0xFF: N/A",E=N-127,51
+565,Lateral delta-v,km/h,220,"0xFE: Invalid, 0xFF: N/A",E=N-127,52
+566,Lateral delta-v,km/h,230,"0xFE: Invalid, 0xFF: N/A",E=N-127,53
+567,Lateral delta-v,km/h,240,"0xFE: Invalid, 0xFF: N/A",E=N-127,54
+568,Lateral delta-v,km/h,250,"0xFE: Invalid, 0xFF: N/A",E=N-127,55
+569,Maximum lateral delta-v,km/h,N/A,"0xFE: Invalid, 0xFF: N/A",E=N-127,56
+570,Square of maximum resultant delta-v,(km/h)^2,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,57
+571,Square of maximum resultant delta-v,(km/h)^2,N/A,Subsequent byte,Subsequent byte,58
+572,Time to reach maximum lateral delta-v,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N*2.5,59
+573,Time to reach maximum resultant delta-v,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N*2.5,60
+574,Yaw rate,deg/s,-5000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,61
+575,Yaw rate,deg/s,-5000,Subsequent byte,Subsequent byte,62
+576,Yaw rate,deg/s,-4500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,63
+577,Yaw rate,deg/s,-4500,Subsequent byte,Subsequent byte,64
+578,Yaw rate,deg/s,-4000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,65
+579,Yaw rate,deg/s,-4000,Subsequent byte,Subsequent byte,66
+580,Yaw rate,deg/s,-3500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,67
+581,Yaw rate,deg/s,-3500,Subsequent byte,Subsequent byte,68
+582,Yaw rate,deg/s,-3000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,69
+583,Yaw rate,deg/s,-3000,Subsequent byte,Subsequent byte,70
+584,Yaw rate,deg/s,-2500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,71
+585,Yaw rate,deg/s,-2500,Subsequent byte,Subsequent byte,72
+586,Yaw rate,deg/s,-2000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,73
+587,Yaw rate,deg/s,-2000,Subsequent byte,Subsequent byte,74
+588,Yaw rate,deg/s,-1500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,75
+589,Yaw rate,deg/s,-1500,Subsequent byte,Subsequent byte,76
+590,Yaw rate,deg/s,-1000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,77
+591,Yaw rate,deg/s,-1000,Subsequent byte,Subsequent byte,78
+592,Yaw rate,deg/s,-500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,79
+593,Yaw rate,deg/s,-500,Subsequent byte,Subsequent byte,80
+594,Yaw rate,deg/s,0,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*0.1-300,81
+595,Yaw rate,deg/s,0,Subsequent byte,Subsequent byte,82
+596,Steering input,deg,-5000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,83
+597,Steering input,deg,-5000,Subsequent byte,Subsequent byte,84
+598,Steering input,deg,-4500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,85
+599,Steering input,deg,-4500,Subsequent byte,Subsequent byte,86
+600,Steering input,deg,-4000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,87
+601,Steering input,deg,-4000,Subsequent byte,Subsequent byte,88
+602,Steering input,deg,-3500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,89
+603,Steering input,deg,-3500,Subsequent byte,Subsequent byte,90
+604,Steering input,deg,-3000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,91
+605,Steering input,deg,-3000,Subsequent byte,Subsequent byte,92
+606,Steering input,deg,-2500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,93
+607,Steering input,deg,-2500,Subsequent byte,Subsequent byte,94
+608,Steering input,deg,-2000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,95
+609,Steering input,deg,-2000,Subsequent byte,Subsequent byte,96
+610,Steering input,deg,-1500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,97
+611,Steering input,deg,-1500,Subsequent byte,Subsequent byte,98
+612,Steering input,deg,-1000,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,99
+613,Steering input,deg,-1000,Subsequent byte,Subsequent byte,100
+614,Steering input,deg,-500,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,101
+615,Steering input,deg,-500,Subsequent byte,Subsequent byte,102
+616,Steering input,deg,0,"0xFFFE: Invalid, 0xFFFF: N/A",E=N*5-780,103
+617,Steering input,deg,0,Subsequent byte,Subsequent byte,104
+618,Time end,ms,N/A,"0xFE: Invalid, 0xFF: N/A",E=N*2.5,105
+619,Year,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N+2000,106
+620,Month,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,107
+621,Day,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,108
+622,Hour,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,109
+623,Minute,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,110
+624,Second,N/A,N/A,"0xFE: Invalid, 0xFF: N/A",E=N,111
+625,Gear position,N/A,-5000,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,112
+626,Gear position,N/A,-4500,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,113
+627,Gear position,N/A,-4000,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,114
+628,Gear position,N/A,-3500,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,115
+629,Gear position,N/A,-3000,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,116
+630,Gear position,N/A,-2500,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,117
+631,Gear position,N/A,-2000,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,118
+632,Gear position,N/A,-1500,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,119
+633,Gear position,N/A,-1000,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,120
+634,Gear position,N/A,-500,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,121
+635,Gear position,N/A,0,"0x00: P, 0x01: R, 0x02: N, 0x03: D, 0xFE: Invalid, 0xFF: N/A",Not defined,122
+636,Engine throttle position,%,-5000,"0xFE: Invalid, 0xFF: N/A",E=N,123
+637,Engine throttle position,%,-4500,"0xFE: Invalid, 0xFF: N/A",E=N,124
+638,Engine throttle position,%,-4000,"0xFE: Invalid, 0xFF: N/A",E=N,125
+639,Engine throttle position,%,-3500,"0xFE: Invalid, 0xFF: N/A",E=N,126
+640,Engine throttle position,%,-3000,"0xFE: Invalid, 0xFF: N/A",E=N,127
+641,Engine throttle position,%,-2500,"0xFE: Invalid, 0xFF: N/A",E=N,128
+642,Engine throttle position,%,-2000,"0xFE: Invalid, 0xFF: N/A",E=N,129
+643,Engine throttle position,%,-1500,"0xFE: Invalid, 0xFF: N/A",E=N,130
+644,Engine throttle position,%,-1000,"0xFE: Invalid, 0xFF: N/A",E=N,131
+645,Engine throttle position,%,-500,"0xFE: Invalid, 0xFF: N/A",E=N,132
+646,Engine throttle position,%,0,"0xFE: Invalid, 0xFF: N/A",E=N,133
+647,Brake pedal position,%,-5000,"0xFE: Invalid, 0xFF: N/A",E=N*5,134
+648,Brake pedal position,%,-4500,"0xFE: Invalid, 0xFF: N/A",E=N*5,135
+649,Brake pedal position,%,-4000,"0xFE: Invalid, 0xFF: N/A",E=N*5,136
+650,Brake pedal position,%,-3500,"0xFE: Invalid, 0xFF: N/A",E=N*5,137
+651,Brake pedal position,%,-3000,"0xFE: Invalid, 0xFF: N/A",E=N*5,138
+652,Brake pedal position,%,-2500,"0xFE: Invalid, 0xFF: N/A",E=N*5,139
+653,Brake pedal position,%,-2000,"0xFE: Invalid, 0xFF: N/A",E=N*5,140
+654,Brake pedal position,%,-1500,"0xFE: Invalid, 0xFF: N/A",E=N*5,141
+655,Brake pedal position,%,-1000,"0xFE: Invalid, 0xFF: N/A",E=N*5,142
+656,Brake pedal position,%,-500,"0xFE: Invalid, 0xFF: N/A",E=N*5,143
+657,Brake pedal position,%,0,"0xFE: Invalid, 0xFF: N/A",E=N*5,144
+658,Parking system status,N/A,-5000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,145
+659,Parking system status,N/A,-4500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,146
+660,Parking system status,N/A,-4000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,147
+661,Parking system status,N/A,-3500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,148
+662,Parking system status,N/A,-3000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,149
+663,Parking system status,N/A,-2500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,150
+664,Parking system status,N/A,-2000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,151
+665,Parking system status,N/A,-1500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,152
+666,Parking system status,N/A,-1000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,153
+667,Parking system status,N/A,-500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,154
+668,Parking system status,N/A,0,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,155
+669,Turn signal switch status,N/A,-5000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,156
+670,Turn signal switch status,N/A,-4500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,157
+671,Turn signal switch status,N/A,-4000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,158
+672,Turn signal switch status,N/A,-3500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,159
+673,Turn signal switch status,N/A,-3000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,160
+674,Turn signal switch status,N/A,-2500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,161
+675,Turn signal switch status,N/A,-2000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,162
+676,Turn signal switch status,N/A,-1500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,163
+677,Turn signal switch status,N/A,-1000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,164
+678,Turn signal switch status,N/A,-500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,165
+679,Turn signal switch status,N/A,0,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined,166
+680,"Time to activate pretensioner, driver",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,167
+681,"Time to activate pretensioner, driver",ms,N/A,Subsequent byte,Subsequent byte,168
+682,"Time to activate front airbag (first stage), driver",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,169
+683,"Time to activate front airbag (first stage), driver",ms,N/A,Subsequent byte,Subsequent byte,170
+684,"Time to activate front airbag (second stage), driver",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,171
+685,"Time to activate front airbag (second stage), driver",ms,N/A,Subsequent byte,Subsequent byte,172
+686,"Time to activate side airbag, driver",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,173
+687,"Time to activate side airbag, driver",ms,N/A,Subsequent byte,Subsequent byte,174
+688,"Time to activate side curtain airbag, driver",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,175
+689,"Time to activate side curtain airbag, driver",ms,N/A,Subsequent byte,Subsequent byte,176
+690,"Seat belt status, front passenger",N/A,N/A,"0x00: Fastened, 0x01: Not fastened, 0xFE: Invalid, 0xFF: N/A",Not defined,177
+691,"Time to activate pretensioner, front passenger",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,178
+692,"Time to activate pretensioner, front passenger",ms,N/A,Subsequent byte,Subsequent byte,179
+693,Front passenger airbag suppression status,N/A,N/A,"0x00: Not suppressed, 0x01: Suppressed, 0xFE: Invalid, 0xFF: N/A",Not defined,180
+694,"Time to activate front airbag (first stage), front passenger",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,181
+695,"Time to activate front airbag (first stage), front passenger",ms,N/A,Subsequent byte,Subsequent byte,182
+696,"Time to activate front airbag (second stage), front passenger",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,183
+697,"Time to activate front airbag (second stage), front passenger",ms,N/A,Subsequent byte,Subsequent byte,184
+698,"Time to activate side airbag, front passenger",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,185
+699,"Time to activate side airbag, front passenger",ms,N/A,Subsequent byte,Subsequent byte,186
+700,"Time to activate side curtain airbag, front passenger",ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,187
+701,"Time to activate side curtain airbag, front passenger",ms,N/A,Subsequent byte,Subsequent byte,188
+702,Occupant safety system warning state,N/A,N/A,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,189
+703,Tire pressure monitoring system warning status,N/A,N/A,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,190
+704,Brake system warning status,N/A,N/A,"0x00: Off, 0x01: On, 0xFE: Invalid, 0xFF: N/A",Not defined,191
+705,Cruise control system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,192
+706,Cruise control system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,193
+707,Cruise control system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,194
+708,Cruise control system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,195
+709,Cruise control system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,196
+710,Cruise control system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,197
+711,Cruise control system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,198
+712,Cruise control system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,199
+713,Cruise control system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,200
+714,Cruise control system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,201
+715,Cruise control system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,202
+716,Adaptive cruise control system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,203
+717,Adaptive cruise control system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,204
+718,Adaptive cruise control system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,205
+719,Adaptive cruise control system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,206
+720,Adaptive cruise control system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,207
+721,Adaptive cruise control system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,208
+722,Adaptive cruise control system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,209
+723,Adaptive cruise control system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,210
+724,Adaptive cruise control system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,211
+725,Adaptive cruise control system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,212
+726,Adaptive cruise control system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,213
+727,Anti lock brake system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,214
+728,Anti lock brake system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,215
+729,Anti lock brake system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,216
+730,Anti lock brake system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,217
+731,Anti lock brake system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,218
+732,Anti lock brake system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,219
+733,Anti lock brake system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,220
+734,Anti lock brake system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,221
+735,Anti lock brake system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,222
+736,Anti lock brake system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,223
+737,Anti lock brake system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,224
+738,Automatic emergency braking system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,225
+739,Automatic emergency braking system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,226
+740,Automatic emergency braking system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,227
+741,Automatic emergency braking system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,228
+742,Automatic emergency braking system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,229
+743,Automatic emergency braking system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,230
+744,Automatic emergency braking system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,231
+745,Automatic emergency braking system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,232
+746,Automatic emergency braking system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,233
+747,Automatic emergency braking system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,234
+748,Automatic emergency braking system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,235
+749,Stability control system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,236
+750,Stability control system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,237
+751,Stability control system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,238
+752,Stability control system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,239
+753,Stability control system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,240
+754,Stability control system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,241
+755,Stability control system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,242
+756,Stability control system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,243
+757,Stability control system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,244
+758,Stability control system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,245
+759,Stability control system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,246
+760,Traction control system status,N/A,-5000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,247
+761,Traction control system status,N/A,-4500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,248
+762,Traction control system status,N/A,-4000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,249
+763,Traction control system status,N/A,-3500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,250
+764,Traction control system status,N/A,-3000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,251
+765,Traction control system status,N/A,-2500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,252
+766,Traction control system status,N/A,-2000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,253
+767,Traction control system status,N/A,-1500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,254
+768,Traction control system status,N/A,-1000,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,255
+769,Traction control system status,N/A,-500,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,0
+770,Traction control system status,N/A,0,"0x00: On, 0x01: Engaged, 0x02: Off, 0x03: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined,1
+771,Pre-event synchronization timer,ms,N/A,"0xFFFE: Invalid, 0xFFFF: N/A",E=N,2
+772,Pre-event synchronization timer,ms,N/A,Subsequent byte,Subsequent byte,3
