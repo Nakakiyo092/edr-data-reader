@@ -22,6 +22,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
     # Setup ISOTP stacks
     tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
     rx_stacks = []
+    rx_stacks.append(tx_stack)
     for rx_addr in rx_addrs:
         rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
         rx_stacks.append(rx_stack)
@@ -34,7 +35,6 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
     pend_response = Response(service=ReadDataByIdentifier, code=Response.Code.RequestCorrectlyReceived_ResponsePending)
 
     # Start stacks
-    tx_stack.start()
     for rx_stack in rx_stacks:
         rx_stack.start()
 
@@ -68,14 +68,13 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         return None
 
     # Stop stacks
-    tx_stack.stop()
     for rx_stack in rx_stacks:
         rx_stack.stop()
 
     if payload is not None:
         print(len(payload), " bytes of data received.")
     else:
-        print("No data received.")
+        print("No data was received.")
 
     return payload
 
@@ -128,7 +127,7 @@ def output_data(payload) -> bytearray:
                     row.append("N/A")  # Handle cases where No is out of range
                 writer.writerow(row)
         
-        print(f"The file '{destination_file}' has been successfully created with the additional column.")
+        print(f"The file '{destination_file}' has been successfully updated with the additional column.")
     except FileNotFoundError:
         print(f"The input file '{source_file}' does not exist.")
     except Exception as e:
@@ -148,8 +147,8 @@ except Exception as err:
     exit()
 
 # Setup a debug listener that print all messages
-notifier = can.Notifier(bus, [can.Printer()])
-#notifier = can.Notifier(bus, [])
+#notifier = can.Notifier(bus, [can.Printer()])
+notifier = can.Notifier(bus, [])
 
 
 # Isotp parameters
@@ -182,28 +181,26 @@ for i in range(0x100 - 0x8):
     rx_addrs.append(rx_addr)
 
 try:
-    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
 except Exception as err:
     print(err)
 
 
 # Read with 11bits physical address
-tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F5, rxid=0x7F1)
+tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
 rx_addrs = []
-rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F5, rxid=0x7F1)
-rx_addrs.append(rx_addr)
 
 try:
-    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
+    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Physical, isotp_params)
     output_data(payload)
 except Exception as err:
     print(err)
@@ -213,15 +210,16 @@ except Exception as err:
 tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
 rx_addrs = []
 for i in range(0x100):
-    rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=i, source_address=0xF1)
-    rx_addrs.append(rx_addr)
+    if i != 0x33:
+        rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=i, source_address=0xF1)
+        rx_addrs.append(rx_addr)
 
 try:
-    payload = read_did(0xFA13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
-    payload = read_did(0xFA15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
+    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, isotp.TargetAddressType.Functional, isotp_params)
     output_data(payload)
 except Exception as err:
     print(err)
