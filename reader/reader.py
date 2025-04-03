@@ -20,17 +20,17 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         print("Reading data id", hex(did), "with 11bits physical address.")
 
     # Setup ISOTP stacks
-    tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+    tx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=tx_addr, params=isotp_params)
     rx_stacks = []
-    rx_stacks.append(tx_stack)
+    rx_stacks.append(tx_stack)  # Add tx_stack itself to support Physical addressing
     for rx_addr in rx_addrs:
-        rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)  # Network/Transport layer (IsoTP protocol). Register a new listenenr
+        rx_stack = isotp.NotifierBasedCanStack(bus=bus, notifier=notifier, address=rx_addr, params=isotp_params)
         rx_stacks.append(rx_stack)
 
     # Request message
     request = ReadDataByIdentifier.make_request(didlist=[did], didconfig={'default':'s'})
 
-    # Response message (data/pending)
+    # Response message (positive/pending)
     response = Response(service=ReadDataByIdentifier, code=Response.Code.PositiveResponse, data=bytes([(did>>8)&0xFF,did&0xFF]))
     pend_response = Response(service=ReadDataByIdentifier, code=Response.Code.RequestCorrectlyReceived_ResponsePending)
 
@@ -47,7 +47,8 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         start_time = time.time()
         while waiting:
             # Response timeout
-            if time.time() - start_time > 5 + 1:
+            if time.time() - start_time > 5:
+                print("Time out.")
                 payload = None
                 waiting = False
                 break
@@ -56,10 +57,12 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
             for rx_stack in rx_stacks:
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
+                    # Response pending
                     if payload == pend_response.get_payload():
                         pass
 
-                    if payload[:3] == response.get_payload():
+                    # Positive response
+                    if payload[:len(response)] == response.get_payload():
                         waiting = False
                         break
 
@@ -96,13 +99,15 @@ def output_data(payload) -> bytearray:
     # Copy the file
     try:
         shutil.copy(source_file, destination_file)
-        print(f"The file '{source_file}' has been successfully copied to '{destination_file}'.")
     except FileNotFoundError:
         print(f"The source file '{source_file}' does not exist.")
+        return
     except PermissionError:
         print("You do not have the necessary permissions to read or write the file.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        return
+    except Exception as err:
+        print(err)
+        return
 
     # Make data
     byte_array = payload[3:]
@@ -127,11 +132,12 @@ def output_data(payload) -> bytearray:
                     row.append("N/A")  # Handle cases where No is out of range
                 writer.writerow(row)
         
-        print(f"The file '{destination_file}' has been successfully updated with the additional column.")
     except FileNotFoundError:
-        print(f"The input file '{source_file}' does not exist.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"The file '{source_file}' or '{destination_file}' does not exist.")
+        return
+    except Exception as err:
+        print(err)
+        return
 
 
 ### Main process ###
@@ -153,16 +159,15 @@ notifier = can.Notifier(bus, [])
 
 # Isotp parameters
 isotp_params = {
- 'stmin': 0,                             # Will request the sender to wait 32ms between consecutive frame. 0-127ms or 100-900ns with values from 0xF1-0xF9
- 'blocksize': 0,                         # Request the sender to send 8 consecutives frames before sending a new flow control message
+ 'stmin': 0,                             # Will request the sender to wait 0ms between consecutive frame. 0-127ms or 100-900ns with values from 0xF1-0xF9
+ 'blocksize': 0,                         # Request the sender to send all consecutives frames without waiting a new flow control message
  'wftmax': 0,                            # Number of wait frame allowed before triggering an error
  'tx_data_length': 8,                    # Link layer (CAN layer) works with 8 byte payload (CAN 2.0)
- # Minimum length of CAN messages. When different from None, messages are padded to meet this length. Works with CAN 2.0 and CAN FD.
- 'tx_data_min_length': 8,
+ 'tx_data_min_length': 8,                # Minimum length of CAN messages. Messages are padded to meet this length.
  'tx_padding': 0,                        # Will pad all transmitted CAN messages with byte 0x00.
  'rx_flowcontrol_timeout': 1000,         # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds
  'rx_consecutive_frame_timeout': 1000,   # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds
- #'squash_stmin_requirement': False,      # When sending, respect the stmin requirement of the receiver. If set to True, go as fast as possible.
+ 'override_receiver_stmin': None,        # When set, this value will override the receiver stmin requirement. 
  'max_frame_size': 4095,                 # Limit the size of receive frame.
  'can_fd': False,                        # Does not set the can_fd flag on the output CAN messages
  'bitrate_switch': False,                # Does not set the bitrate_switch flag on the output CAN messages
