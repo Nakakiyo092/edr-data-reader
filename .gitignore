@@ -3,4 +3,4 @@ venv/*
 .vscode/*
 
 result/*
-!result
+!result/
