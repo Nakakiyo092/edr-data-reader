@@ -1,6 +1,3 @@
-test/__pycache__/*
 venv/*
+result/*
 .vscode/*
-
-result/*.csv
-result/*.md

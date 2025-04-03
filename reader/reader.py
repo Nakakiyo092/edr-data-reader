@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import time
+import os
 import shutil
+import time
 import csv
 
 import can
@@ -98,6 +99,7 @@ def output_data(payload) -> bytearray:
 
     # Copy the file
     try:
+        os.makedirs("result", exist_ok=True)
         shutil.copy(source_file, destination_file)
     except FileNotFoundError:
         print(f"The source file '{source_file}' does not exist.")
