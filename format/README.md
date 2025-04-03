@@ -1,3 +1,10 @@
+# Order of events
+
+1. did_fa13 is data for the latest event.
+2. did_fa14 is data for the second latest event.
+3. did_fa15 is data for the third latest event.
+
+
 # Conversion rules
 
 1. Search the value from the "Value table" row. If found, it's the result.
