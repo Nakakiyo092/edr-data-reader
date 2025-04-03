@@ -17,3 +17,5 @@ You can use any [python-can](https://github.com/hardbyte/python-can) combatible 
 
 The communication is configured so that the example in the standard can be recreated.
 Some modifications may be required to deal with specific ECUs.
+
+If successful, the data will be stored in the `result` directory.
