@@ -230,6 +230,17 @@ except Exception as err:
     print(err)
 
 
+# Copy the README file
+try:
+    shutil.copy("format/README.md", "result/README.md")
+except FileNotFoundError:
+    print(f"The source file format/README.md does not exist.")
+except PermissionError:
+    print("You do not have the necessary permissions to read or write the file.")
+except Exception as err:
+    print(err)
+
+
 # Shutdown the CAN bus
 notifier.stop()
 bus.shutdown()
