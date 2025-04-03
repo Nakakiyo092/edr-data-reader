@@ -1,5 +1,5 @@
 # EDR Data Reader
-Python script to retreive EDR data according to the Chinese standard GB39732-2020.
+Python script to retreive EDR data via CAN bus according to the Chinese standard GB39732-2020.
 
 ## Requirements
 - Python 3
