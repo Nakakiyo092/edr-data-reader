@@ -147,7 +147,7 @@ def output_data(payload) -> bytearray:
 # Setup and start a CAN bus
 try:
     #bus = can.Bus(interface='slcan', channel='/dev/ttyACM0', bitrate=500000)
-    bus = can.Bus(interface='slcan', channel='COM8', bitrate=500000)
+    bus = can.Bus(interface='slcan', channel='COM9', bitrate=500000)
     #bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
     #bus = can.Bus('test', interface='virtual')
 except Exception as err:

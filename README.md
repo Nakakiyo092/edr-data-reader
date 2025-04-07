@@ -12,10 +12,15 @@ According to the standard, EDR is defined as:
 - See requirements.txt
 
 ## Usage
-By default, the script uses the slcan device as a CAN interface.
+By default, the script uses the slcan device `COM9` as a CAN interface.
 You can use any [python-can](https://github.com/hardbyte/python-can) combatible interface by modifying the script.
 
 The communication is configured so that the example in the standard can be recreated.
 Some modifications may be required to deal with specific ECUs.
+
+The script will run by the command below:
+
+* `python .\reader\reader.py` (Windows)
+* `python3 ./reader/reader.py` (Linux)
 
 If successful, the data will be stored in the `result` directory.
