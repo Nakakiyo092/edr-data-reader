@@ -1,5 +1,5 @@
 # EDR Data Reader
-Python script to retreive [Event Data Recorder (EDR)](https://en.wikipedia.org/wiki/Event_data_recorder) data via CAN bus according to the Chinese standard GB39732-2020.
+Python scripts to retreive [Event Data Recorder (EDR)](https://en.wikipedia.org/wiki/Event_data_recorder) data via CAN bus according to the Chinese standard [GB39732-2020](https://std.samr.gov.cn/gb/search/gbDetailed?id=B7A9FA1FFC316818E05397BE0A0AB4AC).
 
 According to the standard, EDR is defined as:
 
@@ -13,14 +13,24 @@ According to the standard, EDR is defined as:
 
 ## Usage
 By default, the script uses the slcan device `COM9` as a CAN interface.
-You can use any [python-can](https://github.com/hardbyte/python-can) combatible interface by modifying the script.
+You can use any [python-can](https://github.com/hardbyte/python-can) compatible interface by modifying the following line in the middle of `reader.py`.
+
+```
+    bus = can.Bus(interface='slcan', channel='COM9', bitrate=500000)
+```
 
 The communication is configured so that the example in the standard can be recreated.
-Some modifications may be required to deal with specific ECUs.
+Modifications may be required to deal with specific ECUs.
 
 The script will run by the command below:
 
-* `python .\reader\reader.py` (Windows)
-* `python3 ./reader/reader.py` (Linux)
+Windows
+* `python .\reader\reader.py`
+
+Linux
+* `python3 ./reader/reader.py`
 
 If successful, the data will be stored in the `result` directory.
+
+You can read the data from the vehicle's OBD connector, and if properly connected, you can also read it directory from the EDR ECU.
+
