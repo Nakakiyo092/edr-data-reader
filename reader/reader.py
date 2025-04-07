@@ -169,7 +169,7 @@ isotp_params = {
  'tx_padding': 0,                        # Will pad all transmitted CAN messages with byte 0x00.
  'rx_flowcontrol_timeout': 1000,         # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds
  'rx_consecutive_frame_timeout': 1000,   # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds
- 'override_receiver_stmin': None,        # When set, this value will override the receiver stmin requirement. 
+ 'override_receiver_stmin': None,        # When sending, respect the stmin requirement of the receiver. Could be set to a float value in seconds.
  'max_frame_size': 4095,                 # Limit the size of receive frame.
  'can_fd': False,                        # Does not set the can_fd flag on the output CAN messages
  'bitrate_switch': False,                # Does not set the bitrate_switch flag on the output CAN messages
