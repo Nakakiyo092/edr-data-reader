@@ -656,17 +656,17 @@ No.,Name,Unit,Time_ms,Value table,Conversion
 655,Brake pedal position,%,-1000,"0xFE: Invalid, 0xFF: N/A",E=N*5
 656,Brake pedal position,%,-500,"0xFE: Invalid, 0xFF: N/A",E=N*5
 657,Brake pedal position,%,0,"0xFE: Invalid, 0xFF: N/A",E=N*5
-658,Parking system status,N/A,-5000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-659,Parking system status,N/A,-4500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-660,Parking system status,N/A,-4000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-661,Parking system status,N/A,-3500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-662,Parking system status,N/A,-3000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-663,Parking system status,N/A,-2500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-664,Parking system status,N/A,-2000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-665,Parking system status,N/A,-1500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-666,Parking system status,N/A,-1000,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-667,Parking system status,N/A,-500,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
-668,Parking system status,N/A,0,"0x00: On, 0x01: Off, 0x02: Faulted, 0xFE: Invalid, 0xFF: N/A",Not defined
+658,Parking system status,N/A,-5000,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+659,Parking system status,N/A,-4500,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+660,Parking system status,N/A,-4000,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+661,Parking system status,N/A,-3500,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+662,Parking system status,N/A,-3000,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+663,Parking system status,N/A,-2500,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+664,Parking system status,N/A,-2000,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+665,Parking system status,N/A,-1500,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+666,Parking system status,N/A,-1000,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+667,Parking system status,N/A,-500,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
+668,Parking system status,N/A,0,"0x00: On, 0x01: Faulted, 0x02: Off, 0xFE: Invalid, 0xFF: N/A",Not defined
 669,Turn signal switch status,N/A,-5000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined
 670,Turn signal switch status,N/A,-4500,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined
 671,Turn signal switch status,N/A,-4000,"0x00: Off, 0x01: Left, 0x02, Right, 0x03: Both, 0xFE: Invalid, 0xFF: N/A",Not defined
