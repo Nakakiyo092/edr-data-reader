@@ -27,7 +27,7 @@ The script will run by the command below:
 Windows
 * `python .\reader\reader.py`
 
-Linux
+Linux or macOS
 * `python3 ./reader/reader.py`
 
 If successful, the data will be stored in the `result` directory.
