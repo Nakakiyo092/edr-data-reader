@@ -48,7 +48,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         start_time = time.time()
         while waiting:
             # Response timeout
-            if time.time() - start_time > 5:
+            if time.time() - start_time > 10:
                 print("Time out.")
                 payload = None
                 waiting = False
