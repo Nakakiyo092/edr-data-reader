@@ -216,7 +216,7 @@ except Exception as err:
 # Read with 29bits address
 tx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=0xFF, source_address=0xF1)
 rx_addrs = []
-for i in range(0x100):
+for i in range(0xF0):
     if i != 0x33:
         rx_addr = isotp.Address(isotp.AddressingMode.NormalFixed_29bits, target_address=i, source_address=0xF1)
         rx_addrs.append(rx_addr)
