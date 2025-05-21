@@ -7,8 +7,10 @@
 
 # Conversion rules
 
-1. Search the value from the "Value table" row. If found, it's the result.
-2. If not found, convert the value as described in the "Conversion" row, where E and N are:
+A raw value can be converted using the following rules.
+
+1. Search the value from the "Value table" column. If found, it's the result.
+2. If not found, convert the value as described in the "Conversion" column, where E and N are:
 
 * E: Converted value
 * N: Raw value (unsigned integer)
