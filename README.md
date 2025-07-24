@@ -15,7 +15,7 @@ According to the standard, EDR is defined as:
 By default, the script uses the slcan device `COM9` as a CAN interface.
 You can use any [python-can](https://github.com/hardbyte/python-can) compatible interface by modifying the following line in the middle of `reader.py`.
 
-```
+```python
     bus = can.Bus(interface='slcan', channel='COM9', bitrate=500000)
 ```
 
