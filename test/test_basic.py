@@ -27,7 +27,7 @@ class BasicTestCase(unittest.TestCase):
         )
 
         # Verity the output (No device error)
-        self.assertIn("FileNotFoundError", result.stdout)
+        self.assertIn("could not open port", result.stdout)
 
 
 if __name__ == "__main__":
