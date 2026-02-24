@@ -1,4 +1,4 @@
-can-isotp==2.0.6
+can-isotp==2.0.7
 msgpack==1.1.2
 packaging==24.2
 pyserial==3.5
