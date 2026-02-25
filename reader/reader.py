@@ -35,6 +35,7 @@ def get_argparser():
     )
     parser.add_argument(
         "-v", "--verbose",
+        type=bool,
         action="store_true",
         help="enable verbose output"
     )
