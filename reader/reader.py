@@ -15,10 +15,31 @@ import sys
 import time
 import csv
 
+import argparse
 import can
 import isotp
 from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
+
+
+def get_argparser():
+    """Get the command line argument parser."""
+
+    parser = argparse.ArgumentParser(
+        description="Retreive EDR data via CAN bus. Press 'q' + [ENTER] to quit."
+    )
+    parser.add_argument(
+        "devicename",
+        type=str,
+        help="device name like COM9 or /dev/ttyACM0 (required)"
+    )
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="enable verbose output"
+    )
+    return parser
+
 
 def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> bytearray:
     """Read one data by identifier (DID) from the target ECU."""
@@ -175,137 +196,144 @@ def output_data(payload) -> bytearray:
         return
 
 
-### Main process ###
+def main():
+    """Main process."""
 
-# Setup and start a CAN bus
-try:
-    #bus = can.Bus(interface='slcan', channel='/dev/ttyACM0', bitrate=500000)
-    bus = can.Bus(interface='slcan', channel='COM9', bitrate=500000)
-    #bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
-    #bus = can.Bus('test', interface='virtual')
-except Exception as err:
-    print(err)
-    sys.exit()
+    # Parse command line arguments
+    argparser = get_argparser()
+    args = argparser.parse_args()
 
-# Setup a debug listener that print all messages
-#notifier = can.Notifier(bus, [can.Printer()])
-notifier = can.Notifier(bus, [])
+    # Setup and start a CAN bus
+    try:
+        if args.devicename == "virtual":
+            bus = can.Bus('test', interface='virtual')
+        elif args.devicename == "vector":
+            bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
+        else:
+            bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+    except Exception as err:
+        print(err)
+        return
 
+    # Setup a debug listener that print all messages
+    if args.verbose:
+        notifier = can.Notifier(bus, [can.Printer()])
+    else:
+        notifier = can.Notifier(bus, [])
 
-# Isotp parameters
-isotp_params = {
-    # Will request the sender to wait 0ms between consecutive frame.
-    # 0-127ms or 100-900ns with values from 0xF1-0xF9.
-    'stmin': 0,
-    # Request the sender to send all consecutives frames without waiting a new flow control message.
-    'blocksize': 0,
-    # Number of wait frame allowed before triggering an error.
-    'wftmax': 0,
-    # Link layer (CAN layer) works with 8 byte payload (CAN 2.0).
-    'tx_data_length': 8,
-    # Minimum length of CAN messages. Messages are padded to meet this length.
-    'tx_data_min_length': 8,
-    # Will pad all transmitted CAN messages with byte 0x00.
-    'tx_padding': 0,
-    # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds.
-    'rx_flowcontrol_timeout': 1000,
-    # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds.
-    'rx_consecutive_frame_timeout': 1000,
-    # When sending, respect the stmin requirement of the receiver.
-    # Could be set to a float value in seconds.
-    'override_receiver_stmin': None,
-    # Limit the size of receive frame.
-    'max_frame_size': 4095,
-    # Does not set the can_fd flag on the output CAN messages.
-    'can_fd': False,
-    # Does not set the bitrate_switch flag on the output CAN messages.
-    'bitrate_switch': False,
-    # Disable the rate limiter.
-    'rate_limit_enable': False,
-    # Ignored when rate_limit_enable=False. Sets the max bitrate when rate_limit_enable=True.
-    'rate_limit_max_bitrate': 1000000,
-    # Ignored when rate_limit_enable=False.
-    # Sets the averaging window size for bitrate calculation when rate_limit_enable=True.
-    'rate_limit_window_size': 0.2,
-    # Does not use the listen_mode which prevent transmission.
-    'listen_mode': False,
-}
+    # Isotp parameters
+    isotp_params = {
+        # Will request the sender to wait 0ms between consecutive frame.
+        # 0-127ms or 100-900ns with values from 0xF1-0xF9.
+        'stmin': 0,
+        # Request the sender to send all consecutives frames without waiting a new flow control message.
+        'blocksize': 0,
+        # Number of wait frame allowed before triggering an error.
+        'wftmax': 0,
+        # Link layer (CAN layer) works with 8 byte payload (CAN 2.0).
+        'tx_data_length': 8,
+        # Minimum length of CAN messages. Messages are padded to meet this length.
+        'tx_data_min_length': 8,
+        # Will pad all transmitted CAN messages with byte 0x00.
+        'tx_padding': 0,
+        # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds.
+        'rx_flowcontrol_timeout': 1000,
+        # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds.
+        'rx_consecutive_frame_timeout': 1000,
+        # When sending, respect the stmin requirement of the receiver.
+        # Could be set to a float value in seconds.
+        'override_receiver_stmin': None,
+        # Limit the size of receive frame.
+        'max_frame_size': 4095,
+        # Does not set the can_fd flag on the output CAN messages.
+        'can_fd': False,
+        # Does not set the bitrate_switch flag on the output CAN messages.
+        'bitrate_switch': False,
+        # Disable the rate limiter.
+        'rate_limit_enable': False,
+        # Ignored when rate_limit_enable=False. Sets the max bitrate when rate_limit_enable=True.
+        'rate_limit_max_bitrate': 1000000,
+        # Ignored when rate_limit_enable=False.
+        # Sets the averaging window size for bitrate calculation when rate_limit_enable=True.
+        'rate_limit_window_size': 0.2,
+        # Does not use the listen_mode which prevent transmission.
+        'listen_mode': False,
+    }
 
-
-# Read with 11bits functional address
-tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
-rx_addrs = []
-for i in range(0x100 - 0x8):
-    rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8)
-    rx_addrs.append(rx_addr)
-
-try:
-    func = isotp.TargetAddressType.Functional
-    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-except Exception as err:
-    print(err)
-
-
-# Read with 11bits physical address
-tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
-rx_addrs = []
-
-try:
-    phys = isotp.TargetAddressType.Physical
-    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
-    output_data(payload)
-except Exception as err:
-    print(err)
-
-
-# Read with 29bits address
-tx_addr = isotp.Address(
-    isotp.AddressingMode.NormalFixed_29bits,
-    target_address=0xFF,
-    source_address=0xF1
-    )
-rx_addrs = []
-for i in range(0xF0):
-    if i != 0x33:
-        rx_addr = isotp.Address(
-            isotp.AddressingMode.NormalFixed_29bits,
-            target_address=i,
-            source_address=0xF1
-            )
+    # Read with 11bits functional address
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
+    rx_addrs = []
+    for i in range(0x100 - 0x8):
+        rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8)
         rx_addrs.append(rx_addr)
 
-try:
-    func = isotp.TargetAddressType.Functional
-    payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-    payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
-    output_data(payload)
-except Exception as err:
-    print(err)
+    try:
+        func = isotp.TargetAddressType.Functional
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+    except Exception as err:
+        print(err)
+
+    # Read with 11bits physical address
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
+    rx_addrs = []
+
+    try:
+        phys = isotp.TargetAddressType.Physical
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        output_data(payload)
+    except Exception as err:
+        print(err)
+
+    # Read with 29bits address
+    tx_addr = isotp.Address(
+        isotp.AddressingMode.NormalFixed_29bits,
+        target_address=0xFF,
+        source_address=0xF1
+        )
+    rx_addrs = []
+    for i in range(0xF0):
+        if i != 0x33:
+            rx_addr = isotp.Address(
+                isotp.AddressingMode.NormalFixed_29bits,
+                target_address=i,
+                source_address=0xF1
+                )
+            rx_addrs.append(rx_addr)
+
+    try:
+        func = isotp.TargetAddressType.Functional
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        output_data(payload)
+    except Exception as err:
+        print(err)
+
+    # Copy the README file
+    try:
+        shutil.copy("format/README.md", "result/README.md")
+    except FileNotFoundError:
+        print("The source file format/README.md does not exist.")
+    except PermissionError:
+        print("You do not have the necessary permissions to read or write the file.")
+    except Exception as err:
+        print(err)
+
+    # Shutdown the CAN bus
+    notifier.stop()
+    bus.shutdown()
 
 
-# Copy the README file
-try:
-    shutil.copy("format/README.md", "result/README.md")
-except FileNotFoundError:
-    print("The source file format/README.md does not exist.")
-except PermissionError:
-    print("You do not have the necessary permissions to read or write the file.")
-except Exception as err:
-    print(err)
-
-
-# Shutdown the CAN bus
-notifier.stop()
-bus.shutdown()
+if __name__ == "__main__":
+    main()

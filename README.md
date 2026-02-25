@@ -12,23 +12,23 @@ According to the standard, EDR is defined as:
 - See requirements.txt
 
 ## Usage
-By default, the script uses the slcan device `COM9` as a CAN interface.
+By default, the script uses the slcan device as a CAN interface.
 You can use any [python-can](https://github.com/hardbyte/python-can) compatible interface by modifying the following line in the middle of `reader.py`.
 
 ```python
-    bus = can.Bus(interface='slcan', channel='COM9', bitrate=500000)
+    bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
 ```
 
 The communication is configured so that the example in the standard can be recreated.
 Modifications may be required to deal with specific ECUs.
 
-Connect your CAN device to the vehicle's diagnostic connector, then the script will run by the command below:
+Connect your CAN device to the vehicle's diagnostic connector, then the script will tell you the usage by the command below:
 
 Windows
-* `python .\reader\reader.py`
+* `python .\reader\reader.py --help`
 
 Linux or macOS
-* `python3 ./reader/reader.py`
+* `python3 ./reader/reader.py --help`
 
 If successful, the data will be stored in the `result` directory.
 
