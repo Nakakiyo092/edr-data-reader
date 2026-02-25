@@ -1,12 +1,13 @@
-name: Tests
+name: Continuous Integration
 
 on:
+  push:
+    branches:
+      - 'master'
+      - 'main'
   pull_request:
     branches:
       - '**'
-  push:
-    branches-ignore:
-      - 'dependabot/**'
 
 env:
   PY_COLORS: "1"
@@ -15,13 +16,20 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  Test:
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.13"]
       fail-fast: false
+      matrix:
+        include:
+          # Latest version of python with three OS
+          - { os: ubuntu-latest,  python-version: "3.x" }
+          - { os: macos-latest,   python-version: "3.x" }
+          - { os: windows-latest, python-version: "3.x" }
+          # Older version of python
+          - { os: ubuntu-latest,  python-version: "3.14" }
+          - { os: ubuntu-latest,  python-version: "3.13" }
+          - { os: ubuntu-latest,  python-version: "3.12" }
 
     steps:
       - name: Checkout repository
@@ -40,3 +48,33 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest discover -s test -v
+
+  Lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - { os: ubuntu-latest,  python-version: "3.x" }
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint
+
+      - name: Run pylint error check
+        run: |
+          pylint -E $(git ls-files '*.py')
+          
+      - name: Assess pylint score
+        run: |
+          pylint --fail-under=8.5 reader/reader.py
