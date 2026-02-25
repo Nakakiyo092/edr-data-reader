@@ -8,7 +8,7 @@ According to the standard, EDR is defined as:
 (Machine-translated by Copilot)
 
 ## Requirements
-- Python 3
+- Python 3.13
 - See requirements.txt
 
 ## Usage
