@@ -11,7 +11,6 @@ License:
 
 import os
 import shutil
-import sys
 import time
 import csv
 
@@ -226,7 +225,8 @@ def main():
         # Will request the sender to wait 0ms between consecutive frame.
         # 0-127ms or 100-900ns with values from 0xF1-0xF9.
         'stmin': 0,
-        # Request the sender to send all consecutives frames without waiting a new flow control message.
+        # Request the sender to send all consecutives frames
+        # without waiting a new flow control message.
         'blocksize': 0,
         # Number of wait frame allowed before triggering an error.
         'wftmax': 0,
