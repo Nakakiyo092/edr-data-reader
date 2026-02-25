@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+"""
+A Python script to retreive Event Data Recorder (EDR) data via CAN bus
+according to the Chinese standard GB39732-2020.
+
+License:
+    MIT License.
+    See the accompanying LICENSE file for full terms.
+"""
+
 import os
 import shutil
 import time
@@ -7,10 +16,11 @@ import csv
 
 import can
 import isotp
-from udsoncan import Request, Response
+from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
 def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> bytearray:
+    """Read one data by identifier (DID) from the target ECU."""
 
     print("")
     if tx_addr.is_tx_29bits():
@@ -84,15 +94,17 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
 
 
 def output_data(payload) -> bytearray:
+    """Output the data to a CSV file according to the format defined in the 'format' folder."""
+
     # Get target did from payload
     if payload is None:
         print(f"No data to output.")
         return
-    elif len(payload) < 3:
+    if len(payload) < 3:
         print(f"The payload is too short.")
         return
-    else:
-        did = f"{payload[1]:02x}{payload[2]:02x}"
+
+    did = f"{payload[1]:02x}{payload[2]:02x}"
 
     # File paths for source and destination
     source_file = "format/did_" + did + ".csv"
@@ -117,7 +129,10 @@ def output_data(payload) -> bytearray:
 
     # Read the input CSV file and write to the output file with the additional column
     try:
-        with open(source_file, mode="r", encoding="utf-8") as infile, open(destination_file, mode="w", encoding="utf-8", newline="") as outfile:
+        with (
+            open(source_file, mode="r", encoding="utf-8") as infile,
+            open(destination_file, mode="w", encoding="utf-8", newline="") as outfile
+        ):
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
             
