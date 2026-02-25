@@ -11,6 +11,7 @@ License:
 
 import os
 import shutil
+import sys
 import time
 import csv
 
@@ -114,10 +115,10 @@ def output_data(payload) -> bytearray:
 
     # Get target did from payload
     if payload is None:
-        print(f"No data to output.")
+        print("No data to output.")
         return
     if len(payload) < 3:
-        print(f"The payload is too short.")
+        print("The payload is too short.")
         return
 
     did = f"{payload[1]:02x}{payload[2]:02x}"
@@ -184,7 +185,7 @@ try:
     #bus = can.Bus('test', interface='virtual')
 except Exception as err:
     print(err)
-    exit()
+    sys.exit()
 
 # Setup a debug listener that print all messages
 #notifier = can.Notifier(bus, [can.Printer()])
@@ -298,7 +299,7 @@ except Exception as err:
 try:
     shutil.copy("format/README.md", "result/README.md")
 except FileNotFoundError:
-    print(f"The source file format/README.md does not exist.")
+    print("The source file format/README.md does not exist.")
 except PermissionError:
     print("You do not have the necessary permissions to read or write the file.")
 except Exception as err:
