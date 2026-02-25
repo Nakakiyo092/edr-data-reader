@@ -88,8 +88,9 @@ def output_data(payload) -> bytearray:
     if payload is None:
         print(f"No data to output.")
         return
-    if len(payload) < 3:
+    elif len(payload) < 3:
         print(f"The payload is too short.")
+        return
     else:
         did = f"{payload[1]:02x}{payload[2]:02x}"
 
