@@ -5,4 +5,4 @@ pyserial==3.5
 python-can==4.6.1
 typing_extensions==4.15.0
 udsoncan==1.25.2
-wrapt==1.17.2
+wrapt==2.1.1
