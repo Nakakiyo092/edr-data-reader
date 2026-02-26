@@ -1,6 +1,6 @@
 can-isotp==2.0.7
 msgpack==1.1.2
-packaging==24.2
+packaging==26.0
 pyserial==3.5
 python-can==4.6.1
 typing_extensions==4.15.0
