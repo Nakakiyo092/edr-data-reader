@@ -25,7 +25,7 @@ def get_argparser():
     """Get the command line argument parser."""
 
     parser = argparse.ArgumentParser(
-        description="Retreive EDR data via CAN bus. Press 'q' + [ENTER] to quit."
+        description="Retreive EDR data via CAN bus. Press [CTRL] + 'c' to quit."
     )
     parser.add_argument(
         "devicename",
