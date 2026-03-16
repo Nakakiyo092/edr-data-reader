@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+"""
+A Python script to test the basic functionality of the EDR data reader.
+
+License:
+    MIT License.
+    See the accompanying LICENSE file for full terms.
+"""
+
 import unittest
 import subprocess
 import sys
@@ -17,6 +25,8 @@ class BasicTestCase(unittest.TestCase):
         pass
 
     def test_no_device(self):
+        """Test the behavior when no valid device is specified."""
+
         # Get absolute path to reader.py
         script_path = Path(__file__).resolve().parents[1] / "src" / "reader.py"
 
@@ -32,6 +42,8 @@ class BasicTestCase(unittest.TestCase):
         self.assertIn("", result.stderr)
 
     def test_no_response(self):
+        """Test the behavior when no response is received on CAN bus."""
+
         # Get absolute path to reader.py
         script_path = Path(__file__).resolve().parents[1] / "src" / "reader.py"
 
