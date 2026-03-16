@@ -18,7 +18,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_no_device(self):
         # Get absolute path to reader.py
-        script_path = Path(__file__).resolve().parents[1] / "reader" / "reader.py"
+        script_path = Path(__file__).resolve().parents[1] / "src" / "reader.py"
 
         # Run the script with an invalid device name
         result = subprocess.run(
@@ -33,7 +33,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_no_response(self):
         # Get absolute path to reader.py
-        script_path = Path(__file__).resolve().parents[1] / "reader" / "reader.py"
+        script_path = Path(__file__).resolve().parents[1] / "src" / "reader.py"
 
         # Run the script with a virtual CAN interface
         result = subprocess.run(
