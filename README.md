@@ -15,10 +15,10 @@ According to the standard, EDR is defined as:
 Connect your CAN device to the vehicle's diagnostic connector, then the script will tell you the usage by the command below:
 
 Windows
-* `python .\reader\reader.py --help`
+* `python .\src\reader.py --help`
 
 Linux or macOS
-* `python3 ./reader/reader.py --help`
+* `python3 ./src/reader.py --help`
 
 If successful, the data will be stored in the `result` directory.
 
