@@ -31,3 +31,5 @@ You can use any [python-can](https://github.com/hardbyte/python-can) compatible 
 
 The communication is configured so that the example in the standard can be recreated.
 Modifications may be required to deal with specific ECUs.
+
+To test this script without an actual ECU, there is a [mock script](https://github.com/Nakakiyo092/edr-ecu-mock) which simulates an ECU with EDR data.
