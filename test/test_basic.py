@@ -38,7 +38,7 @@ class BasicTestCase(unittest.TestCase):
         )
 
         # Verity the output (No device error)
-        self.assertIn("could not open port", result.stdout)
+        self.assertIn("Could not access CAN nework", result.stdout)
         self.assertIn("", result.stderr)
 
     def test_no_response(self):
@@ -54,8 +54,9 @@ class BasicTestCase(unittest.TestCase):
             text=True
         )
 
-        # Verity the output (Time out error)
+        # Verity the output (Time out for all did)
         self.assertIn("Time out", result.stdout)
+        self.assertIn("", result.stderr)
 
 
 if __name__ == "__main__":
