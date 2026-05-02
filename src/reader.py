@@ -153,9 +153,11 @@ def output_data(payload) -> bytearray:
         shutil.copy(source_file, destination_file)
     except FileNotFoundError:
         print(f"The source file '{source_file}' does not exist.")
+        print(f"The output file '{destination_file}' was not created from '{source_file}'.")
         return
     except PermissionError:
         print("You do not have the necessary permissions to read or write the file.")
+        print(f"The output file '{destination_file}' was not created from '{source_file}'.")
         return
     except Exception as err:
         print(err)
@@ -187,9 +189,6 @@ def output_data(payload) -> bytearray:
                     row.append("N/A")  # Handle cases where No is out of range
                 writer.writerow(row)
 
-    except FileNotFoundError:
-        print(f"The file '{source_file}' or '{destination_file}' does not exist.")
-        return
     except Exception as err:
         print(err)
         return
@@ -211,6 +210,8 @@ def main():
         else:
             bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
     except Exception as err:
+        print("Could not access CAN nework.")
+        print("The program is aborting.")
         print(err)
         return
 
@@ -325,8 +326,10 @@ def main():
         shutil.copy("format/README.md", "result/README.md")
     except FileNotFoundError:
         print("The source file format/README.md does not exist.")
+        print("The file format/README.md was not copied to result/README.md.")
     except PermissionError:
-        print("You do not have the necessary permissions to read or write the file.")
+        print("You do not have the necessary permissions to read or write a file.")
+        print("The file format/README.md was not copied to result/README.md.")
     except Exception as err:
         print(err)
 
