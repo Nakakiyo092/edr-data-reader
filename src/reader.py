@@ -209,13 +209,17 @@ def main():
             bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
             bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+    except PermissionError as err:
+        print("Could not access CAN nework.")
+        print("The program is aborting.")
+        print(err)
+        if args.devicename not in ("virtual", "vector"):
+            print(f"On Linux, try: sudo chmod 666 {args.devicename}")
+        return
     except Exception as err:
         print("Could not access CAN nework.")
         print("The program is aborting.")
         print(err)
-        if isinstance(err, PermissionError) or "Permission denied" in str(err) or "Access is denied" in str(err):
-            if args.devicename not in ("virtual", "vector"):
-                print(f"On Linux, try: sudo chmod 666 {args.devicename}")
         return
 
     # Setup a debug listener that print all messages
