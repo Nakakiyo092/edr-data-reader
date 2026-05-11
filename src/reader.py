@@ -37,10 +37,16 @@ def get_argparser():
         action="store_true",
         help="enable verbose output"
     )
+    parser.add_argument(
+        "-t", "--timeout",
+        type=float,
+        default=10.0,
+        help="response timeout in seconds per DID read (default: 10)"
+    )
     return parser
 
 
-def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> bytearray:
+def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params, timeout=10.0) -> bytearray:
     """Read one data by identifier (DID) from the target ECU."""
 
     print("")
@@ -95,7 +101,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         start_time = time.time()
         while waiting:
             # Response timeout
-            if time.time() - start_time > 10:
+            if time.time() - start_time > timeout:
                 print("Time out.")
                 payload = None
                 waiting = False
@@ -270,11 +276,11 @@ def main():
 
     try:
         func = isotp.TargetAddressType.Functional
-        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -285,11 +291,11 @@ def main():
 
     try:
         phys = isotp.TargetAddressType.Physical
-        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, phys, isotp_params)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -312,11 +318,11 @@ def main():
 
     try:
         func = isotp.TargetAddressType.Functional
-        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
-        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params)
+        payload = read_did(0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
