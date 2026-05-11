@@ -110,7 +110,22 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
                         pass
 
                     # Positive response
-                    if payload[:len(response)] == response.get_payload():
+                    elif payload[:len(response)] == response.get_payload():
+                        waiting = False
+                        break
+
+                    # Negative response
+                    elif len(payload) >= 1 and payload[0] == 0x7F:
+                        nrc = payload[2] if len(payload) >= 3 else None
+                        if nrc is not None:
+                            try:
+                                nrc_name = Response.Code(nrc).name
+                            except ValueError:
+                                nrc_name = f"0x{nrc:02X}"
+                        else:
+                            nrc_name = "unknown"
+                        print(f"Negative response received: {nrc_name}")
+                        payload = None
                         waiting = False
                         break
 
