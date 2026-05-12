@@ -182,7 +182,10 @@ def output_data(payload) -> None:
 
             # Process rows
             for row in reader:
-                no = int(row[0])  # Convert No column to integer
+                try:
+                    no = int(row[0])  # Convert No column to integer
+                except (ValueError, IndexError):
+                    continue
                 if 1 <= no <= len(byte_array):  # Check if No is within the range
                     row.append(byte_array[no - 1])  # Add corresponding byte array value
                 else:
