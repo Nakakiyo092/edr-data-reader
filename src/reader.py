@@ -217,6 +217,7 @@ def main():
             print("Possible causes:")
             print(f"  - Wrong device name: check '{args.devicename}' is correct")
             print( "  - Device not powered: check the device is powered on")
+            print( "  - Device not connected: check the device is properly connected")
             print( "  - Wrong firmware: check the device has correct firmware")
             print(f"  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login'")
             print( "    or 'sudo chmod 666 {args.devicename}")
