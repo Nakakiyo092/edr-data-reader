@@ -209,15 +209,20 @@ def main():
             bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
             bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
-    except PermissionError as err:
-        print("Could not access CAN nework.")
+    except can.CanInitializationError as err:
+        print("Could not access CAN network.")
         print("The program is aborting.")
         print(err)
         if args.devicename not in ("virtual", "vector"):
-            print(f"On Linux, try: sudo chmod 666 {args.devicename}")
+            print("Possible causes:")
+            print(f"  - Permission denied: try 'sudo chmod 666 {args.devicename}'")
+            print( "    or 'sudo usermod -aG dialout $USER' and re-login")
+            print(f"  - Wrong device name: check '{args.devicename}' is correct")
+            print( "  - Device not powered: check the device is powered on")
+            print( "  - Wrong firmware: check the device has correct firmware")
         return
     except Exception as err:
-        print("Could not access CAN nework.")
+        print("Could not access CAN network.")
         print("The program is aborting.")
         print(err)
         return
