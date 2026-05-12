@@ -96,7 +96,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params) -> 
         while waiting:
             # Response timeout
             if time.time() - start_time > 10:
-                print("Time out.")
+                print("Timed out.")
                 payload = None
                 waiting = False
                 break
@@ -209,6 +209,19 @@ def main():
             bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
             bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+    except can.CanInitializationError as err:
+        print("Could not access CAN network.")
+        print("The program is aborting.")
+        print(err)
+        if args.devicename not in ("virtual", "vector"):
+            print("Possible causes:")
+            print(f"  - Wrong device name: check '{args.devicename}' is correct")
+            print( "  - Device not powered: check the device is powered on")
+            print( "  - Device not connected: check the device is properly connected")
+            print( "  - Wrong firmware: check the device has correct firmware")
+            print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
+            print(f"    or 'sudo chmod 666 {args.devicename}'")
+        return
     except Exception as err:
         print("Could not access CAN network.")
         print("The program is aborting.")
