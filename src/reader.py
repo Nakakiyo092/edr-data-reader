@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-A Python script to retreive Event Data Recorder (EDR) data via CAN bus
+A Python script to retrieve Event Data Recorder (EDR) data via CAN bus
 according to the Chinese standard GB39732-2020.
 
 License:
@@ -25,7 +25,7 @@ def get_argparser():
     """Get the command line argument parser."""
 
     parser = argparse.ArgumentParser(
-        description="Retreive EDR data via CAN bus. Press [CTRL] + 'c' to quit."
+        description="Retrieve EDR data via CAN bus. Press [CTRL] + 'c' to quit."
     )
     parser.add_argument(
         "devicename",
@@ -46,7 +46,7 @@ def get_argparser():
     return parser
 
 
-def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params, timeout=10.0) -> bytearray:
+def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params, timeout=10.0) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
 
     print("")
@@ -136,7 +136,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params, tim
     return payload
 
 
-def output_data(payload) -> bytearray:
+def output_data(payload) -> None:
     """Output the data to a CSV file according to the format defined in the 'format' folder."""
 
     # Get target did from payload
@@ -175,7 +175,7 @@ def output_data(payload) -> bytearray:
     # Read the input CSV file and write to the output file with the additional column
     try:
         with (
-            open(source_file, mode="r", encoding="utf-8") as infile,
+            open(source_file, mode="r", encoding="utf-8", newline="") as infile,
             open(destination_file, mode="w", encoding="utf-8", newline="") as outfile
         ):
             reader = csv.reader(infile)
@@ -216,7 +216,7 @@ def main():
         else:
             bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
     except Exception as err:
-        print("Could not access CAN nework.")
+        print("Could not access CAN network.")
         print("The program is aborting.")
         print(err)
         return
