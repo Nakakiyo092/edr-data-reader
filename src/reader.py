@@ -220,7 +220,7 @@ def main():
             print( "  - Device not connected: check the device is properly connected")
             print( "  - Wrong firmware: check the device has correct firmware")
             print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login'")
-            print(f"    or 'sudo chmod 666 {args.devicename}")
+            print(f"    or 'sudo chmod 666 {args.devicename}'")
         return
     except Exception as err:
         print("Could not access CAN network.")
