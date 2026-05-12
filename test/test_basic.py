@@ -55,7 +55,7 @@ class BasicTestCase(unittest.TestCase):
         )
 
         # Verity the output (Time out for all did)
-        self.assertIn("Time out", result.stdout)
+        self.assertIn("Timed out.", result.stdout)
         self.assertIn("", result.stderr)
 
 
