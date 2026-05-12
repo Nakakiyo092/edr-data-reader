@@ -37,8 +37,8 @@ class BasicTestCase(unittest.TestCase):
             text=True
         )
 
-        # Verity the output (No device error)
-        self.assertIn("Could not access CAN nework", result.stdout)
+        # Verify the output (No device error)
+        self.assertIn("Could not access CAN network", result.stdout)
         self.assertIn("", result.stderr)
 
     def test_no_response(self):

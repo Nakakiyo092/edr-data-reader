@@ -22,7 +22,7 @@ Linux or macOS
 
 If successful, the data will be stored in the `result` directory.
 
-By default, the script uses the slcan device as a CAN interface.
+By default, the script uses a slcan device as a CAN interface.
 You can use any [python-can](https://github.com/hardbyte/python-can) compatible interface by modifying the following line in the middle of `reader.py`.
 
 ```python
