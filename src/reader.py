@@ -215,11 +215,11 @@ def main():
         print(err)
         if args.devicename not in ("virtual", "vector"):
             print("Possible causes:")
-            print(f"  - Permission denied: try 'sudo chmod 666 {args.devicename}'")
-            print( "    or 'sudo usermod -aG dialout $USER' and re-login")
             print(f"  - Wrong device name: check '{args.devicename}' is correct")
             print( "  - Device not powered: check the device is powered on")
             print( "  - Wrong firmware: check the device has correct firmware")
+            print(f"  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login'")
+            print( "    or 'sudo chmod 666 {args.devicename}")
         return
     except Exception as err:
         print("Could not access CAN network.")
