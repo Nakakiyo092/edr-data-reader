@@ -1,4 +1,13 @@
+> [!WARNING]
+> **Disclaimer:** This tool is intended for use only on vehicles you own
+> or have explicit written authorization to analyze. EDR data contains
+> personal information about the driver's behavior; unauthorized
+> retrieval may violate privacy laws (e.g., GDPR, CCPA, Japan's APPI)
+> and constitute unauthorized access to a computer system in some
+> jurisdictions. The author assumes no liability for misuse.
+
 # EDR Data Reader
+
 A Python script to retreive [Event Data Recorder (EDR)](https://en.wikipedia.org/wiki/Event_data_recorder) data via CAN bus according to the Chinese standard [GB39732-2020](https://std.samr.gov.cn/gb/search/gbDetailed?id=B7A9FA1FFC316818E05397BE0A0AB4AC).
 
 According to the standard, EDR is defined as:
