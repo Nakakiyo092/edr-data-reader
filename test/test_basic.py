@@ -47,9 +47,9 @@ class BasicTestCase(unittest.TestCase):
         # Get absolute path to reader.py
         script_path = Path(__file__).resolve().parents[1] / "src" / "reader.py"
 
-        # Run the script with a virtual CAN interface
+        # Run the script with a virtual CAN interface and a short timeout to keep CI fast
         result = subprocess.run(
-            [sys.executable, str(script_path), "virtual"],
+            [sys.executable, str(script_path), "virtual", "--timeout", "0.1"],
             capture_output=True,
             text=True
         )
