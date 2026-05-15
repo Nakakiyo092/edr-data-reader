@@ -112,14 +112,12 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
             for rx_stack in rx_stacks:
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
-                    # Response pending
-                    if payload == pend_response.get_payload():
-                        pass
-
                     # Positive response
                     if payload[:len(response)] == response.get_payload():
                         waiting = False
                         break
+                    # No Negative response handling. See the link for details.
+                    # https://github.com/Nakakiyo092/edr-data-reader/pull/29
 
     except Exception as err:
         print(err)
