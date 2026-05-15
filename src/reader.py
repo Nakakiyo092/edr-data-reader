@@ -128,7 +128,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         rx_stack.stop()
 
     if payload is not None:
-        print(len(payload), " bytes of data received.")
+        print(len(payload), "bytes of data received.")
     else:
         print("No data was received.")
 
