@@ -98,14 +98,12 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
 
     try:
         # Wait for response
-        waiting = True
         start_time = time.time()
-        while waiting:
+        while True:
             # Response timeout
             if time.time() - start_time > timeout:
                 print("Timed out.")
                 payload = None
-                waiting = False
                 break
 
             # Check response for all stacks
@@ -114,7 +112,6 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
                 if payload is not None:
                     # Positive response
                     if payload[:len(response)] == response.get_payload():
-                        waiting = False
                         break
                     # No Negative response handling. See the link for details.
                     # https://github.com/Nakakiyo092/edr-data-reader/pull/29
