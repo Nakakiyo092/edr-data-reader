@@ -238,8 +238,8 @@ def main():
         print(err)
         return
 
-    # Setup a debug listener that print all messages
     if args.verbose:
+        # Setup a debug listener that print all messages
         notifier = can.Notifier(bus, [can.Printer()])
     else:
         notifier = can.Notifier(bus, [])
