@@ -20,16 +20,16 @@ import isotp
 from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
-_DEFAULT_TIMEOUT_S = 10
-_TESTER_ADDR = 0xF1  # ISO 15765-4
-_OBD_FUNC_ADDR = 0x33  # broadcast (excluded from rx)
+_DEFAULT_TIMEOUT_S = 10    # TODO: use this
+_TESTER_ADDR = 0xF1  # ISO 15765-4  # TODO: use this
+_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx) # TODO: use this
 
 # Parameters from GB39732-2020
-_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
-_TX_PHYS_11BIT = 0x7F1
-_RX_PHYS_11BIT = 0x7F9
-_TX_FUNC_11BIT = 0x7DF
-_BROADCAST_29BIT = 0xFF
+_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)    # TODO: use this
+_TX_PHYS_11BIT = 0x7F1  # TODO: use this
+_RX_PHYS_11BIT = 0x7F9  # TODO: use this
+_TX_FUNC_11BIT = 0x7DF   # TODO: use this
+_BROADCAST_29BIT = 0xFF  # TODO: use this
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
