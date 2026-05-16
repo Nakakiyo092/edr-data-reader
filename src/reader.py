@@ -21,6 +21,48 @@ from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
 
+RANDOM_SEED = 42
+
+ISOTP_PARAMS = {
+    # Will request the sender to wait 0ms between consecutive frame.
+    # 0-127ms or 100-900ns with values from 0xF1-0xF9.
+    'stmin': 0,
+    # Request the sender to send all consecutives frames
+    # without waiting a new flow control message.
+    'blocksize': 0,
+    # Number of wait frame allowed before triggering an error.
+    'wftmax': 0,
+    # Link layer (CAN layer) works with 8 byte payload (CAN 2.0).
+    'tx_data_length': 8,
+    # Minimum length of CAN messages. Messages are padded to meet this length.
+    'tx_data_min_length': 8,
+    # Will pad all transmitted CAN messages with byte 0x00.
+    'tx_padding': 0,
+    # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds.
+    'rx_flowcontrol_timeout': 1000,
+    # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds.
+    'rx_consecutive_frame_timeout': 1000,
+    # When sending, respect the stmin requirement of the receiver.
+    # Could be set to a float value in seconds.
+    'override_receiver_stmin': None,
+    # Limit the size of receive frame.
+    'max_frame_size': 4095,
+    # Does not set the can_fd flag on the output CAN messages.
+    'can_fd': False,
+    # Does not set the bitrate_switch flag on the output CAN messages.
+    'bitrate_switch': False,
+    # Disable the rate limiter.
+    'rate_limit_enable': False,
+    # Ignored when rate_limit_enable=False. Sets the max bitrate when rate_limit_enable=True.
+    'rate_limit_max_bitrate': 1000000,
+    # Ignored when rate_limit_enable=False.
+    # Sets the averaging window size for bitrate calculation when rate_limit_enable=True.
+    'rate_limit_window_size': 0.2,
+    # Does not use the listen_mode which prevent transmission.
+    'listen_mode': False,
+}
+
+
 def get_argparser():
     """Get the command line argument parser."""
 
@@ -234,46 +276,6 @@ def main():
     else:
         notifier = can.Notifier(bus, [])
 
-    # Isotp parameters
-    isotp_params = {
-        # Will request the sender to wait 0ms between consecutive frame.
-        # 0-127ms or 100-900ns with values from 0xF1-0xF9.
-        'stmin': 0,
-        # Request the sender to send all consecutives frames
-        # without waiting a new flow control message.
-        'blocksize': 0,
-        # Number of wait frame allowed before triggering an error.
-        'wftmax': 0,
-        # Link layer (CAN layer) works with 8 byte payload (CAN 2.0).
-        'tx_data_length': 8,
-        # Minimum length of CAN messages. Messages are padded to meet this length.
-        'tx_data_min_length': 8,
-        # Will pad all transmitted CAN messages with byte 0x00.
-        'tx_padding': 0,
-        # Triggers a timeout if a flow control is awaited for more than 1000 milliseconds.
-        'rx_flowcontrol_timeout': 1000,
-        # Triggers a timeout if a consecutive frame is awaited for more than 1000 milliseconds.
-        'rx_consecutive_frame_timeout': 1000,
-        # When sending, respect the stmin requirement of the receiver.
-        # Could be set to a float value in seconds.
-        'override_receiver_stmin': None,
-        # Limit the size of receive frame.
-        'max_frame_size': 4095,
-        # Does not set the can_fd flag on the output CAN messages.
-        'can_fd': False,
-        # Does not set the bitrate_switch flag on the output CAN messages.
-        'bitrate_switch': False,
-        # Disable the rate limiter.
-        'rate_limit_enable': False,
-        # Ignored when rate_limit_enable=False. Sets the max bitrate when rate_limit_enable=True.
-        'rate_limit_max_bitrate': 1000000,
-        # Ignored when rate_limit_enable=False.
-        # Sets the averaging window size for bitrate calculation when rate_limit_enable=True.
-        'rate_limit_window_size': 0.2,
-        # Does not use the listen_mode which prevent transmission.
-        'listen_mode': False,
-    }
-
     # Read with 11bits functional address
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
     rx_addrs = []
@@ -284,13 +286,13 @@ def main():
     try:
         func = isotp.TargetAddressType.Functional
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -302,13 +304,13 @@ def main():
     try:
         phys = isotp.TargetAddressType.Physical
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, isotp_params, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -332,13 +334,13 @@ def main():
     try:
         func = isotp.TargetAddressType.Functional
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, isotp_params, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
