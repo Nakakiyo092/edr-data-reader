@@ -20,6 +20,16 @@ import isotp
 from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
+_DEFAULT_TIMEOUT_S = 10.0
+_TESTER_ADDR = 0xF1  # ISO 15765-4
+_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx)
+
+# Parameters from GB39732-2020
+_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
+_TX_PHYS_11BIT = 0x7F1
+_RX_PHYS_11BIT = 0x7F9
+_TX_FUNC_11BIT = 0x7DF
+_BROADCAST_29BIT = 0xFF
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
@@ -80,14 +90,14 @@ def get_argparser():
     parser.add_argument(
         "-t", "--timeout",
         type=float,
-        default=10.0,
+        default=_DEFAULT_TIMEOUT_S,
         help="response timeout in seconds per DID read (default: 10)"
     )
     return parser
 
 
 def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
-             timeout=10.0) -> bytearray | None:
+             timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
 
     print("")
@@ -104,7 +114,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         notifier=notifier,
         address=tx_addr,
         params=isotp_params
-        )
+    )
     rx_stacks = []
     rx_stacks.append(tx_stack)  # Add tx_stack itself to support Physical addressing
     for rx_addr in rx_addrs:
@@ -112,7 +122,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
             bus=bus, notifier=notifier,
             address=rx_addr,
             params=isotp_params
-            )
+        )
         rx_stacks.append(rx_stack)
 
     # Request message
@@ -123,7 +133,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         service=ReadDataByIdentifier,
         code=Response.Code.PositiveResponse,
         data=bytes([(did>>8)&0xFF,did&0xFF])
-        )
+    )
 
     # Start stacks
     for rx_stack in rx_stacks:
@@ -223,13 +233,13 @@ def output_data(payload) -> None:
             # Process rows
             for row in reader:
                 try:
-                    no = int(row[0])  # Convert No column to integer
+                    no = int(row[0])  # Convert "No." column to integer
                 except (ValueError, IndexError):
                     continue
-                if 1 <= no <= len(byte_array):  # Check if No is within the range
+                if 1 <= no <= len(byte_array):  # Check if "No." is within the range
                     row.append(byte_array[no - 1])  # Add corresponding byte array value
                 else:
-                    row.append("N/A")  # Handle cases where No is out of range
+                    row.append("N/A")  # Handle cases where "No." is out of range
                 writer.writerow(row)
 
     except Exception as err:
@@ -237,21 +247,15 @@ def output_data(payload) -> None:
         return
 
 
-def main():
-    """Main process."""
-
-    # Parse command line arguments
-    argparser = get_argparser()
-    args = argparser.parse_args()
-
-    # Setup and start a CAN bus
+def _create_bus(args):
+    """Create and return a CAN bus, or None if initialization fails."""
     try:
         if args.devicename == "virtual":
-            bus = can.Bus('test', interface='virtual')
+            return can.Bus('test', interface='virtual')
         elif args.devicename == "vector":
-            bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
+            return can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
-            bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+            return can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
     except can.CanInitializationError as err:
         print("Could not access CAN network.")
         print("The program is aborting.")
@@ -264,88 +268,71 @@ def main():
             print( "  - Wrong firmware: check the device has correct firmware")
             print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
             print(f"    or 'sudo chmod 666 {args.devicename}'")
-        return
+        return None
     except Exception as err:
         print("Could not access CAN network.")
         print("The program is aborting.")
         print(err)
-        return
+        return None
 
-    if args.verbose:
-        # Setup a debug listener that print all messages
-        notifier = can.Notifier(bus, [can.Printer()])
-    else:
-        notifier = can.Notifier(bus, [])
+
+def _read_all_dids(args, bus, notifier):
+    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
 
     # Abbreviated name
     func = isotp.TargetAddressType.Functional
     phys = isotp.TargetAddressType.Physical
 
-    # Read with 11bits functional address
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
+    # Read with 11bits functional address (See GB39732-2020 for the address values)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
     rx_addrs = []
     for i in range(0x100 - 0x8):
-        rx_addrs.append(isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
+        rx_addrs.append(isotp.Address(
+            isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
-    # Read with 11bits physical address
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
+    # Read with 11bits physical address (See GB39732-2020 for the address values)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
     rx_addrs = []
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
-    # Read with 29bits address
+    # Read with 29bits address (See GB39732-2020 for the address values)
     tx_addr = isotp.Address(
         isotp.AddressingMode.NormalFixed_29bits,
-        target_address=0xFF,
-        source_address=0xF1
-        )
+        target_address=_BROADCAST_29BIT,
+        source_address=_TESTER_ADDR
+    )
     rx_addrs = []
     for i in range(0xF0):
-        if i != 0x33:
+        if i != _OBD_FUNC_ADDR:
             rx_addrs.append(isotp.Address(
                 isotp.AddressingMode.NormalFixed_29bits,
                 target_address=i,
-                source_address=0xF1
-                ))
+                source_address=_TESTER_ADDR
+            ))
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
-    # Copy the README file
+
+def _copy_readme():
+    """Copy the README file from the format folder to the result folder."""
     try:
         shutil.copy("format/README.md", "result/README.md")
     except FileNotFoundError:
@@ -357,9 +344,35 @@ def main():
     except Exception as err:
         print(err)
 
-    # Shutdown the CAN bus
-    notifier.stop()
-    bus.shutdown()
+
+def main():
+    """Main process."""
+
+    # Parse command line arguments
+    argparser = get_argparser()
+    args = argparser.parse_args()
+
+    # Setup and start a CAN bus
+    bus = _create_bus(args)
+    if bus is None:
+        return
+
+    if args.verbose:
+        # Setup a debug listener that print all CAN frames
+        notifier = can.Notifier(bus, [can.Printer()])
+    else:
+        notifier = can.Notifier(bus, [])
+
+    try:
+        # Read all EDR DIDs
+        _read_all_dids(args, bus, notifier)
+    finally:
+        # Shutdown the CAN bus
+        notifier.stop()
+        bus.shutdown()
+
+    # Copy the README file
+    _copy_readme()
 
 
 if __name__ == "__main__":
