@@ -24,7 +24,7 @@ _DEFAULT_TIMEOUT_S = 10    # TODO: use this
 _TESTER_ADDR = 0xF1  # ISO 15765-4  # TODO: use this
 _OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx) # TODO: use this
 
-# Parameter form GB39732-2020
+# Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)    # TODO: use this
 _TX_PHYS_11BIT = 0x7F1  # TODO: use this
 _RX_PHYS_11BIT = 0x7F9  # TODO: use this
