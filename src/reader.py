@@ -134,8 +134,9 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
 
     try:
         # Wait for response
+        waiting = True
         start_time = time.time()
-        while True:
+        while waiting:
             # Response timeout
             if time.time() - start_time > timeout:
                 payload = None
@@ -145,14 +146,13 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
             for rx_stack in rx_stacks:
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
-                    # Positive response
                     if payload[:len(response)] == response.get_payload():
+                        # Positive response
+                        waiting = False
                         break
-                    # No Negative response handling. See the link for details.
-                    # https://github.com/Nakakiyo092/edr-data-reader/pull/29
-            else:
-                continue
-            break
+                    else:
+                        # No Negative response handling. See the DESIGN.md.
+                        pass
 
     except Exception as err:
         print(err)
@@ -241,7 +241,8 @@ def main():
     """Main process."""
 
     # Parse command line arguments
-    args = get_argparser().parse_args()
+    argparser = get_argparser()
+    args = argparser.parse_args()
 
     # Setup and start a CAN bus
     try:
@@ -276,6 +277,10 @@ def main():
     else:
         notifier = can.Notifier(bus, [])
 
+    # Abbreviated name
+    func = isotp.TargetAddressType.Functional
+    phys = isotp.TargetAddressType.Physical
+
     # Read with 11bits functional address
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
     rx_addrs = []
@@ -283,7 +288,6 @@ def main():
         rx_addrs.append(isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
 
     try:
-        func = isotp.TargetAddressType.Functional
         payload = read_did(
             0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
@@ -301,7 +305,6 @@ def main():
     rx_addrs = []
 
     try:
-        phys = isotp.TargetAddressType.Physical
         payload = read_did(
             0xfa13, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
