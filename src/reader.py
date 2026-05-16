@@ -193,10 +193,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
 
             # Check response for all stacks
             for rx_stack in rx_stacks:
-                # Use a short blocking recv (10 ms) so we yield to the notifier
-                # thread between iterations rather than spinning at 100 % CPU,
-                # while still cycling through all stacks frequently enough to
-                # catch the first available response without noticeable delay.
+                # TODO: #42
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
                     # Compare only the header portion of the received payload against
