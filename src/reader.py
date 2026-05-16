@@ -363,15 +363,16 @@ def main():
     else:
         notifier = can.Notifier(bus, [])
 
-    # Read all EDR DIDs
-    _read_all_dids(args, bus, notifier)
+    try:
+        # Read all EDR DIDs
+        _read_all_dids(args, bus, notifier)
+    finally:
+        # Shutdown the CAN bus
+        notifier.stop()
+        bus.shutdown()
 
     # Copy the README file
     _copy_readme()
-
-    # Shutdown the CAN bus
-    notifier.stop()
-    bus.shutdown()
 
 
 if __name__ == "__main__":
