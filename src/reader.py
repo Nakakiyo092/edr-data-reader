@@ -53,15 +53,15 @@ from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
 _DEFAULT_TIMEOUT_S = 10.0
-_TESTER_ADDR = 0xF1  # ISO 15765-4: tester source address for 29-bit NormalFixed addressing
-_OBD_FUNC_ADDR = 0x33  # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
+_TX_FUNC_11BIT = 0x7DF  # 11-bit OBD-II functional broadcast CAN ID per ISO 15765-4
+_TESTER_ADDR = 0xF1     # ISO 15765-4: tester source address for 29-bit NormalFixed addressing
+_OBD_FUNC_ADDR = 0x33   # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
+_BROADCAST_29BIT = 0xFF # 29-bit UDS functional broadcast target address per ISO 15765-4
 
 # Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
 _TX_PHYS_11BIT = 0x7F1  # Tester physical TX ID (ECU receives on this ID)
 _RX_PHYS_11BIT = 0x7F9  # Tester physical RX ID (ECU transmits on this ID); offset of 8 from TX
-_TX_FUNC_11BIT = 0x7DF  # 11-bit OBD-II functional broadcast CAN ID per ISO 15765-4
-_BROADCAST_29BIT = 0xFF  # 29-bit UDS functional broadcast target address per ISO 15765-4
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
@@ -337,8 +337,6 @@ def _read_all_dids(args, bus, notifier):
     rx_addrs = []
     # Pre-allocate one receive stack per plausible physical CAN ID pair in the 0x700–0x7FF range.
     # GB39732-2020 physical pairs follow the convention: ECU TX = tester TX + 8
-    # (e.g., _TX_PHYS_11BIT=0x7F1, _RX_PHYS_11BIT=0x7F9, difference=8).
-    # The upper bound 0x100-0x8 (=248) keeps rxid = 0x700+i+8 within 0x7FF (11-bit max).
     for i in range(0x100 - 0x8):
         rx_addrs.append(isotp.Address(
             isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8))
@@ -368,12 +366,6 @@ def _read_all_dids(args, bus, notifier):
         source_address=_TESTER_ADDR
     )
     rx_addrs = []
-    # In NormalFixed 29-bit addressing the CAN arbitration ID encodes both target and source
-    # addresses. The tester sends Flow Control back to each ECU using the ECU's own source
-    # address as the target_address. Addresses 0xF0–0xFF are reserved for testers and
-    # functional use per ISO 15765-4, so only 0x00–0xEF (range 0xF0 = 240 values) are valid
-    # ECU source addresses. _OBD_FUNC_ADDR (0x33) is a functional broadcast address and must
-    # be excluded to avoid interfering with OBD-II traffic.
     for i in range(0xF0):
         if i != _OBD_FUNC_ADDR:
             rx_addrs.append(isotp.Address(
