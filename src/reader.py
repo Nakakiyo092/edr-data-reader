@@ -276,23 +276,8 @@ def _create_bus(args):
         return None
 
 
-def main():
-    """Main process."""
-
-    # Parse command line arguments
-    argparser = get_argparser()
-    args = argparser.parse_args()
-
-    # Setup and start a CAN bus
-    bus = _create_bus(args)
-    if bus is None:
-        return
-
-    if args.verbose:
-        # Setup a debug listener that print all messages
-        notifier = can.Notifier(bus, [can.Printer()])
-    else:
-        notifier = can.Notifier(bus, [])
+def _read_all_dids(args, bus, notifier):
+    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
 
     # Abbreviated name
     func = isotp.TargetAddressType.Functional
@@ -344,6 +329,28 @@ def main():
             output_data(payload)
     except Exception as err:
         print(err)
+
+
+def main():
+    """Main process."""
+
+    # Parse command line arguments
+    argparser = get_argparser()
+    args = argparser.parse_args()
+
+    # Setup and start a CAN bus
+    bus = _create_bus(args)
+    if bus is None:
+        return
+
+    if args.verbose:
+        # Setup a debug listener that print all messages
+        notifier = can.Notifier(bus, [can.Printer()])
+    else:
+        notifier = can.Notifier(bus, [])
+
+    # Read all EDR DIDs
+    _read_all_dids(args, bus, notifier)
 
     # Copy the README file
     try:
