@@ -20,6 +20,16 @@ import isotp
 from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
+_DEFAULT_TIMEOUT_S = 10    # TODO: use this
+_TESTER_ADDR = 0xF1  # ISO 15765-4  # TODO: use this
+_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx) # TODO: use this
+
+# Parameter form GB39732-2020
+_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)    # TODO: use this
+_TX_PHYS_11BIT = 0x7F1  # TODO: use this
+_RX_PHYS_11BIT = 0x7F9  # TODO: use this
+_TX_FUNC_11BIT = 0x7DF   # TODO: use this
+_BROADCAST_29BIT = 0xFF  # TODO: use this
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
@@ -223,13 +233,13 @@ def output_data(payload) -> None:
             # Process rows
             for row in reader:
                 try:
-                    no = int(row[0])  # Convert No column to integer
+                    no = int(row[0])  # Convert "No." column to integer
                 except (ValueError, IndexError):
                     continue
-                if 1 <= no <= len(byte_array):  # Check if No is within the range
+                if 1 <= no <= len(byte_array):  # Check if "No." is within the range
                     row.append(byte_array[no - 1])  # Add corresponding byte array value
                 else:
-                    row.append("N/A")  # Handle cases where No is out of range
+                    row.append("N/A")  # Handle cases where "No." is out of range
                 writer.writerow(row)
 
     except Exception as err:
@@ -281,7 +291,7 @@ def main():
     func = isotp.TargetAddressType.Functional
     phys = isotp.TargetAddressType.Physical
 
-    # Read with 11bits functional address
+    # Read with 11bits functional address (See GB39732-2020 for the address values)
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
     rx_addrs = []
     for i in range(0x100 - 0x8):
@@ -300,7 +310,7 @@ def main():
     except Exception as err:
         print(err)
 
-    # Read with 11bits physical address
+    # Read with 11bits physical address (See GB39732-2020 for the address values)
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
     rx_addrs = []
 
@@ -317,7 +327,7 @@ def main():
     except Exception as err:
         print(err)
 
-    # Read with 29bits address
+    # Read with 29bits address (See GB39732-2020 for the address values)
     tx_addr = isotp.Address(
         isotp.AddressingMode.NormalFixed_29bits,
         target_address=0xFF,

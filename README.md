@@ -17,7 +17,7 @@ According to the standard, EDR is defined as:
 (Machine-translated by Copilot)
 
 ## Requirements
-- Python 3.13
+- Python 3.13 or later
 - See requirements.txt
 
 ## Usage
@@ -42,3 +42,8 @@ The communication is configured so that the example in the standard can be recre
 Modifications may be required to deal with specific ECUs.
 
 To test this script without an actual ECU, there is a [mock script](https://github.com/Nakakiyo092/edr-ecu-mock) which simulates an ECU with EDR data.
+
+## Design
+
+See [DESIGN.md](./DESIGN.md) for the design philosophy and the rationale
+behind specific implementation decisions.
