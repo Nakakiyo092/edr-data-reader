@@ -128,6 +128,94 @@ def get_argparser():
     return parser
 
 
+def create_bus(args):
+    """Create and return a CAN bus, or None if initialization fails."""
+    try:
+        if args.devicename == "virtual":
+            return can.Bus('test', interface='virtual')
+        elif args.devicename == "vector":
+            return can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
+        else:
+            # 500 kbps is the standard high-speed CAN bitrate for OBD-II (ISO 15765-4).
+            return can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+    except can.CanInitializationError as err:
+        print("Could not access CAN network.")
+        print("The program is aborting.")
+        print(err)
+        if args.devicename not in ("virtual", "vector"):
+            print("Possible causes:")
+            print(f"  - Wrong device name: check '{args.devicename}' is correct")
+            print( "  - Device not powered: check the device is powered on")
+            print( "  - Device not connected: check the device is properly connected")
+            print( "  - Wrong firmware: check the device has correct firmware")
+            print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
+            print(f"    or 'sudo chmod 666 {args.devicename}'")
+        return None
+    except Exception as err:
+        print("Could not access CAN network.")
+        print("The program is aborting.")
+        print(err)
+        return None
+
+
+def read_all_dids(args, bus, notifier):
+    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
+
+    # Abbreviated name
+    func = isotp.TargetAddressType.Functional
+    phys = isotp.TargetAddressType.Physical
+
+    # Read with 11bits functional address (See GB39732-2020 for the address values)
+    # rxid=0x700 is a dummy; the functional broadcast (txid=0x7DF) does not listen on a fixed ID.
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
+    rx_addrs = []
+    # Pre-allocate one receive stack per plausible physical CAN ID pair in the 0x700–0x7FF range.
+    # GB39732-2020 physical pairs follow the convention: ECU TX = tester TX + 8
+    for i in range(0x100 - 0x8):
+        rx_addrs.append(isotp.Address(
+            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8))
+
+    try:
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
+    except Exception as err:
+        print(err)
+
+    # Read with 11bits physical address (See GB39732-2020 for the address values)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
+    rx_addrs = []
+
+    try:
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
+    except Exception as err:
+        print(err)
+
+    # Read with 29bits address (See GB39732-2020 for the address values)
+    tx_addr = isotp.Address(
+        isotp.AddressingMode.NormalFixed_29bits,
+        target_address=_BROADCAST_29BIT,
+        source_address=_TESTER_ADDR
+    )
+    rx_addrs = []
+    for i in range(0xF0):
+        if i != _OBD_FUNC_ADDR:
+            rx_addrs.append(isotp.Address(
+                isotp.AddressingMode.NormalFixed_29bits,
+                target_address=i,
+                source_address=_TESTER_ADDR
+            ))
+
+    try:
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
+    except Exception as err:
+        print(err)
+
+
 def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
              timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
@@ -291,95 +379,7 @@ def output_data(payload) -> None:
         return
 
 
-def _create_bus(args):
-    """Create and return a CAN bus, or None if initialization fails."""
-    try:
-        if args.devicename == "virtual":
-            return can.Bus('test', interface='virtual')
-        elif args.devicename == "vector":
-            return can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
-        else:
-            # 500 kbps is the standard high-speed CAN bitrate for OBD-II (ISO 15765-4).
-            return can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
-    except can.CanInitializationError as err:
-        print("Could not access CAN network.")
-        print("The program is aborting.")
-        print(err)
-        if args.devicename not in ("virtual", "vector"):
-            print("Possible causes:")
-            print(f"  - Wrong device name: check '{args.devicename}' is correct")
-            print( "  - Device not powered: check the device is powered on")
-            print( "  - Device not connected: check the device is properly connected")
-            print( "  - Wrong firmware: check the device has correct firmware")
-            print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
-            print(f"    or 'sudo chmod 666 {args.devicename}'")
-        return None
-    except Exception as err:
-        print("Could not access CAN network.")
-        print("The program is aborting.")
-        print(err)
-        return None
-
-
-def _read_all_dids(args, bus, notifier):
-    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
-
-    # Abbreviated name
-    func = isotp.TargetAddressType.Functional
-    phys = isotp.TargetAddressType.Physical
-
-    # Read with 11bits functional address (See GB39732-2020 for the address values)
-    # rxid=0x700 is a dummy; the functional broadcast (txid=0x7DF) does not listen on a fixed ID.
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
-    rx_addrs = []
-    # Pre-allocate one receive stack per plausible physical CAN ID pair in the 0x700–0x7FF range.
-    # GB39732-2020 physical pairs follow the convention: ECU TX = tester TX + 8
-    for i in range(0x100 - 0x8):
-        rx_addrs.append(isotp.Address(
-            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8))
-
-    try:
-        for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
-    except Exception as err:
-        print(err)
-
-    # Read with 11bits physical address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
-    rx_addrs = []
-
-    try:
-        for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
-    except Exception as err:
-        print(err)
-
-    # Read with 29bits address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(
-        isotp.AddressingMode.NormalFixed_29bits,
-        target_address=_BROADCAST_29BIT,
-        source_address=_TESTER_ADDR
-    )
-    rx_addrs = []
-    for i in range(0xF0):
-        if i != _OBD_FUNC_ADDR:
-            rx_addrs.append(isotp.Address(
-                isotp.AddressingMode.NormalFixed_29bits,
-                target_address=i,
-                source_address=_TESTER_ADDR
-            ))
-
-    try:
-        for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
-    except Exception as err:
-        print(err)
-
-
-def _copy_readme():
+def copy_readme():
     """Copy the README file from the format folder to the result folder."""
     try:
         shutil.copy("format/README.md", "result/README.md")
@@ -401,7 +401,7 @@ def main():
     args = argparser.parse_args()
 
     # Setup and start a CAN bus
-    bus = _create_bus(args)
+    bus = create_bus(args)
     if bus is None:
         return
 
@@ -413,14 +413,14 @@ def main():
 
     try:
         # Read all EDR DIDs
-        _read_all_dids(args, bus, notifier)
+        read_all_dids(args, bus, notifier)
     finally:
         # Shutdown the CAN bus
         notifier.stop()
         bus.shutdown()
 
     # Copy the README file
-    _copy_readme()
+    copy_readme()
 
 
 if __name__ == "__main__":
