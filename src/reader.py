@@ -247,21 +247,15 @@ def output_data(payload) -> None:
         return
 
 
-def main():
-    """Main process."""
-
-    # Parse command line arguments
-    argparser = get_argparser()
-    args = argparser.parse_args()
-
-    # Setup and start a CAN bus
+def _create_bus(args):
+    """Set up and return a CAN bus, or None on failure."""
     try:
         if args.devicename == "virtual":
-            bus = can.Bus('test', interface='virtual')
+            return can.Bus('test', interface='virtual')
         elif args.devicename == "vector":
-            bus = can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
+            return can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
-            bus = can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
+            return can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
     except can.CanInitializationError as err:
         print("Could not access CAN network.")
         print("The program is aborting.")
@@ -274,11 +268,24 @@ def main():
             print( "  - Wrong firmware: check the device has correct firmware")
             print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
             print(f"    or 'sudo chmod 666 {args.devicename}'")
-        return
+        return None
     except Exception as err:
         print("Could not access CAN network.")
         print("The program is aborting.")
         print(err)
+        return None
+
+
+def main():
+    """Main process."""
+
+    # Parse command line arguments
+    argparser = get_argparser()
+    args = argparser.parse_args()
+
+    # Setup and start a CAN bus
+    bus = _create_bus(args)
+    if bus is None:
         return
 
     if args.verbose:
