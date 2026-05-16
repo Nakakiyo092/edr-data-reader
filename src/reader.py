@@ -284,13 +284,13 @@ def main():
     try:
         func = isotp.TargetAddressType.Functional
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -302,13 +302,13 @@ def main():
     try:
         phys = isotp.TargetAddressType.Physical
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, ISOTP_PARAMS, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
@@ -332,13 +332,13 @@ def main():
     try:
         func = isotp.TargetAddressType.Functional
         payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
         payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, ISOTP_PARAMS, args.timeout)
+            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
     except Exception as err:
         print(err)
