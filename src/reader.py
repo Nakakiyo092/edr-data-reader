@@ -248,7 +248,7 @@ def output_data(payload) -> None:
 
 
 def _create_bus(args):
-    """Set up and return a CAN bus, or None on failure."""
+    """Create and return a CAN bus, or None if initialization fails."""
     try:
         if args.devicename == "virtual":
             return can.Bus('test', interface='virtual')
@@ -358,7 +358,7 @@ def main():
         return
 
     if args.verbose:
-        # Setup a debug listener that print all messages
+        # Setup a debug listener that print all CAN frames
         notifier = can.Notifier(bus, [can.Printer()])
     else:
         notifier = can.Notifier(bus, [])
