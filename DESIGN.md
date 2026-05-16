@@ -76,7 +76,7 @@ Due to the nature of the data handled, active user support is not provided.
     against the processing time on actual ECUs, thereby avoiding missed data
 
 
-# Library / protocol gap: functional → physical transition for multi-frame UDS
+# Functional → physical transition for multi-frame UDS
 
 `edr-data-reader` is a UDS **tester** that reads DIDs from an ECU per
 GB39732-2020. Its isotp topology looks structurally awkward, but the
