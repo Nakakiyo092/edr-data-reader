@@ -8,7 +8,7 @@
 
 # EDR Data Reader
 
-A Python script to retreive [Event Data Recorder (EDR)](https://en.wikipedia.org/wiki/Event_data_recorder) data via CAN bus according to the Chinese standard [GB39732-2020](https://std.samr.gov.cn/gb/search/gbDetailed?id=B7A9FA1FFC316818E05397BE0A0AB4AC).
+A Python script to retrieve [Event Data Recorder (EDR)](https://en.wikipedia.org/wiki/Event_data_recorder) data via CAN bus according to the Chinese standard [GB39732-2020](https://std.samr.gov.cn/gb/search/gbDetailed?id=B7A9FA1FFC316818E05397BE0A0AB4AC).
 
 According to the standard, EDR is defined as:
 

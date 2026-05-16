@@ -54,7 +54,7 @@ class BasicTestCase(unittest.TestCase):
             text=True
         )
 
-        # Verity the output (Time out for all did)
+        # Verify the output (Timeout for all DIDs)
         self.assertIn("No data was received.", result.stdout)
         self.assertIn("", result.stderr)
 
