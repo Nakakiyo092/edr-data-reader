@@ -331,6 +331,20 @@ def _read_all_dids(args, bus, notifier):
         print(err)
 
 
+def _copy_readme():
+    """Copy the README file from the format folder to the result folder."""
+    try:
+        shutil.copy("format/README.md", "result/README.md")
+    except FileNotFoundError:
+        print("The source file format/README.md does not exist.")
+        print("The file format/README.md was not copied to result/README.md.")
+    except PermissionError:
+        print("You do not have the necessary permissions to read or write a file.")
+        print("The file format/README.md was not copied to result/README.md.")
+    except Exception as err:
+        print(err)
+
+
 def main():
     """Main process."""
 
@@ -353,16 +367,7 @@ def main():
     _read_all_dids(args, bus, notifier)
 
     # Copy the README file
-    try:
-        shutil.copy("format/README.md", "result/README.md")
-    except FileNotFoundError:
-        print("The source file format/README.md does not exist.")
-        print("The file format/README.md was not copied to result/README.md.")
-    except PermissionError:
-        print("You do not have the necessary permissions to read or write a file.")
-        print("The file format/README.md was not copied to result/README.md.")
-    except Exception as err:
-        print(err)
+    _copy_readme()
 
     # Shutdown the CAN bus
     notifier.stop()
