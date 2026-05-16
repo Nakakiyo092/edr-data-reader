@@ -94,8 +94,9 @@ addresses, so the response must use the responding ECU's physical pair:
 
 ```
 Tester (edr-data-reader) -> ECU   SF   functional addr   (request)
-Tester                   <- ECU   FF   physical addr     (response start)
+Tester                   <- ECU   FF   physical addr     (response starts)
 Tester                   -> ECU   FC   physical addr     (flow control)
+Tester                   <- ECU   CF   physical addr     (response continues)
 Tester                   <- ECU   CF   physical addr     ...
 ```
 
