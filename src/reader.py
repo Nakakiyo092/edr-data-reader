@@ -4,6 +4,38 @@
 A Python script to retrieve Event Data Recorder (EDR) data via CAN bus
 according to the Chinese standard GB39732-2020.
 
+EDR is a system that monitors, collects, and records vehicle and occupant
+protection data before, during, and after a collision event. This script
+reads 3 standardized data identifiers (DIDs 0xFA13, 0xFA14, 0xFA15) using
+3 address types (11-bit functional, 11-bit physical, and 29-bit), making
+9 attempts in total. All attempts are executed sequentially without early
+termination. Successful reads are saved as CSV files in the 'result' directory.
+
+Usage:
+    Connect a CAN device to the vehicle's OBD-II diagnostic connector,
+    then run the script from the repository root:
+
+    Windows:
+        python src\\reader.py <devicename> [options]
+
+    Linux or macOS:
+        python3 src/reader.py <devicename> [options]
+
+    Arguments:
+        devicename    CAN device name (e.g., COM9 on Windows, /dev/ttyACM0 on Linux)
+
+    Options:
+        -v, --verbose       Enable verbose output (prints all CAN frames)
+        -t, --timeout SECS  Response timeout in seconds per DID read (default: 10)
+
+    For full help:
+        python src/reader.py --help
+
+    Output:
+        Results are saved to the 'result' directory as CSV files
+        (did_fa13.csv, did_fa14.csv, did_fa15.csv) with raw byte values
+        appended to each row.
+
 License:
     MIT License.
     See the accompanying LICENSE file for full terms.
