@@ -20,16 +20,16 @@ import isotp
 from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
-_DEFAULT_TIMEOUT_S = 10    # TODO: use this
-_TESTER_ADDR = 0xF1  # ISO 15765-4  # TODO: use this
-_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx) # TODO: use this
+_DEFAULT_TIMEOUT_S = 10.0
+_TESTER_ADDR = 0xF1  # ISO 15765-4
+_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx)
 
 # Parameters from GB39732-2020
-_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)    # TODO: use this
-_TX_PHYS_11BIT = 0x7F1  # TODO: use this
-_RX_PHYS_11BIT = 0x7F9  # TODO: use this
-_TX_FUNC_11BIT = 0x7DF   # TODO: use this
-_BROADCAST_29BIT = 0xFF  # TODO: use this
+_EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
+_TX_PHYS_11BIT = 0x7F1
+_RX_PHYS_11BIT = 0x7F9
+_TX_FUNC_11BIT = 0x7DF
+_BROADCAST_29BIT = 0xFF
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
@@ -90,14 +90,14 @@ def get_argparser():
     parser.add_argument(
         "-t", "--timeout",
         type=float,
-        default=10.0,
+        default=_DEFAULT_TIMEOUT_S,
         help="response timeout in seconds per DID read (default: 10)"
     )
     return parser
 
 
 def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
-             timeout=10.0) -> bytearray | None:
+             timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
 
     print("")
@@ -292,66 +292,49 @@ def main():
     phys = isotp.TargetAddressType.Physical
 
     # Read with 11bits functional address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
     rx_addrs = []
     for i in range(0x100 - 0x8):
-        rx_addrs.append(isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
+        rx_addrs.append(isotp.Address(
+            isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
     # Read with 11bits physical address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7F1, rxid=0x7F9)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
     rx_addrs = []
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
     # Read with 29bits address (See GB39732-2020 for the address values)
     tx_addr = isotp.Address(
         isotp.AddressingMode.NormalFixed_29bits,
-        target_address=0xFF,
-        source_address=0xF1
+        target_address=_BROADCAST_29BIT,
+        source_address=_TESTER_ADDR
         )
     rx_addrs = []
     for i in range(0xF0):
-        if i != 0x33:
+        if i != _OBD_FUNC_ADDR:
             rx_addrs.append(isotp.Address(
                 isotp.AddressingMode.NormalFixed_29bits,
                 target_address=i,
-                source_address=0xF1
+                source_address=_TESTER_ADDR
                 ))
 
     try:
-        payload = read_did(
-            0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa14, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
-        payload = read_did(
-            0xfa15, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-        output_data(payload)
+        for did in _EDR_DID_LIST:
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            output_data(payload)
     except Exception as err:
         print(err)
 
