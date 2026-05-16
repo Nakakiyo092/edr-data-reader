@@ -15,7 +15,6 @@ from pathlib import Path
 
 
 class BasicTestCase(unittest.TestCase):
-    """Basic functional tests for the EDR data reader script."""
 
     print_on: bool
 
@@ -35,8 +34,7 @@ class BasicTestCase(unittest.TestCase):
         result = subprocess.run(
             [sys.executable, str(script_path), "NULL"],
             capture_output=True,
-            text=True,
-            check=False
+            text=True
         )
 
         # Verify the output (No device error)
@@ -53,8 +51,7 @@ class BasicTestCase(unittest.TestCase):
         result = subprocess.run(
             [sys.executable, str(script_path), "virtual", "--timeout", "0.1"],
             capture_output=True,
-            text=True,
-            check=False
+            text=True
         )
 
         # Verify the output (Timeout for all DIDs)

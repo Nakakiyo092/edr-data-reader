@@ -160,7 +160,9 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
                         # Positive response
                         waiting = False
                         break
-                    # No Negative response handling. See the DESIGN.md.
+                    else:
+                        # No Negative response handling. See the DESIGN.md.
+                        pass
 
     except Exception as err:
         print(err)
@@ -270,8 +272,7 @@ def main():
             print( "  - Device not powered: check the device is powered on")
             print( "  - Device not connected: check the device is properly connected")
             print( "  - Wrong firmware: check the device has correct firmware")
-            print( "  - Permission denied (Linux): try "
-                   "'sudo usermod -aG dialout $USER' and re-login")
+            print( "  - Permission denied (Linux): try 'sudo usermod -aG dialout $USER' and re-login")
             print(f"    or 'sudo chmod 666 {args.devicename}'")
         return
     except Exception as err:
@@ -299,21 +300,18 @@ def main():
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(
-                did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
             output_data(payload)
     except Exception as err:
         print(err)
 
     # Read with 11bits physical address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(
-        isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
+    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
     rx_addrs = []
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(
-                did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
             output_data(payload)
     except Exception as err:
         print(err)
@@ -335,8 +333,7 @@ def main():
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(
-                did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
             output_data(payload)
     except Exception as err:
         print(err)
