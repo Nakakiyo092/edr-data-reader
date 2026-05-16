@@ -114,7 +114,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         notifier=notifier,
         address=tx_addr,
         params=isotp_params
-        )
+    )
     rx_stacks = []
     rx_stacks.append(tx_stack)  # Add tx_stack itself to support Physical addressing
     for rx_addr in rx_addrs:
@@ -122,7 +122,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
             bus=bus, notifier=notifier,
             address=rx_addr,
             params=isotp_params
-            )
+        )
         rx_stacks.append(rx_stack)
 
     # Request message
@@ -133,7 +133,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         service=ReadDataByIdentifier,
         code=Response.Code.PositiveResponse,
         data=bytes([(did>>8)&0xFF,did&0xFF])
-        )
+    )
 
     # Start stacks
     for rx_stack in rx_stacks:
@@ -321,7 +321,7 @@ def main():
         isotp.AddressingMode.NormalFixed_29bits,
         target_address=_BROADCAST_29BIT,
         source_address=_TESTER_ADDR
-        )
+    )
     rx_addrs = []
     for i in range(0xF0):
         if i != _OBD_FUNC_ADDR:
@@ -329,7 +329,7 @@ def main():
                 isotp.AddressingMode.NormalFixed_29bits,
                 target_address=i,
                 source_address=_TESTER_ADDR
-                ))
+            ))
 
     try:
         for did in _EDR_DID_LIST:
