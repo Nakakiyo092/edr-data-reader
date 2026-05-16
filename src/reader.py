@@ -148,11 +148,8 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         params=isotp_params
     )
     rx_stacks = []
-    # tx_stack is included in rx_stacks so it can receive the ECU's physical response when the
-    # tester's own physical pair happens to match the responding ECU. This is the degenerate case
-    # of the functional→physical transition: the broadcast goes out on the functional address,
-    # but the ECU replies on a physical pair — which may be the tester's own pair.
-    # See DESIGN.md ("Functional → physical transition for multi-frame UDS") for full details.
+    # In Physical addressing, request and response share the same address pair (tx_addr),
+    # so rx_addrs can be void. tx_stack is included in rx_stacks to receive the ECU's response.
     rx_stacks.append(tx_stack)
     for rx_addr in rx_addrs:
         rx_stack = isotp.NotifierBasedCanStack(
