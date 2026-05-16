@@ -53,15 +53,15 @@ from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
 _DEFAULT_TIMEOUT_S = 10.0
-_TESTER_ADDR = 0xF1  # ISO 15765-4
-_OBD_FUNC_ADDR = 0x33         # broadcast (excluded from rx)
+_TESTER_ADDR = 0xF1  # ISO 15765-4: tester source address for 29-bit NormalFixed addressing
+_OBD_FUNC_ADDR = 0x33  # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
 
 # Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
-_TX_PHYS_11BIT = 0x7F1
-_RX_PHYS_11BIT = 0x7F9
-_TX_FUNC_11BIT = 0x7DF
-_BROADCAST_29BIT = 0xFF
+_TX_PHYS_11BIT = 0x7F1  # Tester physical TX ID (ECU receives on this ID)
+_RX_PHYS_11BIT = 0x7F9  # Tester physical RX ID (ECU transmits on this ID); offset of 8 from TX
+_TX_FUNC_11BIT = 0x7DF  # 11-bit OBD-II functional broadcast CAN ID per ISO 15765-4
+_BROADCAST_29BIT = 0xFF  # 29-bit UDS functional broadcast target address per ISO 15765-4
 
 _ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
@@ -148,7 +148,12 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         params=isotp_params
     )
     rx_stacks = []
-    rx_stacks.append(tx_stack)  # Add tx_stack itself to support Physical addressing
+    # tx_stack is included in rx_stacks so it can receive the ECU's physical response when the
+    # tester's own physical pair happens to match the responding ECU. This is the degenerate case
+    # of the functional→physical transition: the broadcast goes out on the functional address,
+    # but the ECU replies on a physical pair — which may be the tester's own pair.
+    # See DESIGN.md ("Functional → physical transition for multi-frame UDS") for full details.
+    rx_stacks.append(tx_stack)
     for rx_addr in rx_addrs:
         rx_stack = isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier,
@@ -157,14 +162,19 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         )
         rx_stacks.append(rx_stack)
 
-    # Request message
-    request = ReadDataByIdentifier.make_request(didlist=[did], didconfig={'default':'s'})
+    # Build the UDS ReadDataByIdentifier request payload.
+    # didconfig maps DID to a string codec; udsoncan requires it even though we
+    # discard the decoded value and work with raw bytes from the payload directly.
+    request = ReadDataByIdentifier.make_request(didlist=[did], didconfig={'default': 's'})
 
-    # Response message (positive)
+    # Build the expected positive-response header for filtering.
+    # A positive response for ReadDataByIdentifier (service 0x22) starts with:
+    #   0x62 (service ID | 0x40) followed by the 2-byte DID (big-endian).
+    # Any received payload that does not start with this header is not our answer.
     response = Response(
         service=ReadDataByIdentifier,
         code=Response.Code.PositiveResponse,
-        data=bytes([(did>>8)&0xFF,did&0xFF])
+        data=bytes([(did >> 8) & 0xFF, did & 0xFF])  # DID encoded as big-endian 2-byte
     )
 
     # Start stacks
@@ -186,8 +196,14 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
 
             # Check response for all stacks
             for rx_stack in rx_stacks:
+                # Use a short blocking recv (10 ms) so we yield to the notifier
+                # thread between iterations rather than spinning at 100 % CPU,
+                # while still cycling through all stacks frequently enough to
+                # catch the first available response without noticeable delay.
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
+                    # Compare only the header portion of the received payload against
+                    # the expected positive-response bytes. The remainder is data.
                     if payload[:len(response)] == response.get_payload():
                         # Positive response
                         waiting = False
@@ -245,7 +261,8 @@ def output_data(payload) -> None:
         print(err)
         return
 
-    # Make data
+    # Strip the 3-byte UDS response header (service ID 0x62 + 2-byte DID) to get
+    # the raw data bytes that map to the CSV rows.
     byte_array = payload[3:]
 
     # Read the input CSV file and write to the output file with the additional column
@@ -268,10 +285,11 @@ def output_data(payload) -> None:
                     no = int(row[0])  # Convert "No." column to integer
                 except (ValueError, IndexError):
                     continue
-                if 1 <= no <= len(byte_array):  # Check if "No." is within the range
-                    row.append(byte_array[no - 1])  # Add corresponding byte array value
+                # "No." is 1-indexed in the CSV; subtract 1 to index into byte_array.
+                if 1 <= no <= len(byte_array):
+                    row.append(byte_array[no - 1])
                 else:
-                    row.append("N/A")  # Handle cases where "No." is out of range
+                    row.append("N/A")
                 writer.writerow(row)
 
     except Exception as err:
@@ -287,6 +305,7 @@ def _create_bus(args):
         elif args.devicename == "vector":
             return can.Bus(interface='vector', channel=0, bitrate=500000, app_name="Python-CAN")
         else:
+            # 500 kbps is the standard high-speed CAN bitrate for OBD-II (ISO 15765-4).
             return can.Bus(interface='slcan', channel=args.devicename, bitrate=500000)
     except can.CanInitializationError as err:
         print("Could not access CAN network.")
@@ -316,11 +335,16 @@ def _read_all_dids(args, bus, notifier):
     phys = isotp.TargetAddressType.Physical
 
     # Read with 11bits functional address (See GB39732-2020 for the address values)
+    # rxid=0x700 is a dummy; the functional broadcast (txid=0x7DF) does not listen on a fixed ID.
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
     rx_addrs = []
+    # Pre-allocate one receive stack per plausible physical CAN ID pair in the 0x700–0x7FF range.
+    # GB39732-2020 physical pairs follow the convention: ECU TX = tester TX + 8
+    # (e.g., _TX_PHYS_11BIT=0x7F1, _RX_PHYS_11BIT=0x7F9, difference=8).
+    # The upper bound 0x100-0x8 (=248) keeps rxid = 0x700+i+8 within 0x7FF (11-bit max).
     for i in range(0x100 - 0x8):
         rx_addrs.append(isotp.Address(
-            isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
+            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8))
 
     try:
         for did in _EDR_DID_LIST:
@@ -347,6 +371,12 @@ def _read_all_dids(args, bus, notifier):
         source_address=_TESTER_ADDR
     )
     rx_addrs = []
+    # In NormalFixed 29-bit addressing the CAN arbitration ID encodes both target and source
+    # addresses. The tester sends Flow Control back to each ECU using the ECU's own source
+    # address as the target_address. Addresses 0xF0–0xFF are reserved for testers and
+    # functional use per ISO 15765-4, so only 0x00–0xEF (range 0xF0 = 240 values) are valid
+    # ECU source addresses. _OBD_FUNC_ADDR (0x33) is a functional broadcast address and must
+    # be excluded to avoid interfering with OBD-II traffic.
     for i in range(0xF0):
         if i != _OBD_FUNC_ADDR:
             rx_addrs.append(isotp.Address(
