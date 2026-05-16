@@ -84,6 +84,10 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         code=Response.Code.PositiveResponse,
         data=bytes([(did>>8)&0xFF,did&0xFF])
         )
+    pend_response = Response(
+        service=ReadDataByIdentifier,
+        code=Response.Code.RequestCorrectlyReceived_ResponsePending
+        )
 
     # Start stacks
     for rx_stack in rx_stacks:
