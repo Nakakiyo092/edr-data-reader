@@ -118,15 +118,11 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
     # Request message
     request = ReadDataByIdentifier.make_request(didlist=[did], didconfig={'default':'s'})
 
-    # Response message (positive/pending)
+    # Response message (positive)
     response = Response(
         service=ReadDataByIdentifier,
         code=Response.Code.PositiveResponse,
         data=bytes([(did>>8)&0xFF,did&0xFF])
-        )
-    pend_response = Response(
-        service=ReadDataByIdentifier,
-        code=Response.Code.RequestCorrectlyReceived_ResponsePending
         )
 
     # Start stacks
@@ -144,19 +140,19 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
             # Response timeout
             if time.time() - start_time > timeout:
                 payload = None
-                waiting = False
                 break
 
             # Check response for all stacks
             for rx_stack in rx_stacks:
                 payload = rx_stack.recv(block=True, timeout=0.01)
                 if payload is not None:
-                    # Positive response
                     if payload[:len(response)] == response.get_payload():
+                        # Positive response
                         waiting = False
                         break
-                    # No Negative response handling. See the link for details.
-                    # https://github.com/Nakakiyo092/edr-data-reader/pull/29
+                    else:
+                        # No Negative response handling. See the DESIGN.md.
+                        pass
 
     except Exception as err:
         print(err)
@@ -281,15 +277,17 @@ def main():
     else:
         notifier = can.Notifier(bus, [])
 
+    # Abbreviated name
+    func = isotp.TargetAddressType.Functional
+    phys = isotp.TargetAddressType.Physical
+
     # Read with 11bits functional address
     tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x7DF, rxid=0x700)
     rx_addrs = []
     for i in range(0x100 - 0x8):
-        rx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8)
-        rx_addrs.append(rx_addr)
+        rx_addrs.append(isotp.Address(isotp.AddressingMode.Normal_11bits, txid=0x700+i, rxid=0x700+i+8))
 
     try:
-        func = isotp.TargetAddressType.Functional
         payload = read_did(
             0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
@@ -307,7 +305,6 @@ def main():
     rx_addrs = []
 
     try:
-        phys = isotp.TargetAddressType.Physical
         payload = read_did(
             0xfa13, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
@@ -329,15 +326,13 @@ def main():
     rx_addrs = []
     for i in range(0xF0):
         if i != 0x33:
-            rx_addr = isotp.Address(
+            rx_addrs.append(isotp.Address(
                 isotp.AddressingMode.NormalFixed_29bits,
                 target_address=i,
                 source_address=0xF1
-                )
-            rx_addrs.append(rx_addr)
+                ))
 
     try:
-        func = isotp.TargetAddressType.Functional
         payload = read_did(
             0xfa13, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
         output_data(payload)
