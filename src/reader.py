@@ -16,7 +16,7 @@ Usage:
     then run the script from the repository root:
 
     Windows:
-        python src\\reader.py <devicename> [options]
+        python src\reader.py <devicename> [options]
 
     Linux or macOS:
         python3 src/reader.py <devicename> [options]
