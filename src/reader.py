@@ -21,9 +21,7 @@ from udsoncan import Response
 from udsoncan.services import ReadDataByIdentifier
 
 
-RANDOM_SEED = 42
-
-ISOTP_PARAMS = {
+_ISOTP_PARAMS = {
     # Will request the sender to wait 0ms between consecutive frame.
     # 0-127ms or 100-900ns with values from 0xF1-0xF9.
     'stmin': 0,
