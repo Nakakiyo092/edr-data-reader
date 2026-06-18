@@ -1,3 +1,4 @@
-result/*
-.venv/*
-.vscode/*
+__pycache__/
+.venv/
+.vscode/
+result/
