@@ -221,14 +221,25 @@ def _read_all_dids(args, bus, notifier):
     """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
     for builder in (_build_11func, _build_11phys, _build_29bit):
         try:
-            for did in _EDR_DID_LIST:
-                tx_stack, rx_stacks, addr_type, mode_label = builder(
-                    bus, notifier, _ISOTP_PARAMS
-                )
-                payload = _read_did(
-                    did, tx_stack, rx_stacks, addr_type, mode_label, args.timeout
-                )
-                _output_data(payload)
+            tx_stack, rx_stacks, addr_type, mode_label = builder(
+                bus, notifier, _ISOTP_PARAMS
+            )
+            # The 11bits physical builder returns the same instance as tx_stack and
+            # rx_stacks[0]; set() dedupes so start() / stop() run once per stack.
+            # python-can-isotp's TransportLayer is designed for long-lived stacks:
+            # construct once per scheme, reuse across DIDs, tear down at the end.
+            all_stacks = {tx_stack, *rx_stacks}
+            for s in all_stacks:
+                s.start()
+            try:
+                for did in _EDR_DID_LIST:
+                    payload = _read_did(
+                        did, tx_stack, rx_stacks, addr_type, mode_label, args.timeout
+                    )
+                    _output_data(payload)
+            finally:
+                for s in all_stacks:
+                    s.stop()
         except Exception as err:
             print(err)
 
@@ -255,15 +266,8 @@ def _read_did(did, tx_stack, rx_stacks, addr_type, mode_label,
         data=bytes([(did >> 8) & 0xFF, did & 0xFF])  # DID encoded as big-endian 2-byte
     )
 
-    # In 11bits physical mode tx_stack is also the sole rx_stack (symmetric Address);
-    # deduplicate so start() / stop() are called once per unique instance.
-    all_stacks = [tx_stack] + [s for s in rx_stacks if s is not tx_stack]
-
-    # Start stacks
-    for s in all_stacks:
-        s.start()
-
-    # Send request
+    # Send request. Stacks are started/stopped by the caller (_read_all_dids)
+    # once per addressing scheme, not per DID.
     tx_stack.send(request.get_payload(), addr_type)
 
     try:
@@ -290,10 +294,6 @@ def _read_did(did, tx_stack, rx_stacks, addr_type, mode_label,
     except Exception as err:
         print(err)
         return None
-
-    # Stop stacks
-    for s in all_stacks:
-        s.stop()
 
     if payload is not None:
         print(len(payload), "bytes of data received.")
