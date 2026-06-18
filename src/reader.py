@@ -158,94 +158,87 @@ def _create_bus(args):
         return None
 
 
-def _read_all_dids(args, bus, notifier):
-    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
-
-    # Abbreviated name
-    func = isotp.TargetAddressType.Functional
-    phys = isotp.TargetAddressType.Physical
-
-    # Read with 11bits functional address (See GB39732-2020 for the address values)
-    # rxid=0x700 is a dummy; the functional broadcast (txid=0x7DF) does not listen on a fixed ID.
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700)
-    rx_addrs = []
-    # Pre-allocate one receive stack per plausible physical CAN ID pair in the 0x700–0x7FF range.
-    # GB39732-2020 physical pairs follow the convention: ECU TX = tester TX + 8
+def _build_11func(bus, notifier, params):
+    """11bits functional: emit-only tx_stack on 0x7DF + per-ECU rx_stacks (0x700-0x7FF)."""
+    # rxid=0x700 is a placeholder to satisfy Address validation; no ECU transmits on it.
+    tx_addr = isotp.Address(
+        isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700
+    )
+    tx_stack = isotp.NotifierBasedCanStack(
+        bus=bus, notifier=notifier, address=tx_addr, params=params
+    )
+    # Pre-allocate one rx stack per plausible per-ECU physical pair (DESIGN.md library-gap),
+    # so the FF and the subsequent FC/CFs are received on the responder's own pair.
+    rx_stacks = []
     for i in range(0x100 - 0x8):
-        rx_addrs.append(isotp.Address(
-            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8))
+        rx_addr = isotp.Address(
+            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8
+        )
+        rx_stacks.append(isotp.NotifierBasedCanStack(
+            bus=bus, notifier=notifier, address=rx_addr, params=params
+        ))
+    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "11bits functional address"
 
-    try:
-        for did in _EDR_DID_LIST:
-            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            _output_data(payload)
-    except Exception as err:
-        print(err)
 
-    # Read with 11bits physical address (See GB39732-2020 for the address values)
-    tx_addr = isotp.Address(isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT)
-    rx_addrs = []
+def _build_11phys(bus, notifier, params):
+    """11bits physical: single symmetric stack used for both send and receive."""
+    addr = isotp.Address(
+        isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT
+    )
+    stack = isotp.NotifierBasedCanStack(
+        bus=bus, notifier=notifier, address=addr, params=params
+    )
+    return stack, [stack], isotp.TargetAddressType.Physical, "11bits physical address"
 
-    try:
-        for did in _EDR_DID_LIST:
-            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-            _output_data(payload)
-    except Exception as err:
-        print(err)
 
-    # Read with 29bits address (See GB39732-2020 for the address values)
+def _build_29bit(bus, notifier, params):
+    """29bits NormalFixed: emit-only broadcast tx_stack + per-ECU rx_stacks."""
     tx_addr = isotp.Address(
         isotp.AddressingMode.NormalFixed_29bits,
         target_address=_BROADCAST_29BIT,
-        source_address=_TESTER_ADDR
+        source_address=_TESTER_ADDR,
     )
-    rx_addrs = []
+    tx_stack = isotp.NotifierBasedCanStack(
+        bus=bus, notifier=notifier, address=tx_addr, params=params
+    )
+    # Cover every plausible responder address (excluding the OBD functional broadcast).
+    rx_stacks = []
     for i in range(0xF0):
-        if i != _OBD_FUNC_ADDR:
-            rx_addrs.append(isotp.Address(
-                isotp.AddressingMode.NormalFixed_29bits,
-                target_address=i,
-                source_address=_TESTER_ADDR
-            ))
-
-    try:
-        for did in _EDR_DID_LIST:
-            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            _output_data(payload)
-    except Exception as err:
-        print(err)
+        if i == _OBD_FUNC_ADDR:
+            continue
+        rx_addr = isotp.Address(
+            isotp.AddressingMode.NormalFixed_29bits,
+            target_address=i,
+            source_address=_TESTER_ADDR,
+        )
+        rx_stacks.append(isotp.NotifierBasedCanStack(
+            bus=bus, notifier=notifier, address=rx_addr, params=params
+        ))
+    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "29bits address"
 
 
-def _read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
-             timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
+def _read_all_dids(args, bus, notifier):
+    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
+    for builder in (_build_11func, _build_11phys, _build_29bit):
+        try:
+            for did in _EDR_DID_LIST:
+                tx_stack, rx_stacks, addr_type, mode_label = builder(
+                    bus, notifier, _ISOTP_PARAMS
+                )
+                payload = _read_did(
+                    did, tx_stack, rx_stacks, addr_type, mode_label, args.timeout
+                )
+                _output_data(payload)
+        except Exception as err:
+            print(err)
+
+
+def _read_did(did, tx_stack, rx_stacks, addr_type, mode_label,
+              timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
 
     print("")
-    if tx_addr.is_tx_29bits():
-        print("Reading data id", hex(did), "with 29bits address.")
-    elif addr_type == isotp.TargetAddressType.Functional:
-        print("Reading data id", hex(did), "with 11bits functional address.")
-    else:
-        print("Reading data id", hex(did), "with 11bits physical address.")
-
-    # Setup ISOTP stacks
-    tx_stack = isotp.NotifierBasedCanStack(
-        bus=bus,
-        notifier=notifier,
-        address=tx_addr,
-        params=isotp_params
-    )
-    rx_stacks = []
-    # In Physical addressing, request and response share the same address pair (tx_addr),
-    # so rx_addrs can be void. tx_stack is included in rx_stacks to receive the ECU's response.
-    rx_stacks.append(tx_stack)
-    for rx_addr in rx_addrs:
-        rx_stack = isotp.NotifierBasedCanStack(
-            bus=bus, notifier=notifier,
-            address=rx_addr,
-            params=isotp_params
-        )
-        rx_stacks.append(rx_stack)
+    print(f"Reading data id {hex(did)} with {mode_label}.")
 
     # Build the UDS ReadDataByIdentifier request payload.
     # didconfig maps DID to a string codec; udsoncan requires it even though we
@@ -262,9 +255,13 @@ def _read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         data=bytes([(did >> 8) & 0xFF, did & 0xFF])  # DID encoded as big-endian 2-byte
     )
 
+    # In 11bits physical mode tx_stack is also the sole rx_stack (symmetric Address);
+    # deduplicate so start() / stop() are called once per unique instance.
+    all_stacks = [tx_stack] + [s for s in rx_stacks if s is not tx_stack]
+
     # Start stacks
-    for rx_stack in rx_stacks:
-        rx_stack.start()
+    for s in all_stacks:
+        s.start()
 
     # Send request
     tx_stack.send(request.get_payload(), addr_type)
@@ -299,8 +296,8 @@ def _read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
         return None
 
     # Stop stacks
-    for rx_stack in rx_stacks:
-        rx_stack.stop()
+    for s in all_stacks:
+        s.stop()
 
     if payload is not None:
         print(len(payload), "bytes of data received.")
