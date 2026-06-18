@@ -267,30 +267,26 @@ def _read_did(did, tx_stack, rx_stacks, addr_type, mode_label,
     tx_stack.send(request.get_payload(), addr_type)
 
     try:
-        # Wait for response
-        waiting = True
-        start_time = time.time()
-        while waiting:
-            # Response timeout
-            if time.time() - start_time > timeout:
-                payload = None
-                break
-
-            # Check response for all stacks
+        # Wait for response.
+        # Non-blocking recv(): a sweep over hundreds of rx_stacks takes microseconds
+        # when empty, so the user-supplied timeout is honored within ~1 ms granularity.
+        # monotonic() is immune to wall-clock adjustments mid-wait.
+        payload = None
+        deadline = time.monotonic() + timeout
+        while payload is None and time.monotonic() < deadline:
             for rx_stack in rx_stacks:
-                # TODO: #42
-                payload = rx_stack.recv(block=True, timeout=0.01)
-                if payload is not None:
-                    # Compare only the header portion of the received payload against
-                    # the expected positive-response bytes. The remainder is data.
-                    if payload[:len(response)] == response.get_payload():
-                        # Positive response
-                        waiting = False
-                        break
-                    else:
-                        # No Negative response handling. See the DESIGN.md.
-                        pass
-
+                received = rx_stack.recv(block=False)
+                if received is None:
+                    continue
+                # Compare only the header portion of the received payload against
+                # the expected positive-response bytes. The remainder is data.
+                if received[:len(response)] == response.get_payload():
+                    # Positive response
+                    payload = received
+                    break
+                # Non-matching payload (e.g., negative response). See DESIGN.md.
+            if payload is None:
+                time.sleep(0.001)
     except Exception as err:
         print(err)
         return None
