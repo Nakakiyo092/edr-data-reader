@@ -103,7 +103,7 @@ _ISOTP_PARAMS = {
 }
 
 
-def get_argparser():
+def _get_argparser():
     """Get the command line argument parser."""
 
     parser = argparse.ArgumentParser(
@@ -128,7 +128,7 @@ def get_argparser():
     return parser
 
 
-def create_bus(args):
+def _create_bus(args):
     """Create and return a CAN bus, or None if initialization fails."""
     try:
         if args.devicename == "virtual":
@@ -158,7 +158,7 @@ def create_bus(args):
         return None
 
 
-def read_all_dids(args, bus, notifier):
+def _read_all_dids(args, bus, notifier):
     """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
 
     # Abbreviated name
@@ -177,8 +177,8 @@ def read_all_dids(args, bus, notifier):
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
+            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            _output_data(payload)
     except Exception as err:
         print(err)
 
@@ -188,8 +188,8 @@ def read_all_dids(args, bus, notifier):
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
+            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, phys, _ISOTP_PARAMS, args.timeout)
+            _output_data(payload)
     except Exception as err:
         print(err)
 
@@ -210,13 +210,13 @@ def read_all_dids(args, bus, notifier):
 
     try:
         for did in _EDR_DID_LIST:
-            payload = read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
-            output_data(payload)
+            payload = _read_did(did, bus, notifier, tx_addr, rx_addrs, func, _ISOTP_PARAMS, args.timeout)
+            _output_data(payload)
     except Exception as err:
         print(err)
 
 
-def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
+def _read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
              timeout=_DEFAULT_TIMEOUT_S) -> bytearray | None:
     """Read one data by identifier (DID) from the target ECU."""
 
@@ -310,7 +310,7 @@ def read_did(did, bus, notifier, tx_addr, rx_addrs, addr_type, isotp_params,
     return payload
 
 
-def output_data(payload) -> None:
+def _output_data(payload) -> None:
     """Output the data to a CSV file according to the format defined in the 'format' folder."""
 
     # Get target did from payload
@@ -379,7 +379,7 @@ def output_data(payload) -> None:
         return
 
 
-def copy_readme():
+def _copy_readme():
     """Copy the README file from the format folder to the result folder."""
     try:
         shutil.copy("format/README.md", "result/README.md")
@@ -397,11 +397,11 @@ def main():
     """Main process."""
 
     # Parse command line arguments
-    argparser = get_argparser()
+    argparser = _get_argparser()
     args = argparser.parse_args()
 
     # Setup and start a CAN bus
-    bus = create_bus(args)
+    bus = _create_bus(args)
     if bus is None:
         return
 
@@ -413,14 +413,14 @@ def main():
 
     try:
         # Read all EDR DIDs
-        read_all_dids(args, bus, notifier)
+        _read_all_dids(args, bus, notifier)
     finally:
         # Shutdown the CAN bus
         notifier.stop()
         bus.shutdown()
 
     # Copy the README file
-    copy_readme()
+    _copy_readme()
 
 
 if __name__ == "__main__":
