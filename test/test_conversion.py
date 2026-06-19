@@ -124,11 +124,6 @@ class ConvertTest(unittest.TestCase):
     def test_not_defined_with_table_match(self):
         self.assertEqual(_convert(0x01, "0x00:Off;0x01:On", "Not defined"), "On")
 
-    def test_na_conversion_returns_empty(self):
-        # 'N/A' in the Conversion column: only value_table can supply output.
-        self.assertEqual(_convert(0x05, "0x00:No;0x01:Yes", "N/A"), "")
-        self.assertEqual(_convert(0x01, "0x00:No;0x01:Yes", "N/A"), "Yes")
-
     def test_multi_byte_table_match(self):
         # Aggregated 2-byte value 0xFFFF should hit the table.
         self.assertEqual(

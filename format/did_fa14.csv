@@ -78,7 +78,7 @@ No.,Name,Unit,Time_ms,Value table,Conversion
 77,"Ignition cycle, event",N/A,N/A,Subsequent byte,Subsequent byte
 78,"Ignition cycle, download",N/A,N/A,0xFFFE:Invalid;0xFFFF:N/A,E=N
 79,"Ignition cycle, download",N/A,N/A,Subsequent byte,Subsequent byte
-80,Complete file recorded,N/A,N/A,0x00:No;0x01:Yes;0xFE:Invalid;0xFF:N/A,N/A
+80,Complete file recorded,N/A,N/A,0x00:No;0x01:Yes;0xFE:Invalid;0xFF:N/A,Not defined
 81,Time from last event to this event,s,N/A,0xFE:Invalid;0xFF:N/A,E=N*0.1
 82,Vehicle identification number,N/A,N/A,0xFF:See last byte,Ascii
 83,Vehicle identification number,N/A,N/A,0xFF:See last byte,Ascii

@@ -375,7 +375,7 @@ def _convert(raw: int, value_table: str, conversion: str) -> str:
             return chr(raw)
         return f"0x{raw:02X}"
 
-    if conversion in ("Not defined", "N/A", "Subsequent byte", ""):
+    if conversion in ("Not defined", "Subsequent byte", ""):
         return ""
 
     try:

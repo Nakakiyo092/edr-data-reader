@@ -25,8 +25,6 @@ Example: `0xFE:Invalid;0xFF:N/A` (single-byte signal) or
 `0xFFFE:Invalid;0xFFFF:N/A` (two-byte signal — the key matches the aggregated
 multi-byte raw value).
 
-`N/A` in this column means there is no value table for that row.
-
 ## Conversion column
 
 Possible values:
@@ -35,8 +33,8 @@ Possible values:
   where K is a real number. The reader applies the formula directly.
 * **`Ascii`** — the raw byte is rendered as a printable ASCII character (or as
   `0xHH` if not printable).
-* **`Not defined`** or **`N/A`** — there is no formula. Only a Value table
-  match produces a physical value; otherwise the cell is left empty.
+* **`Not defined`** — there is no formula. Only a Value table match produces
+  a physical value; otherwise the cell is left empty.
 * **`Subsequent byte`** — this row is a continuation of the previous signal
   (see Multi-byte signals below).
 
