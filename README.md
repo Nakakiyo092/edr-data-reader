@@ -1,10 +1,27 @@
 > [!WARNING]
-> **Disclaimer:** This tool is intended for use only on vehicles you own
-> or have explicit written authorization to analyze. EDR data contains
-> personal information about the driver's behavior; unauthorized
-> retrieval may violate privacy laws (e.g., GDPR, CCPA, Japan's APPI)
-> and constitute unauthorized access to a computer system in some
-> jurisdictions. The author assumes no liability for misuse.
+> **Privacy and legal disclaimer.** Before using this tool, confirm that
+> you have the right to retrieve EDR data from the target vehicle and
+> that you will handle the retrieved data lawfully.
+>
+> - **Authorization.** Use this tool only on vehicles you own or are
+>   explicitly authorized to analyze. Unauthorized retrieval may violate
+>   privacy laws (e.g., GDPR, CCPA, Japan's APPI) and constitute
+>   unauthorized access to a computer system in some jurisdictions.
+> - **Personal data of the driver.** EDR data records driver behavior
+>   and is the personal information of the driver, who is not
+>   necessarily the vehicle owner (e.g., rentals, family or fleet
+>   vehicles).
+> - **Console output.** With `--verbose`, the script prints CAN frames
+>   that may contain the same personal data; handle the console output
+>   with the same care as the result CSV.
+> - **Storage and deletion.** Store the retrieved data securely and
+>   delete it when it is no longer needed. Cross-border transfer of the
+>   data may be regulated.
+> - **Third-party sharing.** Do not share the data with insurers, repair
+>   shops, or any third party without the driver's explicit consent.
+> - **Liability.** The author assumes no liability for misuse. The user
+>   is responsible for compliance with applicable laws regarding the
+>   retention, use, and disclosure of retrieved data.
 
 # EDR Data Reader
 
