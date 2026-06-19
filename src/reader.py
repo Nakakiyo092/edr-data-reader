@@ -42,6 +42,7 @@ License:
 """
 
 import os
+import re
 import shutil
 import time
 import csv
@@ -303,6 +304,88 @@ def _read_did(did, tx_stack, rx_stacks, addr_type, mode_label,
     return payload
 
 
+# `E=N*A+B` where A and B are optional. Examples found in format/*.csv:
+#   E=N          -> (1, 0)
+#   E=N-127      -> (1, -127)
+#   E=N+2000     -> (1, 2000)
+#   E=N*100      -> (100, 0)
+#   E=N*0.1-300  -> (0.1, -300)
+#   E=N*5-780    -> (5, -780)
+# `×` is accepted as `*` for forward compatibility.
+_LINEAR_FORMULA = re.compile(r'^E=N(?:[*×]([+-]?\d*\.?\d+))?(?:([+-])(\d+\.?\d*))?$')
+
+
+def _parse_value_table(s: str) -> dict[int, str]:
+    """Parse '0xFE:Invalid;0xFF:N/A' into {0xFE: 'Invalid', 0xFF: 'N/A'}.
+
+    Returns an empty dict for 'N/A', 'Subsequent byte', empty strings, or any
+    unparsable entry.
+    """
+    if s in ("N/A", "Subsequent byte", ""):
+        return {}
+    result: dict[int, str] = {}
+    for entry in s.split(";"):
+        entry = entry.strip()
+        if ":" not in entry:
+            continue
+        key_str, label = entry.split(":", 1)
+        try:
+            key = int(key_str.strip(), 16)
+        except ValueError:
+            continue
+        result[key] = label.strip()
+    return result
+
+
+def _parse_linear(expr: str) -> tuple[float, float]:
+    """Parse 'E=A*N+B' style formulas into (scale, offset).
+
+    'E=N' yields (1.0, 0.0). Raises ValueError if the expression does not match
+    the linear pattern.
+    """
+    normalized = expr.replace(" ", "").replace("×", "*")
+    m = _LINEAR_FORMULA.match(normalized)
+    if not m:
+        raise ValueError(f"Unrecognized linear formula: {expr}")
+    scale_str, op, offset_str = m.groups()
+    scale = float(scale_str) if scale_str else 1.0
+    if offset_str:
+        offset = float(offset_str)
+        if op == '-':
+            offset = -offset
+    else:
+        offset = 0.0
+    return scale, offset
+
+
+def _convert(raw: int, value_table: str, conversion: str) -> str:
+    """Apply value_table or conversion to a (possibly multi-byte) raw value.
+
+    Order: value_table match first, then conversion handlers ('Ascii',
+    'Not defined', or a linear formula). Returns '' for 'Not defined' or any
+    case the conversion cannot be parsed.
+    """
+    table = _parse_value_table(value_table)
+    if raw in table:
+        return table[raw]
+
+    if conversion == "Ascii":
+        # Printable ASCII char, else fall back to a two-digit hex form.
+        if 0x20 <= raw < 0x7F:
+            return chr(raw)
+        return f"0x{raw:02X}"
+
+    if conversion in ("Not defined", "Subsequent byte", ""):
+        return ""
+
+    try:
+        scale, offset = _parse_linear(conversion)
+    except ValueError:
+        return ""
+
+    return f"{scale * raw + offset:g}"
+
+
 def _output_data(payload) -> None:
     """Output the data to a CSV file according to the format defined in the 'format' folder."""
 
@@ -340,7 +423,7 @@ def _output_data(payload) -> None:
     # the raw data bytes that map to the CSV rows.
     byte_array = payload[3:]
 
-    # Read the input CSV file and write to the output file with the additional column
+    # Read the input CSV file and write to the output file with the additional columns
     try:
         with (
             open(source_file, mode="r", encoding="utf-8", newline="") as infile,
@@ -349,23 +432,54 @@ def _output_data(payload) -> None:
             reader = csv.reader(infile)
             writer = csv.writer(outfile)
 
-            # Read header and add new column name
+            # Read header and add new column names
             header = next(reader)
-            header.append("Raw value")  # Add a new column named 'Raw value'
+            header.extend(["Raw value", "Physical value"])
             writer.writerow(header)
 
-            # Process rows
-            for row in reader:
+            # Buffer the data rows so we can look ahead to determine multi-byte
+            # signal width (counting subsequent 'Subsequent byte' rows).
+            data_rows = list(reader)
+
+            for i, row in enumerate(data_rows):
                 try:
                     no = int(row[0])  # Convert "No." column to integer
                 except (ValueError, IndexError):
                     continue
+
                 # "No." is 1-indexed in the CSV; subtract 1 to index into byte_array.
                 if 1 <= no <= len(byte_array):
-                    row.append(byte_array[no - 1])
+                    raw_byte = byte_array[no - 1]
                 else:
-                    row.append("N/A")
-                writer.writerow(row)
+                    raw_byte = "N/A"
+
+                conversion = row[5] if len(row) > 5 else ""
+
+                # Continuation rows: only the leading row of a multi-byte signal
+                # carries the physical value; here we just echo the raw byte.
+                if conversion == "Subsequent byte":
+                    writer.writerow(row + [raw_byte, ""])
+                    continue
+
+                # Signal-start row: scan forward for continuation rows to determine width.
+                width = 1
+                while (i + width < len(data_rows)
+                       and len(data_rows[i + width]) > 5
+                       and data_rows[i + width][5] == "Subsequent byte"):
+                    width += 1
+
+                # Aggregate the bytes for this signal in big-endian (Motorola)
+                # order. Skip the physical conversion if any byte falls outside
+                # the received payload.
+                physical: str = ""
+                if isinstance(raw_byte, int) and no + width - 1 <= len(byte_array):
+                    agg = 0
+                    for k in range(width):
+                        agg = (agg << 8) | byte_array[no - 1 + k]
+                    value_table = row[4] if len(row) > 4 else ""
+                    physical = _convert(agg, value_table, conversion)
+
+                writer.writerow(row + [raw_byte, physical])
 
     except Exception as err:
         print(err)
