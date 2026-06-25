@@ -8,8 +8,11 @@ EDR is a system that monitors, collects, and records vehicle and occupant
 protection data before, during, and after a collision event. This script
 reads 3 standardized data identifiers (DIDs 0xFA13, 0xFA14, 0xFA15) using
 3 address types (11-bit functional, 11-bit physical, and 29-bit functional),
-making 9 attempts in total. All attempts are executed sequentially without early
-termination. Successful reads are saved as CSV files in the 'result' directory.
+making 9 attempts in total by default. The --id-type option restricts this to a
+single scheme (3 attempts), and --ecu-addr targets a single known responder
+instead of sweeping every address. All attempts are executed sequentially
+without early termination. Successful reads are saved as CSV files in the
+'result' directory.
 
 Usage:
     Connect a CAN device to the vehicle's OBD-II diagnostic connector,
@@ -25,11 +28,13 @@ Usage:
         devicename    CAN device name (e.g., COM9 on Windows, /dev/ttyACM0 on Linux)
 
     Options:
-        -v, --verbose       Enable verbose output (prints all CAN frames)
-        -t, --timeout SECS  Response timeout in seconds per DID read (default: 10)
-        -a, --address HEX   Known ECU physical address (hex, e.g. 77) to target a
-                            single responder in the functional schemes instead of
-                            sweeping every address
+        -v, --verbose        Enable verbose output (prints all CAN frames)
+        -t, --timeout SECS   Response timeout in seconds per DID read (default: 10)
+        -i, --id-type TYPE   Addressing scheme: 11func, 11phys, or 29bits
+                             (default: try all three)
+        -a, --ecu-addr ADDR  Known ECU physical address (0x77 hex or 119 dec) to
+                             target a single responder in the functional schemes
+                             instead of sweeping every address
 
     For full help:
         python src/reader.py --help
@@ -123,16 +128,17 @@ _ISOTP_PARAMS = {
 
 
 def _ecu_address(value):
-    """Parse an ECU physical address (one byte, hex) from the command line.
+    """Parse an ECU physical address (one byte) from the command line.
 
-    Accepts forms like "77" or "0x77". Used to target a single known responder
-    instead of sweeping every possible address.
+    Uses Python int() base-0 rules: a bare number is decimal (119) and a 0x
+    prefix is hex (0x77). Scheme-specific range checks happen after parsing,
+    once the addressing scheme is known (see _check_ecu_addr).
     """
     try:
-        addr = int(value, 16)
+        addr = int(value, 0)
     except ValueError:
         raise argparse.ArgumentTypeError(
-            f"invalid ECU address '{value}': expected a hex byte like 77 or 0x77"
+            f"invalid ECU address '{value}': expected a byte like 0x77 (hex) or 119 (dec)"
         )
     if not 0x00 <= addr <= 0xFF:
         raise argparse.ArgumentTypeError(
@@ -164,14 +170,22 @@ def _get_argparser():
         help="response timeout in seconds per DID read (default: 10)"
     )
     parser.add_argument(
-        "-a", "--address",
+        "-i", "--id-type",
+        choices=list(_SCHEME_BUILDERS),
+        default=None,
+        help="addressing scheme to use: 11bits functional (11func), 11bits "
+             "physical (11phys), or 29bits functional (29bits); default tries "
+             "all three"
+    )
+    parser.add_argument(
+        "-a", "--ecu-addr",
         type=_ecu_address,
         default=None,
-        metavar="HEX",
-        help="known ECU physical address (hex, e.g. 77) to target a single "
-             "responder instead of sweeping every address; applies to the two "
-             "functional schemes (11-bit and 29-bit), since 11-bit physical "
-             "already targets one ECU"
+        metavar="ADDR",
+        help="known ECU physical address (0x77 hex or 119 dec) to target a "
+             "single responder instead of sweeping every address; applies to "
+             "the functional schemes (11func and 29bits), ignored for 11phys "
+             "which already targets one ECU"
     )
     return parser
 
@@ -301,12 +315,50 @@ def _build_29bit(bus, notifier, params, address=None):
             "29bits functional address", can_filters)
 
 
+# Maps the --id-type choice to its scheme builder. Insertion order is also the
+# order tried when no scheme is fixed (i.e. --id-type omitted).
+_SCHEME_BUILDERS = {
+    "11func": _build_11func,
+    "11phys": _build_11phys,
+    "29bits": _build_29bit,
+}
+
+
+def _check_ecu_addr(args):
+    """Validate --ecu-addr against the scheme(s) it will be used with.
+
+    Returns an error message, or None if acceptable. 11-bit functional needs
+    >= 0x08 so its response ID stays in 0x708-0x7FF; 29-bit allows 0x00-0xFF.
+    With no fixed scheme (--id-type omitted) the address must satisfy both
+    functional schemes, i.e. the 0x08-0xFF intersection. Physical addressing
+    ignores the address.
+    """
+    if args.ecu_addr is None or args.id_type == "11phys":
+        return None
+    if args.id_type == "29bits":
+        lo, hi = 0x00, 0xFF
+    else:  # "11func", or None meaning every functional scheme
+        lo, hi = 0x08, 0xFF
+    if not lo <= args.ecu_addr <= hi:
+        scope = args.id_type or "the functional schemes"
+        return (f"argument -a/--ecu-addr: 0x{args.ecu_addr:X} is out of range for "
+                f"{scope}: expected 0x{lo:02X}-0x{hi:02X}")
+    return None
+
+
 def _read_all_dids(args, bus, notifier):
-    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
-    for builder in (_build_11func, _build_11phys, _build_29bit):
+    """Read the EDR DIDs over the selected addressing scheme(s).
+
+    Tries every scheme by default, or only --id-type when one is given.
+    """
+    if args.id_type is not None:
+        builders = [_SCHEME_BUILDERS[args.id_type]]
+    else:
+        builders = list(_SCHEME_BUILDERS.values())
+    for builder in builders:
         try:
             tx_stack, rx_stacks, addr_type, mode_label, can_filters = builder(
-                bus, notifier, _ISOTP_PARAMS, args.address
+                bus, notifier, _ISOTP_PARAMS, args.ecu_addr
             )
             # Narrow the bus to this scheme's response IDs before receiving, so the
             # Notifier drops other traffic in recv() instead of fanning it out to
@@ -598,6 +650,9 @@ def main():
     # Parse command line arguments
     argparser = _get_argparser()
     args = argparser.parse_args()
+    addr_err = _check_ecu_addr(args)
+    if addr_err:
+        argparser.error(addr_err)
 
     # Setup and start a CAN bus
     bus = _create_bus(args)
