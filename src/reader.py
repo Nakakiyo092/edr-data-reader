@@ -37,6 +37,8 @@ Usage:
                                  Known ECU physical address (0x-prefixed for hex,
                                  else decimal; ex. 0x77) to target a single
                                  responder in the functional schemes
+        --no-filter              Testing: skip CAN acceptance filters so every
+                                 frame reaches the stacks (filters on by default)
 
     Examples:
         python src/reader.py COM9
@@ -179,6 +181,13 @@ def _get_argparser():
              "ex. 0x77) to target a single responder instead of sweeping every "
              "address; applies to the functional schemes, ignored for 11phys "
              "which already targets one ECU"
+    )
+    parser.add_argument(
+        "--no-filter",
+        action="store_true",
+        help="for testing: do not apply CAN acceptance filters, so every frame "
+             "reaches the ISO-TP stacks (reproduces the pre-filter behaviour); "
+             "filters are enabled by default"
     )
     return parser
 
@@ -357,12 +366,13 @@ def _read_all_dids(args, bus, notifier):
             # Narrow the bus to this scheme's response IDs before receiving, so the
             # Notifier drops other traffic in recv() instead of fanning it out to
             # every stack (issue #46). Applied per scheme so e.g. the 29-bit read
-            # also rejects all 11-bit traffic.
-            try:
-                bus.set_filters(can_filters)
-            except Exception as err:
-                print("Could not apply CAN acceptance filters; continuing unfiltered.")
-                print(err)
+            # also rejects all 11-bit traffic. --no-filter skips this (testing).
+            if not args.no_filter:
+                try:
+                    bus.set_filters(can_filters)
+                except Exception as err:
+                    print("Could not apply CAN acceptance filters; continuing unfiltered.")
+                    print(err)
             # The 11bits physical builder returns the same instance as tx_stack and
             # rx_stacks[0]; set() dedupes so start() / stop() run once per stack.
             # python-can-isotp's TransportLayer is designed for long-lived stacks:
