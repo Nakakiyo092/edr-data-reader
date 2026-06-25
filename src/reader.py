@@ -28,16 +28,19 @@ Usage:
         devicename    CAN device name (e.g., COM9 on Windows, /dev/ttyACM0 on Linux)
 
     Options:
-        -v, --verbose        Enable verbose output (prints all CAN frames)
-        -t, --timeout SECS   Response timeout in seconds per DID read (default: 10)
-        -i, --id-type TYPE   Addressing scheme: 11func, 11phys, or 29func
-                             (default: try all three)
-        -a, --ecu-addr ADDR  Known ECU physical address (0x-prefixed for hex,
-                             else decimal; ex. 0x77) to target a single responder
-                             in the functional schemes instead of sweeping
+        -h, --help               Show this help message and exit
+        -v, --verbose            Enable verbose output (prints all CAN frames)
+        -t SECS, --timeout SECS  Response timeout in seconds per DID read (default: 10)
+        -i TYPE, --id-type TYPE  Addressing scheme: 11func, 11phys, or 29func
+                                 (default: try all three)
+        -a ADDR, --ecu-addr ADDR
+                                 Known ECU physical address (0x-prefixed for hex,
+                                 else decimal; ex. 0x77) to target a single
+                                 responder in the functional schemes
 
-    For full help:
-        python src/reader.py --help
+    Examples:
+        python src/reader.py COM9
+        python3 src/reader.py /dev/ttyACM0 --verbose --id-type 29func --ecu-addr 0x77
 
     Output:
         Results are saved to the 'result' directory as CSV files
