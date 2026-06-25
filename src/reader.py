@@ -62,6 +62,21 @@ _TESTER_ADDR = 0xF1     # ISO 15765-4: tester source address for 29-bit NormalFi
 _OBD_FUNC_ADDR = 0x33   # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
 _BROADCAST_29BIT = 0xFF # 29-bit UDS functional broadcast target address per ISO 15765-4
 
+# Each addressing scheme returns a CAN acceptance filter (see the _build_* funcs),
+# applied to the bus before that scheme is read. Every NotifierBasedCanStack
+# registers a Notifier listener, so without filtering the single Notifier thread
+# fans every CAN frame out to all pre-allocated stacks; under background traffic
+# that starves the responder's stack and its FlowControl misses the 1000 ms
+# ISO-TP deadline, so the ECU aborts the transfer (issue #46). Software filtering
+# in bus.recv() drops non-matching frames before they reach the stacks.
+#
+# With a known --address the filter is the single exact response ID (also safe on
+# a real bus, including 11-bit). Without it the filter is the scheme's response
+# range: the 29-bit range 0x18DAF1xx is reserved for diagnostics (ISO 15765-2
+# NormalFixed reply to tester 0xF1), but the 11-bit range 0x700-0x7FF is NOT
+# reserved (only 0x7DF/0x7E0-0x7EF are legislated), so on a real bus non-
+# diagnostic 0x7xx traffic can still pass it -- another reason to pass --address.
+
 # Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
 _TX_PHYS_11BIT = 0x7F1  # Tester physical TX ID (ECU receives on this ID)
@@ -220,7 +235,13 @@ def _build_11func(bus, notifier, params, address=None):
         rx_stacks.append(isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier, address=rx_addr, params=params
         ))
-    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "11bits functional address"
+    # Exact reply ID when targeting one ECU; otherwise the 0x700-0x7FF sweep range.
+    if address is not None:
+        can_filters = [{"can_id": 0x700 | address, "can_mask": 0x7FF, "extended": False}]
+    else:
+        can_filters = [{"can_id": 0x700, "can_mask": 0x700, "extended": False}]
+    return (tx_stack, rx_stacks, isotp.TargetAddressType.Functional,
+            "11bits functional address", can_filters)
 
 
 def _build_11phys(bus, notifier, params, address=None):
@@ -235,7 +256,10 @@ def _build_11phys(bus, notifier, params, address=None):
     stack = isotp.NotifierBasedCanStack(
         bus=bus, notifier=notifier, address=addr, params=params
     )
-    return stack, [stack], isotp.TargetAddressType.Physical, "11bits physical address"
+    # Physical addressing already uses one exact reply ID (0x7F9).
+    can_filters = [{"can_id": _RX_PHYS_11BIT, "can_mask": 0x7FF, "extended": False}]
+    return (stack, [stack], isotp.TargetAddressType.Physical,
+            "11bits physical address", can_filters)
 
 
 def _build_29bit(bus, notifier, params, address=None):
@@ -268,16 +292,31 @@ def _build_29bit(bus, notifier, params, address=None):
         rx_stacks.append(isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier, address=rx_addr, params=params
         ))
-    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "29bits functional address"
+    # Exact reply ID when targeting one ECU; otherwise the reserved 0x18DAF1xx range.
+    if address is not None:
+        can_filters = [{"can_id": 0x18DAF100 | address, "can_mask": 0x1FFFFFFF, "extended": True}]
+    else:
+        can_filters = [{"can_id": 0x18DAF100, "can_mask": 0x1FFFFF00, "extended": True}]
+    return (tx_stack, rx_stacks, isotp.TargetAddressType.Functional,
+            "29bits functional address", can_filters)
 
 
 def _read_all_dids(args, bus, notifier):
     """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
     for builder in (_build_11func, _build_11phys, _build_29bit):
         try:
-            tx_stack, rx_stacks, addr_type, mode_label = builder(
+            tx_stack, rx_stacks, addr_type, mode_label, can_filters = builder(
                 bus, notifier, _ISOTP_PARAMS, args.address
             )
+            # Narrow the bus to this scheme's response IDs before receiving, so the
+            # Notifier drops other traffic in recv() instead of fanning it out to
+            # every stack (issue #46). Applied per scheme so e.g. the 29-bit read
+            # also rejects all 11-bit traffic.
+            try:
+                bus.set_filters(can_filters)
+            except Exception as err:
+                print("Could not apply CAN acceptance filters; continuing unfiltered.")
+                print(err)
             # The 11bits physical builder returns the same instance as tx_stack and
             # rx_stacks[0]; set() dedupes so start() / stop() run once per stack.
             # python-can-isotp's TransportLayer is designed for long-lived stacks:
