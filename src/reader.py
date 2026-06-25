@@ -30,11 +30,11 @@ Usage:
     Options:
         -v, --verbose        Enable verbose output (prints all CAN frames)
         -t, --timeout SECS   Response timeout in seconds per DID read (default: 10)
-        -i, --id-type TYPE   Addressing scheme: 11func, 11phys, or 29bits
+        -i, --id-type TYPE   Addressing scheme: 11func, 11phys, or 29func
                              (default: try all three)
-        -a, --ecu-addr ADDR  Known ECU physical address (0x77 hex or 119 dec) to
-                             target a single responder in the functional schemes
-                             instead of sweeping every address
+        -a, --ecu-addr ADDR  Known ECU physical address (0x-prefixed for hex,
+                             else decimal; ex. 0x77) to target a single responder
+                             in the functional schemes instead of sweeping
 
     For full help:
         python src/reader.py --help
@@ -67,20 +67,10 @@ _TESTER_ADDR = 0xF1     # ISO 15765-4: tester source address for 29-bit NormalFi
 _OBD_FUNC_ADDR = 0x33   # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
 _BROADCAST_29BIT = 0xFF # 29-bit UDS functional broadcast target address per ISO 15765-4
 
-# Each addressing scheme returns a CAN acceptance filter (see the _build_* funcs),
-# applied to the bus before that scheme is read. Every NotifierBasedCanStack
-# registers a Notifier listener, so without filtering the single Notifier thread
-# fans every CAN frame out to all pre-allocated stacks; under background traffic
-# that starves the responder's stack and its FlowControl misses the 1000 ms
-# ISO-TP deadline, so the ECU aborts the transfer (issue #46). Software filtering
-# in bus.recv() drops non-matching frames before they reach the stacks.
-#
-# With a known --address the filter is the single exact response ID (also safe on
-# a real bus, including 11-bit). Without it the filter is the scheme's response
-# range: the 29-bit range 0x18DAF1xx is reserved for diagnostics (ISO 15765-2
-# NormalFixed reply to tester 0xF1), but the 11-bit range 0x700-0x7FF is NOT
-# reserved (only 0x7DF/0x7E0-0x7EF are legislated), so on a real bus non-
-# diagnostic 0x7xx traffic can still pass it -- another reason to pass --address.
+# Each addressing scheme returns a CAN acceptance filter, applied to the bus
+# before that scheme is read (see the _build_* funcs). It keeps the Notifier
+# from fanning background traffic out to every pre-allocated stack, which would
+# stall the response. Root cause, mechanism and measurements: issue #46.
 
 # Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
@@ -174,7 +164,7 @@ def _get_argparser():
         choices=list(_SCHEME_BUILDERS),
         default=None,
         help="addressing scheme to use: 11bits functional (11func), 11bits "
-             "physical (11phys), or 29bits functional (29bits); default tries "
+             "physical (11phys), or 29bits functional (29func); default tries "
              "all three"
     )
     parser.add_argument(
@@ -182,9 +172,9 @@ def _get_argparser():
         type=_ecu_address,
         default=None,
         metavar="ADDR",
-        help="known ECU physical address (0x77 hex or 119 dec) to target a "
-             "single responder instead of sweeping every address; applies to "
-             "the functional schemes (11func and 29bits), ignored for 11phys "
+        help="known ECU physical address (0x-prefixed for hex, else decimal; "
+             "ex. 0x77) to target a single responder instead of sweeping every "
+             "address; applies to the functional schemes, ignored for 11phys "
              "which already targets one ECU"
     )
     return parser
@@ -249,7 +239,8 @@ def _build_11func(bus, notifier, params, address=None):
         rx_stacks.append(isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier, address=rx_addr, params=params
         ))
-    # Exact reply ID when targeting one ECU; otherwise the 0x700-0x7FF sweep range.
+    # Exact reply ID when targeting one ECU; otherwise the 0x700-0x7FF sweep
+    # range, which is not diagnostic-reserved -- prefer --ecu-addr on a real bus.
     if address is not None:
         can_filters = [{"can_id": 0x700 | address, "can_mask": 0x7FF, "extended": False}]
     else:
@@ -320,7 +311,7 @@ def _build_29bit(bus, notifier, params, address=None):
 _SCHEME_BUILDERS = {
     "11func": _build_11func,
     "11phys": _build_11phys,
-    "29bits": _build_29bit,
+    "29func": _build_29bit,
 }
 
 
@@ -335,7 +326,7 @@ def _check_ecu_addr(args):
     """
     if args.ecu_addr is None or args.id_type == "11phys":
         return None
-    if args.id_type == "29bits":
+    if args.id_type == "29func":
         lo, hi = 0x00, 0xFF
     else:  # "11func", or None meaning every functional scheme
         lo, hi = 0x08, 0xFF
