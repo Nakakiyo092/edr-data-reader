@@ -7,9 +7,12 @@ according to the Chinese standard GB39732-2020.
 EDR is a system that monitors, collects, and records vehicle and occupant
 protection data before, during, and after a collision event. This script
 reads 3 standardized data identifiers (DIDs 0xFA13, 0xFA14, 0xFA15) using
-3 address types (11-bit functional, 11-bit physical, and 29-bit), making
-9 attempts in total. All attempts are executed sequentially without early
-termination. Successful reads are saved as CSV files in the 'result' directory.
+3 address types (11-bit functional, 11-bit physical, and 29-bit functional),
+making 9 attempts in total by default. The --id-type option restricts this to a
+single scheme (3 attempts), and --ecu-addr targets a single known responder
+instead of sweeping every address. All attempts are executed sequentially
+without early termination. Successful reads are saved as CSV files in the
+'result' directory.
 
 Usage:
     Connect a CAN device to the vehicle's OBD-II diagnostic connector,
@@ -25,11 +28,21 @@ Usage:
         devicename    CAN device name (e.g., COM9 on Windows, /dev/ttyACM0 on Linux)
 
     Options:
-        -v, --verbose       Enable verbose output (prints all CAN frames)
-        -t, --timeout SECS  Response timeout in seconds per DID read (default: 10)
+        -h, --help               Show this help message and exit
+        -v, --verbose            Enable verbose output (prints all CAN frames)
+        -t SECS, --timeout SECS  Response timeout in seconds per DID read (default: 10)
+        -i TYPE, --id-type TYPE  Addressing scheme: 11func, 11phys, or 29func
+                                 (default: try all three)
+        -a ADDR, --ecu-addr ADDR
+                                 Known ECU physical address (0x-prefixed for hex,
+                                 else decimal; ex. 0x77) to target a single
+                                 responder in the functional schemes
+        --no-filter              Testing: skip CAN acceptance filters so every
+                                 frame reaches the stacks (filters on by default)
 
-    For full help:
-        python src/reader.py --help
+    Examples:
+        python src/reader.py COM9
+        python3 src/reader.py /dev/ttyACM0 --verbose --id-type 29func --ecu-addr 0x77
 
     Output:
         Results are saved to the 'result' directory as CSV files
@@ -58,6 +71,11 @@ _TX_FUNC_11BIT = 0x7DF  # 11-bit OBD-II functional broadcast CAN ID per ISO 1576
 _TESTER_ADDR = 0xF1     # ISO 15765-4: tester source address for 29-bit NormalFixed addressing
 _OBD_FUNC_ADDR = 0x33   # ISO 15765-4: OBD-II functional broadcast address (excluded from rx)
 _BROADCAST_29BIT = 0xFF # 29-bit UDS functional broadcast target address per ISO 15765-4
+
+# Each addressing scheme returns a CAN acceptance filter, applied to the bus
+# before that scheme is read (see the _build_* funcs). It keeps the Notifier
+# from fanning background traffic out to every pre-allocated stack, which would
+# stall the response. Root cause, mechanism and measurements: issue #46.
 
 # Parameters from GB39732-2020
 _EDR_DID_LIST = (0xFA13, 0xFA14, 0xFA15)
@@ -104,6 +122,26 @@ _ISOTP_PARAMS = {
 }
 
 
+def _ecu_address(value):
+    """Parse an ECU physical address (one byte) from the command line.
+
+    Uses Python int() base-0 rules: a bare number is decimal (119) and a 0x
+    prefix is hex (0x77). Scheme-specific range checks happen after parsing,
+    once the addressing scheme is known (see _check_ecu_addr).
+    """
+    try:
+        addr = int(value, 0)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"invalid ECU address '{value}': expected a byte like 0x77 (hex) or 119 (dec)"
+        )
+    if not 0x00 <= addr <= 0xFF:
+        raise argparse.ArgumentTypeError(
+            f"ECU address 0x{addr:X} out of range: expected 0x00-0xFF"
+        )
+    return addr
+
+
 def _get_argparser():
     """Get the command line argument parser."""
 
@@ -125,6 +163,31 @@ def _get_argparser():
         type=float,
         default=_DEFAULT_TIMEOUT_S,
         help="response timeout in seconds per DID read (default: 10)"
+    )
+    parser.add_argument(
+        "-i", "--id-type",
+        choices=list(_SCHEME_BUILDERS),
+        default=None,
+        help="addressing scheme to use: 11bits functional (11func), 11bits "
+             "physical (11phys), or 29bits functional (29func); default tries "
+             "all three"
+    )
+    parser.add_argument(
+        "-a", "--ecu-addr",
+        type=_ecu_address,
+        default=None,
+        metavar="ADDR",
+        help="known ECU physical address (0x-prefixed for hex, else decimal; "
+             "ex. 0x77) to target a single responder instead of sweeping every "
+             "address; applies to the functional schemes, ignored for 11phys "
+             "which already targets one ECU"
+    )
+    parser.add_argument(
+        "--no-filter",
+        action="store_true",
+        help="for testing: do not apply CAN acceptance filters, so every frame "
+             "reaches the ISO-TP stacks (reproduces the pre-filter behaviour); "
+             "filters are enabled by default"
     )
     return parser
 
@@ -159,8 +222,12 @@ def _create_bus(args):
         return None
 
 
-def _build_11func(bus, notifier, params):
-    """11bits functional: emit-only tx_stack on 0x7DF + per-ECU rx_stacks (0x700-0x7FF)."""
+def _build_11func(bus, notifier, params, address=None):
+    """11bits functional: emit-only tx_stack on 0x7DF + per-ECU rx_stacks (0x700-0x7FF).
+
+    When ``address`` is given, only the single rx pair for that responder is built
+    (response on 0x700|address, FC on 0x700|address-8) instead of the full sweep.
+    """
     # rxid=0x700 is a placeholder to satisfy Address validation; no ECU transmits on it.
     tx_addr = isotp.Address(
         isotp.AddressingMode.Normal_11bits, txid=_TX_FUNC_11BIT, rxid=0x700
@@ -170,30 +237,54 @@ def _build_11func(bus, notifier, params):
     )
     # Pre-allocate one rx stack per plausible per-ECU physical pair (DESIGN.md library-gap),
     # so the FF and the subsequent FC/CFs are received on the responder's own pair.
+    # rxid = 0x700|addr is the ECU's response ID; txid = rxid-8 is where it expects
+    # the tester's request/FC (the fixed 8-offset convention also used by the sweep).
+    if address is not None:
+        rxids = [0x700 | address]
+    else:
+        rxids = [0x700 + i + 8 for i in range(0x100 - 0x8)]
     rx_stacks = []
-    for i in range(0x100 - 0x8):
+    for rxid in rxids:
         rx_addr = isotp.Address(
-            isotp.AddressingMode.Normal_11bits, txid=0x700 + i, rxid=0x700 + i + 8
+            isotp.AddressingMode.Normal_11bits, txid=rxid - 8, rxid=rxid
         )
         rx_stacks.append(isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier, address=rx_addr, params=params
         ))
-    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "11bits functional address"
+    # Exact reply ID when targeting one ECU; otherwise the 0x700-0x7FF sweep
+    # range, which is not diagnostic-reserved -- prefer --ecu-addr on a real bus.
+    if address is not None:
+        can_filters = [{"can_id": 0x700 | address, "can_mask": 0x7FF, "extended": False}]
+    else:
+        can_filters = [{"can_id": 0x700, "can_mask": 0x700, "extended": False}]
+    return (tx_stack, rx_stacks, isotp.TargetAddressType.Functional,
+            "11bits functional address", can_filters)
 
 
-def _build_11phys(bus, notifier, params):
-    """11bits physical: single symmetric stack used for both send and receive."""
+def _build_11phys(bus, notifier, params, address=None):
+    """11bits physical: single symmetric stack used for both send and receive.
+
+    ``address`` is accepted for a uniform builder signature but unused: physical
+    addressing already targets one fixed responder pair (0x7F1/0x7F9).
+    """
     addr = isotp.Address(
         isotp.AddressingMode.Normal_11bits, txid=_TX_PHYS_11BIT, rxid=_RX_PHYS_11BIT
     )
     stack = isotp.NotifierBasedCanStack(
         bus=bus, notifier=notifier, address=addr, params=params
     )
-    return stack, [stack], isotp.TargetAddressType.Physical, "11bits physical address"
+    # Physical addressing already uses one exact reply ID (0x7F9).
+    can_filters = [{"can_id": _RX_PHYS_11BIT, "can_mask": 0x7FF, "extended": False}]
+    return (stack, [stack], isotp.TargetAddressType.Physical,
+            "11bits physical address", can_filters)
 
 
-def _build_29bit(bus, notifier, params):
-    """29bits NormalFixed: emit-only broadcast tx_stack + per-ECU rx_stacks."""
+def _build_29bit(bus, notifier, params, address=None):
+    """29bits NormalFixed: emit-only broadcast tx_stack + per-ECU rx_stacks.
+
+    When ``address`` is given, only the single rx stack for that responder is
+    built (replies on 0x18DAF1<address>) instead of sweeping every address.
+    """
     tx_addr = isotp.Address(
         isotp.AddressingMode.NormalFixed_29bits,
         target_address=_BROADCAST_29BIT,
@@ -202,11 +293,14 @@ def _build_29bit(bus, notifier, params):
     tx_stack = isotp.NotifierBasedCanStack(
         bus=bus, notifier=notifier, address=tx_addr, params=params
     )
-    # Cover every plausible responder address (excluding the OBD functional broadcast).
+    # Cover the responder address(es). With a known address, build just that one;
+    # otherwise sweep every plausible address (excluding the OBD functional broadcast).
+    if address is not None:
+        targets = [address]
+    else:
+        targets = [i for i in range(0xF0) if i != _OBD_FUNC_ADDR]
     rx_stacks = []
-    for i in range(0xF0):
-        if i == _OBD_FUNC_ADDR:
-            continue
+    for i in targets:
         rx_addr = isotp.Address(
             isotp.AddressingMode.NormalFixed_29bits,
             target_address=i,
@@ -215,16 +309,70 @@ def _build_29bit(bus, notifier, params):
         rx_stacks.append(isotp.NotifierBasedCanStack(
             bus=bus, notifier=notifier, address=rx_addr, params=params
         ))
-    return tx_stack, rx_stacks, isotp.TargetAddressType.Functional, "29bits address"
+    # Exact reply ID when targeting one ECU; otherwise the reserved 0x18DAF1xx range.
+    if address is not None:
+        can_filters = [{"can_id": 0x18DAF100 | address, "can_mask": 0x1FFFFFFF, "extended": True}]
+    else:
+        can_filters = [{"can_id": 0x18DAF100, "can_mask": 0x1FFFFF00, "extended": True}]
+    return (tx_stack, rx_stacks, isotp.TargetAddressType.Functional,
+            "29bits functional address", can_filters)
+
+
+# Maps the --id-type choice to its scheme builder. Insertion order is also the
+# order tried when no scheme is fixed (i.e. --id-type omitted).
+_SCHEME_BUILDERS = {
+    "11func": _build_11func,
+    "11phys": _build_11phys,
+    "29func": _build_29bit,
+}
+
+
+def _check_ecu_addr(args):
+    """Validate --ecu-addr against the scheme(s) it will be used with.
+
+    Returns an error message, or None if acceptable. 11-bit functional needs
+    >= 0x08 so its response ID stays in 0x708-0x7FF; 29-bit allows 0x00-0xFF.
+    With no fixed scheme (--id-type omitted) the address must satisfy both
+    functional schemes, i.e. the 0x08-0xFF intersection. Physical addressing
+    ignores the address.
+    """
+    if args.ecu_addr is None or args.id_type == "11phys":
+        return None
+    if args.id_type == "29func":
+        lo, hi = 0x00, 0xFF
+    else:  # "11func", or None meaning every functional scheme
+        lo, hi = 0x08, 0xFF
+    if not lo <= args.ecu_addr <= hi:
+        scope = args.id_type or "the functional schemes"
+        return (f"argument -a/--ecu-addr: 0x{args.ecu_addr:X} is out of range for "
+                f"{scope}: expected 0x{lo:02X}-0x{hi:02X}")
+    return None
 
 
 def _read_all_dids(args, bus, notifier):
-    """Read all EDR DIDs via 11bits functional, 11bits physical, and 29bits addresses."""
-    for builder in (_build_11func, _build_11phys, _build_29bit):
+    """Read the EDR DIDs over the selected addressing scheme(s).
+
+    Tries every scheme by default, or only --id-type when one is given.
+    """
+    if args.id_type is not None:
+        builders = [_SCHEME_BUILDERS[args.id_type]]
+    else:
+        builders = list(_SCHEME_BUILDERS.values())
+    for builder in builders:
         try:
-            tx_stack, rx_stacks, addr_type, mode_label = builder(
-                bus, notifier, _ISOTP_PARAMS
+            tx_stack, rx_stacks, addr_type, mode_label, can_filters = builder(
+                bus, notifier, _ISOTP_PARAMS, args.ecu_addr
             )
+            # Narrow the bus to this scheme's response IDs before receiving, so the
+            # Notifier drops other traffic in recv() instead of fanning it out to
+            # every stack (issue #46). Applied per scheme so e.g. the 29-bit read
+            # also rejects all 11-bit traffic. --no-filter skips this (testing).
+            if not args.no_filter:
+                try:
+                    bus.set_filters(can_filters)
+                except Exception as err:
+                    print("Could not apply CAN acceptance filters; continuing unfiltered.")
+                    print(err)
             # The 11bits physical builder returns the same instance as tx_stack and
             # rx_stacks[0]; set() dedupes so start() / stop() run once per stack.
             # python-can-isotp's TransportLayer is designed for long-lived stacks:
@@ -506,6 +654,9 @@ def main():
     # Parse command line arguments
     argparser = _get_argparser()
     args = argparser.parse_args()
+    addr_err = _check_ecu_addr(args)
+    if addr_err:
+        argparser.error(addr_err)
 
     # Setup and start a CAN bus
     bus = _create_bus(args)
