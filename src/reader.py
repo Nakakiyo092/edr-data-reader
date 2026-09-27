@@ -11,8 +11,8 @@ reads 3 standardized data identifiers (DIDs 0xFA13, 0xFA14, 0xFA15) using
 making 9 attempts in total by default. The --id-type option restricts this to a
 single scheme (3 attempts), and --ecu-addr targets a single known responder
 instead of sweeping every address. All attempts are executed sequentially
-without early termination. Successful reads are saved as CSV files in the
-'result' directory.
+without early termination. Successful reads are saved as CSV files in a
+per-run folder under the 'result' directory.
 
 Usage:
     Connect a CAN device to the vehicle's OBD-II diagnostic connector,
@@ -45,9 +45,10 @@ Usage:
         python3 src/reader.py /dev/ttyACM0 --verbose --id-type 29func --ecu-addr 0x77
 
     Output:
-        Results are saved to the 'result' directory as CSV files
-        (did_fa13.csv, did_fa14.csv, did_fa15.csv) with raw byte values
-        appended to each row.
+        Results are saved to a new folder 'result/YYYYMMDD_HHMMSS' per run
+        as CSV files (did_fa13.csv, did_fa14.csv, did_fa15.csv) with raw
+        byte values appended to each row. The folder is created only when
+        at least one DID is read, so earlier runs are never overwritten.
 
 License:
     MIT License.
@@ -349,8 +350,8 @@ def _check_ecu_addr(args):
     return None
 
 
-def _read_all_dids(args, bus, notifier):
-    """Read the EDR DIDs over the selected addressing scheme(s).
+def _read_all_dids(args, bus, notifier, out_dir):
+    """Read the EDR DIDs over the selected addressing scheme(s) into out_dir.
 
     Tries every scheme by default, or only --id-type when one is given.
     """
@@ -385,7 +386,7 @@ def _read_all_dids(args, bus, notifier):
                     payload = _read_did(
                         did, tx_stack, rx_stacks, addr_type, mode_label, args.timeout
                     )
-                    _output_data(payload)
+                    _output_data(payload, out_dir)
             finally:
                 for s in all_stacks:
                     s.stop()
@@ -534,8 +535,25 @@ def _convert(raw: int, value_table: str, conversion: str) -> str:
     return f"{scale * raw + offset:g}"
 
 
-def _output_data(payload) -> None:
-    """Output the data to a CSV file according to the format defined in the 'format' folder."""
+def _new_result_dir() -> str:
+    """Return an unused per-run output folder path under 'result'.
+
+    Each run gets its own timestamped folder so that a partial read never
+    mixes with CSVs left by an earlier run, possibly from another vehicle.
+    Only the path is chosen here; _output_data creates the folder on the
+    first successful read, so a run without data leaves nothing behind.
+    """
+    base = "result/" + time.strftime("%Y%m%d_%H%M%S")
+    path = base
+    n = 2
+    while os.path.exists(path):
+        path = f"{base}_{n}"
+        n += 1
+    return path
+
+
+def _output_data(payload, out_dir) -> None:
+    """Output the data to a CSV file in out_dir per the format in the 'format' folder."""
 
     # Get target did from payload
     if payload is None:
@@ -549,11 +567,11 @@ def _output_data(payload) -> None:
 
     # File paths for source and destination
     source_file = "format/did_" + did + ".csv"
-    destination_file = "result/did_" + did + ".csv"
+    destination_file = out_dir + "/did_" + did + ".csv"
 
     # Copy the file
     try:
-        os.makedirs("result", exist_ok=True)
+        os.makedirs(out_dir, exist_ok=True)
         shutil.copy(source_file, destination_file)
     except FileNotFoundError:
         print(f"The source file '{source_file}' does not exist.")
@@ -634,16 +652,17 @@ def _output_data(payload) -> None:
         return
 
 
-def _copy_readme():
-    """Copy the README file from the format folder to the result folder."""
+def _copy_readme(out_dir):
+    """Copy the README file from the format folder to out_dir."""
+    destination_file = out_dir + "/README.md"
     try:
-        shutil.copy("format/README.md", "result/README.md")
+        shutil.copy("format/README.md", destination_file)
     except FileNotFoundError:
         print("The source file format/README.md does not exist.")
-        print("The file format/README.md was not copied to result/README.md.")
+        print(f"The file format/README.md was not copied to {destination_file}.")
     except PermissionError:
         print("You do not have the necessary permissions to read or write a file.")
-        print("The file format/README.md was not copied to result/README.md.")
+        print(f"The file format/README.md was not copied to {destination_file}.")
     except Exception as err:
         print(err)
 
@@ -669,16 +688,22 @@ def main():
     else:
         notifier = can.Notifier(bus, [])
 
+    out_dir = _new_result_dir()
     try:
         # Read all EDR DIDs
-        _read_all_dids(args, bus, notifier)
+        _read_all_dids(args, bus, notifier, out_dir)
     finally:
         # Shutdown the CAN bus
         notifier.stop()
         bus.shutdown()
 
-    # Copy the README file
-    _copy_readme()
+    # The folder exists only if at least one DID was written
+    print("")
+    if os.path.isdir(out_dir):
+        _copy_readme(out_dir)
+        print(f"Results were saved to '{out_dir}'.")
+    else:
+        print("No data was saved.")
 
 
 if __name__ == "__main__":
