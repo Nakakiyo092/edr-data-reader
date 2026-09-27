@@ -61,6 +61,10 @@ class BasicTestCase(unittest.TestCase):
         self.assertIn("No data was received.", result.stdout)
         self.assertIn("", result.stderr)
 
+        # No output folder is created, so the README copy is skipped silently
+        self.assertIn("No data was saved.", result.stdout)
+        self.assertNotIn("README.md", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

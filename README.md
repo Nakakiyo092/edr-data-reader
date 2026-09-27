@@ -46,7 +46,7 @@ Windows
 Linux or macOS
 * `python3 src/reader.py --help`
 
-If successful, the data will be stored in the `result` directory.
+If successful, the data will be stored in a new folder `result/YYYYMMDD_HHMMSS` for each run, so results of earlier runs are never overwritten.
 
 By default, the script uses a slcan device as a CAN interface.
 You can use any [python-can](https://github.com/hardbyte/python-can) compatible interface by modifying the following line in the middle of `reader.py`.
